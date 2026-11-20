@@ -15,7 +15,7 @@ public fun AsciiMorse(
     modifier: Modifier = Modifier,
     symbolsPerSecond: Float = 6f,
 ) {
-    AnimatedText("Morse code: $text", TEXT_FPS, modifier) { t, reduced, theme ->
+    AnimatedText("${LocalAsciiStrings.current.morseCode}: $text", TEXT_FPS, modifier) { t, reduced, theme ->
         renderMorse(text, t, symbolsPerSecond, reduced, theme)
     }
 }

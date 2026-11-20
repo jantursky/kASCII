@@ -44,16 +44,16 @@ internal fun SettingsScreen(
         AppText("every ${settings.intervalSeconds.roundToInt()} s", muted = true)
         AsciiDivider(cols = width, label = "List")
         AsciiToggle(settings.problemsOnly, { settings.problemsOnly = it }, "Only servers that need attention")
-        AsciiRadioGroup(SettingsState.Regions, settings.region, { settings.region = it })
+        AsciiRadioGroup(SettingsState.Regions, settings.region) { settings.region = it }
         AsciiDivider(cols = width, label = "Profile")
         AsciiTextField(settings.name, { settings.name = it }, label = "Name", cols = width, placeholder = "Your name")
         AppText("shown as ${settings.host}", muted = true)
         AsciiDivider(cols = width, label = "Look")
-        AsciiRadioGroup(BuiltInThemes.map { it.first }, gallery.themeIndex(), gallery::chooseTheme)
+        AsciiRadioGroup(BuiltInThemes.map { it.first }, gallery.themeIndex(), onSelect = gallery::chooseTheme)
         AsciiRadioGroup(
             MotionChoices.map { it.first },
             MotionChoices.indexOfFirst { it.second == gallery.motion },
-            { gallery.motion = MotionChoices[it].second },
+            onSelect = { gallery.motion = MotionChoices[it].second },
         )
     }
 }

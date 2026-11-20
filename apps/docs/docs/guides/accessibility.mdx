@@ -26,7 +26,7 @@ Override it per element with the `motion` parameter (`System`, `Full` or `Reduce
 
 ## Keyboard and touch
 
-Interactive components are focusable. On desktop and web, Enter and Space activate buttons and toggles, arrow keys move sliders, and the focused control is drawn with a visible marker, such as `>` and `<` around a button. Touch targets are at least 48 dp.
+Interactive components are focusable. On desktop and web, Enter and Space activate buttons and toggles, arrow keys move sliders, and the focused control is drawn with a visible marker, which swaps the brackets of a button, checkbox, radio, toggle or slider for `>` and `<`. Touch targets are at least 48 dp.
 
 ## Contrast
 
@@ -35,3 +35,15 @@ Keep ink and paper at a contrast ratio of at least 4.5. `KasciiTheme.contrastRat
 ## Decorative art
 
 Animated art is decoration. Do not put essential information only in an animated piece, and give meaningful art a description in plain text.
+
+## Translating the spoken text
+
+Components describe themselves to screen readers in English by default ("Loading", "Dismiss", "Table, 3 columns", month names in the calendar). Provide your own words once for a whole screen:
+
+```kotlin
+CompositionLocalProvider(LocalAsciiStrings provides AsciiStrings(loading = "Načítava sa", dismiss = "Zavrieť")) {
+    // components here
+}
+```
+
+Labels passed straight to a component, such as `AsciiSpinner(label = ...)`, win over these.

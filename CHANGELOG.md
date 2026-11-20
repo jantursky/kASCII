@@ -6,6 +6,7 @@ All notable changes to Kascii are listed here. The format follows [Keep a Change
 
 ### Added
 
+- `AsciiStrings` and `LocalAsciiStrings` translate the words components speak to screen readers and the calendar's month and weekday names.
 - `Modifier.ascii(live = true)` samples on every frame, for content that animates inside a child's own graphics layer.
 - `LocalKasciiMotion` sets the motion preference for components that have no `motion` parameter.
 - `kascii-core`: the glyph engine for text-mode art, with fields, charsets, grids, themes, a frame clock and text, ANSI and SVG export.

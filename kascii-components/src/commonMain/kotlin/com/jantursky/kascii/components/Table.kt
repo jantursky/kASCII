@@ -43,7 +43,7 @@ public fun AsciiTable(
     modifier: Modifier = Modifier,
     border: BoxStyle = BoxStyle.Single,
 ) {
-    val description = describeTable(columns, rows)
+    val description = describeTable(columns, rows, LocalAsciiStrings.current)
     GridSurface(
         grid = renderTable(columns, rows, border),
         modifier =
@@ -88,9 +88,10 @@ internal fun renderTable(
 internal fun describeTable(
     columns: List<AsciiTableColumn>,
     rows: List<List<String>>,
+    strings: AsciiStrings = AsciiStrings(),
 ): String =
-    "Table, ${columns.size} columns: ${columns.joinToString { it.header }}. " +
-        rows.mapIndexed { i, cells -> "Row ${i + 1}: ${cells.joinToString()}" }.joinToString(". ")
+    "${strings.table}, ${columns.size} ${strings.columns}: ${columns.joinToString { it.header }}. " +
+        rows.mapIndexed { i, cells -> "${strings.row} ${i + 1}: ${cells.joinToString()}" }.joinToString(". ")
 
 private fun align(
     text: String,

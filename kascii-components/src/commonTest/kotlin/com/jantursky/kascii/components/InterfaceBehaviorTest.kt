@@ -107,14 +107,14 @@ class InterfaceBehaviorTest {
     @Test
     fun markerRowsHandleStateAndEmptyLabels() {
         val bare = renderMarkerRow(RADIO_MARKERS, true, "", idle, theme)
-        assertEquals(" (*)", bare.toText())
+        assertEquals("(*)", bare.toText())
         assertEquals(theme.good(), bare.colorAt(1, 0))
         val off = renderMarkerRow(RADIO_MARKERS, false, "A", idle, theme)
-        assertEquals(" ( ) A", off.toText())
+        assertEquals("( ) A", off.toText())
         assertNull(off.colorAt(1, 0))
         val disabled = renderMarkerRow(CHECKBOX_MARKERS, true, "A", ControlState(enabled = false), theme)
         assertEquals(theme.dim(), disabled.colorAt(1, 0))
-        assertEquals(theme.dim(), disabled.colorAt(5, 0))
+        assertEquals(theme.dim(), disabled.colorAt(4, 0))
         val pressed = renderMarkerRow(CHECKBOX_MARKERS, true, "A", ControlState(focused = true, pressed = true), theme)
         assertNull(pressed.colorAt(1, 0))
         assertNull(pressed.colorAt(0, 0))
@@ -122,8 +122,8 @@ class InterfaceBehaviorTest {
 
     @Test
     fun sliderThumbSitsAtTheEnds() {
-        assertEquals(" [O--------]", renderSlider(12, 0f, idle, theme).toText())
-        assertEquals(" [========O]", renderSlider(12, 1f, idle, theme).toText())
+        assertEquals("[O---------]", renderSlider(12, 0f, idle, theme).toText())
+        assertEquals("[=========O]", renderSlider(12, 1f, idle, theme).toText())
         assertEquals(theme.dim(), renderSlider(12, 0.5f, ControlState(enabled = false), theme).colorAt(1, 0))
         assertEquals(theme.good(), renderSlider(12, 0.5f, idle, theme).colorAt(2, 0))
     }

@@ -65,9 +65,9 @@ public fun AsciiRadio(
 public fun AsciiRadioGroup(
     options: List<String>,
     selectedIndex: Int,
-    onSelect: (Int) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    onSelect: (Int) -> Unit,
 ) {
     Column(modifier.selectableGroup()) {
         options.forEachIndexed { index, option ->
@@ -107,7 +107,7 @@ internal val CHECKBOX_MARKERS = Markers("[x]", "[ ]")
 internal val RADIO_MARKERS = Markers("(*)", "( )")
 internal val TOGGLE_MARKERS = Markers("[ON ■]", "[■OFF]")
 
-/** One row: a focus column, the marker for [on], and the label. */
+/** One row: the marker for [on], and the label. A focused marker swaps its outer characters for `>` and `<`. */
 internal fun renderMarkerRow(
     markers: Markers,
     on: Boolean,
@@ -116,7 +116,7 @@ internal fun renderMarkerRow(
     theme: KasciiTheme,
 ): Grid {
     val marker = if (on) markers.on else markers.off
-    val grid = Grid(1 + marker.length + if (label.isEmpty()) 0 else label.length + 1, 1)
+    val grid = Grid(marker.length + if (label.isEmpty()) 0 else label.length + 1, 1)
     val markerColor =
         when {
             !state.enabled -> theme.dim()
@@ -124,8 +124,12 @@ internal fun renderMarkerRow(
             on -> theme.good()
             else -> null
         }
-    grid.write(1, 0, marker, markerColor)
-    if (label.isNotEmpty()) grid.write(marker.length + 2, 0, label, if (state.enabled) null else theme.dim())
-    if (state.focused) grid.put(0, 0, '>', if (state.pressed) null else theme.accent)
+    grid.write(0, 0, marker, markerColor)
+    if (label.isNotEmpty()) grid.write(marker.length + 1, 0, label, if (state.enabled) null else theme.dim())
+    if (state.focused) {
+        val accent = if (state.pressed) null else theme.accent
+        grid.put(0, 0, '>', accent)
+        grid.put(marker.length - 1, 0, '<', accent)
+    }
     return grid
 }

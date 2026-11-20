@@ -34,11 +34,12 @@ public fun AsciiTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    label: String = "Text field",
+    label: String? = null,
     cols: Int = 24,
     placeholder: String = "",
     enabled: Boolean = true,
 ) {
+    val strings = LocalAsciiStrings.current
     val theme = LocalKasciiTheme.current
     val source = remember { MutableInteractionSource() }
     val focused by source.collectIsFocusedAsState()
@@ -52,8 +53,7 @@ public fun AsciiTextField(
             onValueChange = onValueChange,
             modifier =
                 Modifier.width(CellWidth * cols).heightIn(min = MinTouchTarget).semantics {
-                    contentDescription =
-                        label
+                    contentDescription = label ?: strings.textField
                 },
             enabled = enabled,
             singleLine = true,

@@ -36,7 +36,7 @@ internal fun DetailScreen(
     if (server == null) {
         Column(modifier, Arrangement.spacedBy(8.dp)) {
             AppText("No server is open.", muted = true)
-            AsciiButton("Open the list", { state.show(Screen.Servers) })
+            AsciiButton("Open the list") { state.show(Screen.Servers) }
         }
         return
     }
@@ -59,8 +59,8 @@ internal fun DetailScreen(
         AsciiLineChart(server.load, cols = minOf(cols, MAX_COLS), rows = 6)
         AsciiTerminal(server.log, cols = minOf(cols, MAX_COLS), rows = LOG_ROWS)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            AsciiButton("Restart", state::askRestart)
-            AsciiButton("Back", { state.show(Screen.Servers) })
+            AsciiButton("Restart", onClick = state::askRestart)
+            AsciiButton("Back") { state.show(Screen.Servers) }
         }
     }
 }

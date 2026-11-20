@@ -20,15 +20,16 @@ public fun AsciiCalendar(
     today: Int? = null,
 ) {
     require(month in 1..12) { "month must be 1..12, got $month" }
-    val title = "${MONTH_NAMES[month - 1]} $year"
+    val strings = LocalAsciiStrings.current
+    val title = "${strings.monthNames[month - 1]} $year"
     val description =
         listOfNotNull(
-            "Calendar, $title",
+            "${strings.calendar}, $title",
             selectedDay?.let { "selected day $it" },
             today?.let { "today $it" },
         )
     GridSurface(
-        grid = renderCalendar(year, month, selectedDay, today, LocalKasciiTheme.current),
+        grid = renderCalendar(year, month, selectedDay, today, LocalKasciiTheme.current, strings),
         modifier = modifier,
         description = description.joinToString(", "),
     )
@@ -40,12 +41,13 @@ internal fun renderCalendar(
     selectedDay: Int?,
     today: Int?,
     theme: KasciiTheme,
+    strings: AsciiStrings = AsciiStrings(),
 ): Grid {
     val days = daysInMonth(year, month)
     val offset = (dayOfWeek(year, month, 1) + 6) % 7
     val grid = Grid(DAY_WIDTH * 7, 2 + (offset + days + 6) / 7)
-    grid.label(grid.cols / 2, 0, "${MONTH_NAMES[month - 1]} $year")
-    WEEKDAYS.forEachIndexed { i, name -> grid.write(i * DAY_WIDTH, 1, " $name ", theme.dim()) }
+    grid.label(grid.cols / 2, 0, "${strings.monthNames[month - 1]} $year")
+    strings.weekdays.forEachIndexed { i, name -> grid.write(i * DAY_WIDTH, 1, " $name ", theme.dim()) }
     for (day in 1..days) {
         val slot = offset + day - 1
         val text =
@@ -82,20 +84,4 @@ internal fun dayOfWeek(
 }
 
 private val MONTH_OFFSETS = intArrayOf(0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4)
-private val MONTH_NAMES =
-    listOf(
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    )
-private val WEEKDAYS = listOf("Mo", "Tu", "We", "Th", "Fr", "Sa", "Su")
 private const val DAY_WIDTH = 4

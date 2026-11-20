@@ -89,7 +89,7 @@ class InterfaceUiTest {
     fun radioGroupSelectsOneOption() =
         runUiTest {
             var selected by mutableStateOf(0)
-            setComponent { AsciiRadioGroup(listOf("One", "Two"), selected, { selected = it }) }
+            setComponent { AsciiRadioGroup(listOf("One", "Two"), selected) { selected = it } }
             onNodeWithContentDescription("One").assertIsSelected()
             onNodeWithContentDescription("Two").performClick()
             onNodeWithContentDescription("Two").assertIsSelected()

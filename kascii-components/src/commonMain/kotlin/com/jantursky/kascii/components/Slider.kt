@@ -46,8 +46,9 @@ public fun AsciiSlider(
     steps: Int = 0,
     cols: Int = 24,
     enabled: Boolean = true,
-    label: String = "Slider",
+    label: String? = null,
 ) {
+    val strings = LocalAsciiStrings.current
     val source = remember { MutableInteractionSource() }
     val state = rememberControlState(source, enabled)
     val focus = remember { FocusRequester() }
@@ -68,7 +69,7 @@ public fun AsciiSlider(
             modifier
                 .onSizeChanged { boxWidth = it.width }
                 .semantics(mergeDescendants = true) {
-                    contentDescription = label
+                    contentDescription = label ?: strings.slider
                     progressBarRangeInfo = ProgressBarRangeInfo(value.coerceIn(valueRange), valueRange, steps)
                     stateDescription = "${percentOf(fraction)}%"
                     if (!enabled) disabled()
@@ -109,8 +110,8 @@ internal fun renderSlider(
     val grid = Grid(cols, 1)
     val color = if (state.enabled) null else theme.dim()
     val thumb = (fraction.coerceIn(0f, 1f) * (inner - 1)).roundToInt()
-    grid.put(1, 0, '[', color)
-    grid.put(inner + 2, 0, ']', color)
+    grid.put(0, 0, if (state.focused) '>' else '[', if (state.focused) theme.accent else color)
+    grid.put(inner + 1, 0, if (state.focused) '<' else ']', if (state.focused) theme.accent else color)
     for (i in 0 until inner) {
         val glyph =
             when {
@@ -118,20 +119,19 @@ internal fun renderSlider(
                 i < thumb -> '='
                 else -> '-'
             }
-        grid.put(2 + i, 0, glyph, if (i <= thumb && state.enabled) theme.good() else color)
+        grid.put(1 + i, 0, glyph, if (i <= thumb && state.enabled) theme.good() else color)
     }
-    if (state.focused) grid.put(0, 0, '>', theme.accent)
     return grid
 }
 
-/** Track cells between the brackets: the grid has a focus column and two brackets besides. */
-internal fun sliderTrack(cols: Int): Int = (cols - 3).coerceAtLeast(2)
+/** Track cells between the two brackets, which are `>` and `<` while the slider has focus. */
+internal fun sliderTrack(cols: Int): Int = (cols - 2).coerceAtLeast(2)
 
 /** The fraction for a pointer at [x] cells from the grid's left edge. The thumb centers on its cell. */
 internal fun fractionAtCell(
     x: Float,
     inner: Int,
-): Float = ((x - 2f - 0.5f) / (inner - 1)).coerceIn(0f, 1f)
+): Float = ((x - 1f - 0.5f) / (inner - 1)).coerceIn(0f, 1f)
 
 internal fun fractionOf(
     value: Float,

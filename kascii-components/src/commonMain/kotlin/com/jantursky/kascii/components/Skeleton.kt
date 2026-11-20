@@ -16,11 +16,12 @@ public fun AsciiSkeleton(
     cols: Int = 32,
     rows: Int = 3,
 ) {
+    val loading = LocalAsciiStrings.current.loading
     val theme = LocalKasciiTheme.current
     val time = rememberClock(SKELETON_FPS, rememberReducedMotion()).floatValue
     GridSurface(
         grid = renderSkeleton(cols, rows, time, theme),
-        modifier = modifier.semantics(mergeDescendants = true) { contentDescription = "Loading" },
+        modifier = modifier.semantics(mergeDescendants = true) { contentDescription = loading },
     )
 }
 

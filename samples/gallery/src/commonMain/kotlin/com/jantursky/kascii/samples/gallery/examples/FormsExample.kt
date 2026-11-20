@@ -36,7 +36,7 @@ fun FormsExample(modifier: Modifier = Modifier) {
     FlowRow(modifier, Arrangement.spacedBy(32.dp), Arrangement.spacedBy(24.dp)) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             AsciiDivider(cols = 24, label = "Buttons")
-            AsciiButton("Save", { saved++ })
+            AsciiButton("Save") { saved++ }
             AsciiButton("Disabled", onClick = {}, enabled = false)
             AsciiBadge("saved $saved times")
         }
@@ -44,7 +44,7 @@ fun FormsExample(modifier: Modifier = Modifier) {
             AsciiDivider(cols = 24, label = "Choices")
             AsciiCheckbox(checked, { checked = it }, "Remember me")
             AsciiToggle(toggled, { toggled = it }, "Notifications")
-            AsciiRadioGroup(listOf("Small", "Medium", "Large"), size, { size = it })
+            AsciiRadioGroup(listOf("Small", "Medium", "Large"), size) { size = it }
         }
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             AsciiDivider(cols = 24, label = "Values")

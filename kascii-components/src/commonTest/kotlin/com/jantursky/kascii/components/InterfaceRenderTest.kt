@@ -99,7 +99,7 @@ class InterfaceRenderTest {
     fun checkboxFocused() {
         assertGrid(
             renderMarkerRow(CHECKBOX_MARKERS, true, "Accept", focused, theme),
-            "|>[x] Accept|",
+            "|>x< Accept|",
         )
     }
 
@@ -107,7 +107,7 @@ class InterfaceRenderTest {
     fun toggleOff() {
         assertGrid(
             renderMarkerRow(TOGGLE_MARKERS, false, "Dark", idle, theme),
-            "| [■OFF] Dark|",
+            "|[■OFF] Dark|",
         )
     }
 
@@ -115,7 +115,7 @@ class InterfaceRenderTest {
     fun sliderHalf() {
         assertGrid(
             renderSlider(24, 0.5f, focused, theme),
-            "|>[==========O----------]|",
+            "|>===========O----------<|",
         )
     }
 

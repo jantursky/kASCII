@@ -21,7 +21,7 @@ fun DialogExample(modifier: Modifier = Modifier) {
     var open by remember { mutableStateOf(false) }
     var done by remember { mutableStateOf(false) }
     Column(modifier, Arrangement.spacedBy(16.dp)) {
-        AsciiButton("Delete file", { open = true })
+        AsciiButton("Delete file") { open = true }
         if (done) AsciiToast("File deleted", tone = AsciiTone.Success, onDismiss = { done = false })
         AsciiToast("Disk almost full", tone = AsciiTone.Warning)
         AsciiToast("Build failed", tone = AsciiTone.Error)

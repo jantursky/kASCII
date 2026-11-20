@@ -19,10 +19,10 @@ import com.jantursky.kascii.core.KasciiTheme
 @Composable
 public fun AsciiButton(
     label: String,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     contentDescription: String = label,
+    onClick: () -> Unit,
 ) {
     val source = remember { MutableInteractionSource() }
     val state = rememberControlState(source, enabled)

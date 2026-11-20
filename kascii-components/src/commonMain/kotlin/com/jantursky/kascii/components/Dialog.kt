@@ -35,8 +35,8 @@ public fun AsciiDialog(
         ) {
             AsciiCard(message, title = title, cols = cols, border = BoxStyle.Double)
             Row {
-                dismissLabel?.let { AsciiButton(it, onDismissRequest) }
-                AsciiButton(confirmLabel, onConfirm)
+                dismissLabel?.let { AsciiButton(it, onClick = onDismissRequest) }
+                AsciiButton(confirmLabel, onClick = onConfirm)
             }
         }
     }

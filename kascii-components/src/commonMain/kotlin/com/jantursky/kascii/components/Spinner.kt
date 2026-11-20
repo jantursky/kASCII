@@ -65,13 +65,14 @@ public fun AsciiSpinner(
     style: AsciiSpinnerStyle = AsciiSpinnerStyle.BrailleDots,
     label: String? = null,
 ) {
+    val loading = LocalAsciiStrings.current.loading
     val theme = LocalKasciiTheme.current
     val time = rememberClock(style.fps, rememberReducedMotion()).floatValue
     GridSurface(
         grid = renderSpinner(style, time, label, theme),
         modifier =
             modifier.semantics(mergeDescendants = true) {
-                contentDescription = label ?: "Loading"
+                contentDescription = label ?: loading
                 progressBarRangeInfo = ProgressBarRangeInfo.Indeterminate
             },
     )

@@ -29,7 +29,9 @@ public fun AsciiUptimeBar(
     states: List<AsciiUptimeState>,
     modifier: Modifier = Modifier,
 ) {
-    val description = "Uptime ${uptimeLabel(states)}: ${states.count { it == AsciiUptimeState.Down }} slots down"
+    val strings = LocalAsciiStrings.current
+    val down = states.count { it == AsciiUptimeState.Down }
+    val description = "${strings.uptime} ${uptimeLabel(states)}: $down ${strings.slotsDown}"
     GridSurface(renderUptimeBar(states, LocalKasciiTheme.current), modifier, description)
 }
 

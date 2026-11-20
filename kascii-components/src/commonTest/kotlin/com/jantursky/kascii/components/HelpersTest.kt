@@ -118,10 +118,10 @@ class HelpersTest {
         assertEquals(0.3f, snapFraction(0.3f, 0))
         assertEquals(1f, snapFraction(4f, 0))
         assertEquals(2, sliderTrack(1))
-        assertEquals(21, sliderTrack(24))
+        assertEquals(22, sliderTrack(24))
         assertEquals(0f, fractionAtCell(0f, 10))
         assertEquals(1f, fractionAtCell(99f, 10))
-        assertEquals(0.5f, fractionAtCell(2.5f + 4.5f, 10))
+        assertEquals(0.5f, fractionAtCell(1.5f + 4.5f, 10))
     }
 
     @Test
@@ -162,5 +162,15 @@ class HelpersTest {
     @Test
     fun smallestGaugeRenders() {
         renderGauge(0.5f, 1, null, com.jantursky.kascii.core.KasciiTheme.Dark)
+    }
+
+    @Test
+    fun translatedStringsReachTheDescriptionsAndTheCalendar() {
+        val fr = AsciiStrings(table = "Tableau", columns = "colonnes", row = "Ligne", monthNames = List(12) { "m$it" })
+        val columns = listOf(AsciiTableColumn("a"))
+        assertEquals("Tableau, 1 colonnes: a. Ligne 1: x", describeTable(columns, listOf(listOf("x")), fr))
+        assertTrue(renderCalendar(2026, 3, null, null, KasciiTheme.Dark, fr).toText().contains("m2 2026"))
+        assertFailsWith<IllegalArgumentException> { AsciiStrings(monthNames = emptyList()) }
+        assertFailsWith<IllegalArgumentException> { AsciiStrings(weekdays = emptyList()) }
     }
 }

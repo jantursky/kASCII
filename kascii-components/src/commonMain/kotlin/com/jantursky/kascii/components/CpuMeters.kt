@@ -13,7 +13,9 @@ public fun AsciiCpuMeters(
     modifier: Modifier = Modifier,
     cols: Int = 32,
 ) {
-    val description = "CPU load: " + loads.mapIndexed { i, l -> "core $i ${percentOf(l)}%" }.joinToString(", ")
+    val strings = LocalAsciiStrings.current
+    val description =
+        "${strings.cpuLoad}: " + loads.mapIndexed { i, l -> "${strings.core} $i ${percentOf(l)}%" }.joinToString(", ")
     GridSurface(renderCpuMeters(loads, cols, LocalKasciiTheme.current), modifier, description)
 }
 

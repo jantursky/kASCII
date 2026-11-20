@@ -37,15 +37,16 @@ public fun AsciiToast(
             currentDismiss?.invoke()
         }
     }
+    val strings = LocalAsciiStrings.current
     Row(
         modifier.semantics {
             liveRegion = LiveRegionMode.Polite
-            contentDescription = "${tone.name}: $message"
+            contentDescription = "${strings.toneName(tone)}: $message"
         },
         verticalAlignment = Alignment.CenterVertically,
     ) {
         GridSurface(renderToast(message, tone, LocalKasciiTheme.current))
-        onDismiss?.let { AsciiButton("x", it, contentDescription = "Dismiss") }
+        onDismiss?.let { AsciiButton("x", contentDescription = strings.dismiss, onClick = it) }
     }
 }
 
