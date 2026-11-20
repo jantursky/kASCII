@@ -32,6 +32,18 @@ class RendererTest {
     private val blockThenSpace = Grid(2, 1).apply { put(0, 0, '█') }
 
     @Test
+    fun manyDistinctColorsStillDrawWithTheCpuPainter() =
+        runAsciiTest {
+            // Many distinct colors: each gets its own tint filter, and none must break drawing.
+            val grid = Grid(20, 9)
+            for (i in 0 until 180) grid.put(i % 20, i / 20, '█', Rgb(0xFF000000.toInt() or (i * 997 + 1)))
+            setAsciiContent {
+                AsciiGridView(grid, Modifier.size(200.dp, 198.dp), renderer = AsciiRenderer.Cpu)
+            }
+            assertTrue(capture().countOf(Paper, 0, 0, 200, 198) < 200 * 198)
+        }
+
+    @Test
     fun theAtlasPainterDrawsGlyphsInInkOnPaper() =
         runAsciiTest {
             setAsciiContent { AsciiGridView(blockThenSpace, Modifier.size(20.dp, 22.dp)) }

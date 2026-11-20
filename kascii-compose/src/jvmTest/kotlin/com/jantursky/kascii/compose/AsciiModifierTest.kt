@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.unit.dp
@@ -65,6 +67,27 @@ class AsciiModifierTest {
             awaitPixels(Ink, 440)
             color = Color.Transparent
             awaitPixels(Paper, 440)
+        }
+
+    @Test
+    fun liveSamplingFollowsContentThatChangesInsideItsOwnLayer() =
+        runAsciiTest {
+            var level by mutableFloatStateOf(1f)
+            var live by mutableStateOf(true)
+            var cell by mutableStateOf(10.dp)
+            setAsciiContent {
+                Box(box.ascii(Charsets.Blocks, cell = cell, live = live)) {
+                    Box(Modifier.fillMaxSize().graphicsLayer { alpha = level }.background(Color.White))
+                }
+            }
+            awaitPixels(Ink, 440)
+            level = 0f
+            awaitPixels(Paper, 440)
+            cell = 11.dp
+            waitForIdle()
+            live = false
+            level = 1f
+            waitForIdle()
         }
 
     @Test

@@ -25,6 +25,6 @@ For an image from a `Bitmap` use `AsciiImage(bitmap)`, which samples tones and p
 
 ## Notes
 
-- The content is re-sampled when it changes, so an animated child stays in sync.
+- The content is re-sampled whenever the modifier redraws. Content that animates inside a child's own graphics layer (`graphicsLayer { }`, scrolling, video) does not trigger that, so pass `live = true` to sample on every frame. It costs one sample per frame.
 - Semantics of the child are kept. The glyph layer adds nothing a screen reader would read twice.
 - Sampling happens off the main thread. Until the first sample is ready the element draws plain paper.

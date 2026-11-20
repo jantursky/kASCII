@@ -8,7 +8,6 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.findRootCoordinates
 import androidx.compose.ui.unit.IntSize
-import com.jantursky.kascii.core.PieceClock
 
 /** How a view's time moves. [running] is false for still views and under reduced motion. */
 internal data class ClockSpec(
@@ -29,6 +28,9 @@ internal class AsciiClock(
 ) {
     var time by mutableFloatStateOf(still)
 
+    /** Time summed in Double: a Float sum stops growing after days, because the step falls below its precision. */
+    private var elapsed = still.toDouble()
+
     /** The spec the running loop reads each frame, so a new speed never restarts the clock. */
     var spec: ClockSpec = ClockSpec(running = false, still = still)
 
@@ -37,7 +39,8 @@ internal class AsciiClock(
         while (true) {
             withFrameNanos { now ->
                 if (last >= 0) {
-                    time = PieceClock.next(time, (now - last) / NANOS, spec.speed, false, spec.still, spec.loop)
+                    elapsed = advance(elapsed, (now - last) / NANOS.toDouble(), spec)
+                    time = elapsed.toFloat()
                 }
                 last = now
             }
@@ -46,11 +49,25 @@ internal class AsciiClock(
 
     /** Holds the still frame when the spec stops the clock. */
     fun settle(spec: ClockSpec) {
-        if (!spec.running) time = spec.still
+        if (!spec.running) {
+            elapsed = spec.still.toDouble()
+            time = spec.still
+        }
     }
 }
 
 private const val NANOS = 1_000_000_000f
+
+internal fun advance(
+    elapsed: Double,
+    deltaSeconds: Double,
+    spec: ClockSpec,
+): Double {
+    val t = elapsed + deltaSeconds.coerceAtLeast(0.0) * spec.speed
+    if (spec.loop <= 0f) return t
+    val wrapped = t % spec.loop
+    return if (wrapped < 0.0) wrapped + spec.loop else wrapped
+}
 
 /** Whether any part of the element is inside the window, after every ancestor's bounds have clipped it. */
 internal fun LayoutCoordinates.isOnScreen(): Boolean {

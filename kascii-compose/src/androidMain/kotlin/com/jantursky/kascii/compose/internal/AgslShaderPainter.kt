@@ -51,9 +51,13 @@ private class AgslShaderPainter : ShaderPainter {
             filterMode = BitmapShader.FILTER_MODE_NEAREST
         }
 
-    /** A bitmap reused across frames while the grid keeps its size. */
+    /**
+     * Two bitmaps used in turn. The render thread may still read the previous frame's bitmap while the next frame
+     * is written, so a frame never overwrites the one before it.
+     */
     private class FrameBitmap {
-        private var bitmap: Bitmap? = null
+        private val bitmaps = arrayOfNulls<Bitmap>(2)
+        private var next = 0
 
         fun update(
             argb: IntArray,
@@ -61,8 +65,9 @@ private class AgslShaderPainter : ShaderPainter {
             height: Int,
         ): Bitmap {
             val current =
-                bitmap?.takeIf { it.width == width && it.height == height }
-                    ?: Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).also { bitmap = it }
+                bitmaps[next]?.takeIf { it.width == width && it.height == height }
+                    ?: Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).also { bitmaps[next] = it }
+            next = 1 - next
             current.setPixels(argb, 0, width, 0, 0, width, height)
             return current
         }

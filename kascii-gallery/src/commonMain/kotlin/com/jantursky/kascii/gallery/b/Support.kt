@@ -49,10 +49,13 @@ internal fun gradient(
     return colors[i].lerp(colors[i + 1], scaled - i)
 }
 
+/** The most frames a simulation replays, so a huge time cannot lock the UI thread. */
+private const val MAX_STEPS = 100_000
+
 /**
  * Replays a simulation to any frame. It keeps one live state and steps it forward, and only rebuilds from the
  * start when asked for an earlier frame, so a frame's content depends on the frame alone, never on call order.
- * Not thread safe: a piece is drawn from one thread at a time.
+ * Not thread safe: draw a piece from one thread at a time, and give each view its own piece instance.
  */
 internal class Stepper<S>(
     private val create: () -> S,
@@ -61,8 +64,9 @@ internal class Stepper<S>(
     private var state: S = create()
     private var frame = 0
 
-    /** The state after [target] steps. The returned object is reused, so read it before the next call. */
-    fun at(target: Int): S {
+    /** The state after [requested] steps. The returned object is reused, so read it before the next call. */
+    fun at(requested: Int): S {
+        val target = requested.coerceAtMost(MAX_STEPS)
         if (target < frame) {
             state = create()
             frame = 0

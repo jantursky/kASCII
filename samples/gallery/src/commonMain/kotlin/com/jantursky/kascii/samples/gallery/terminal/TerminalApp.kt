@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -28,6 +29,7 @@ import com.jantursky.kascii.components.AsciiBadge
 import com.jantursky.kascii.components.AsciiDialog
 import com.jantursky.kascii.components.AsciiTabs
 import com.jantursky.kascii.components.AsciiToast
+import com.jantursky.kascii.compose.LocalKasciiMotion
 import com.jantursky.kascii.compose.ProvideKasciiTheme
 import com.jantursky.kascii.samples.gallery.GalleryState
 import kotlinx.coroutines.delay
@@ -56,42 +58,48 @@ fun TerminalApp(
             state.refresh()
         }
     }
-    ProvideKasciiTheme(theme) {
-        BoxWithConstraints(
-            modifier.background(Color(theme.paper.argb)).onPreviewKeyEvent { it.switchScreen(state) },
-        ) {
-            val cols = fitCols((maxWidth - Padding * 2).value, MAX_COLS)
-            Column(Modifier.fillMaxSize().padding(Padding), Arrangement.spacedBy(8.dp)) {
-                Header(state)
-                Box(Modifier.onPreviewKeyEvent { it.moveTab(state) }) {
-                    AsciiTabs(Screen.entries.map { it.label }, state.screen.ordinal, { state.show(Screen.entries[it]) })
+    CompositionLocalProvider(LocalKasciiMotion provides gallery.motion) {
+        ProvideKasciiTheme(theme) {
+            BoxWithConstraints(
+                modifier.background(Color(theme.paper.argb)).onPreviewKeyEvent { it.switchScreen(state) },
+            ) {
+                val cols = fitCols((maxWidth - Padding * 2).value, MAX_COLS)
+                Column(Modifier.fillMaxSize().padding(Padding), Arrangement.spacedBy(8.dp)) {
+                    Header(state)
+                    Box(Modifier.onPreviewKeyEvent { it.moveTab(state) }) {
+                        AsciiTabs(
+                            Screen.entries.map { it.label },
+                            state.screen.ordinal,
+                            { state.show(Screen.entries[it]) },
+                        )
+                    }
+                    val screen = Modifier.weight(1f).fillMaxWidth()
+                    when (state.screen) {
+                        Screen.Servers -> ServersScreen(state, screen)
+                        Screen.Detail -> DetailScreen(state, cols, screen)
+                        Screen.Settings -> SettingsScreen(state, gallery, cols, screen)
+                    }
                 }
-                val screen = Modifier.weight(1f).fillMaxWidth()
-                when (state.screen) {
-                    Screen.Servers -> ServersScreen(state, screen)
-                    Screen.Detail -> DetailScreen(state, cols, screen)
-                    Screen.Settings -> SettingsScreen(state, gallery, cols, screen)
+                state.toast?.let {
+                    AsciiToast(
+                        it.message,
+                        Modifier.align(Alignment.BottomCenter).padding(Padding),
+                        tone = it.tone,
+                        onDismiss = state::dismissToast,
+                        durationMillis = TOAST_MILLIS,
+                    )
                 }
-            }
-            state.toast?.let {
-                AsciiToast(
-                    it.message,
-                    Modifier.align(Alignment.BottomCenter).padding(Padding),
-                    tone = it.tone,
-                    onDismiss = state::dismissToast,
-                    durationMillis = TOAST_MILLIS,
-                )
-            }
-            state.restarting?.let {
-                AsciiDialog(
-                    title = "Restart ${it.id}?",
-                    message = "Open connections will be dropped.",
-                    onDismissRequest = state::dismissRestart,
-                    confirmLabel = "Restart",
-                    onConfirm = state::confirmRestart,
-                    dismissLabel = "Cancel",
-                    cols = minOf(cols, DIALOG_COLS),
-                )
+                state.restarting?.let {
+                    AsciiDialog(
+                        title = "Restart ${it.id}?",
+                        message = "Open connections will be dropped.",
+                        onDismissRequest = state::dismissRestart,
+                        confirmLabel = "Restart",
+                        onConfirm = state::confirmRestart,
+                        dismissLabel = "Cancel",
+                        cols = minOf(cols, DIALOG_COLS),
+                    )
+                }
             }
         }
     }

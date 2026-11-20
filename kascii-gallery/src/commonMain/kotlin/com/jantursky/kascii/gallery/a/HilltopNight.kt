@@ -56,7 +56,7 @@ public fun hilltopNightPiece(
         paintMoon(grid, moon)
         paintHills(grid, seed)
         pines.forEach { paintPine(grid, it) }
-        houses.forEachIndexed { i, x -> paintHouse(grid, x, i, t, window) }
+        houses.forEachIndexed { i, x -> paintHouse(grid, x, i, t, window, seed) }
         paintSmoke(grid, houses[0] + 3, t)
         for (x in 0 until COLS) {
             grid.put(x, GROUND, '=')
@@ -128,8 +128,10 @@ private fun paintHouse(
     index: Int,
     t: Float,
     window: Rgb,
+    seed: Int,
 ) {
-    val lit = Noise.hash(index, floor(t * 2f).toInt(), 3, 0) > 0.15f
+    val flicker = floor(t * 2f).toInt().mod((LOOP * 2f).toInt())
+    val lit = Noise.hash(index, flicker, 3, seed) > 0.15f
     HOUSE.forEachIndexed { row, line ->
         line.forEachIndexed { col, ch ->
             val y = GROUND - HOUSE.size + row

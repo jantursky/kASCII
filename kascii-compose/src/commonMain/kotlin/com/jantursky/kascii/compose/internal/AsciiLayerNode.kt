@@ -1,5 +1,6 @@
 package com.jantursky.kascii.compose.internal
 
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
@@ -37,6 +38,7 @@ internal data class AsciiLayerElement(
     val colorMode: ColorMode,
     val renderer: AsciiRenderer,
     val theme: KasciiTheme?,
+    val live: Boolean = false,
 ) : ModifierNodeElement<AsciiLayerNode>() {
     val glyphs: String by lazy { charset.glyphSet() }
 
@@ -49,6 +51,7 @@ internal data class AsciiLayerElement(
         properties["charset"] = charset.name
         properties["cell"] = cell
         properties["renderer"] = renderer
+        properties["live"] = live
     }
 }
 
@@ -72,19 +75,39 @@ internal class AsciiLayerNode(
 
     override val shouldAutoInvalidate: Boolean get() = false
 
+    private var ticker: Job? = null
+
     fun update(next: AsciiLayerElement) {
         spec = next
+        syncTicker()
         invalidateDraw()
+    }
+
+    /** A live node asks for a redraw on every frame, because a child's own layer never redraws this node. */
+    private fun syncTicker() {
+        ticker?.cancel()
+        ticker = null
+        if (!spec.live || !isAttached) return
+        ticker =
+            coroutineScope.launch {
+                while (true) {
+                    withFrameNanos { }
+                    invalidateDraw()
+                }
+            }
     }
 
     override fun onAttach() {
         layer = requireGraphicsContext().createGraphicsLayer()
+        syncTicker()
         if (FontRegistry.family == null) {
             coroutineScope.launch { FontRegistry.register(loadBundledFont(), currentValueOf(LocalFontFamilyResolver)) }
         }
     }
 
     override fun onDetach() {
+        ticker?.cancel()
+        ticker = null
         sampling?.cancel()
         sampling = null
         layer?.let { requireGraphicsContext().releaseGraphicsLayer(it) }

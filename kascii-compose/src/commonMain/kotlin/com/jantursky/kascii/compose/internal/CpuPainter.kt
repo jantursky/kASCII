@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import com.jantursky.kascii.core.Grid
 
-private const val MAX_FILTERS = 512
+private const val MAX_FILTERS = 128
 
 /** Copies atlas slots to cells, tinted per cell. The tint filters are cached by color across frames. */
 internal class CpuPainter {

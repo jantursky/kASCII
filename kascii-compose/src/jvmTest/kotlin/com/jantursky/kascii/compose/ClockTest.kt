@@ -41,6 +41,21 @@ class ClockTest {
         }
 
     @Test
+    fun changingSpeedKeepsTheClockRunning() =
+        runAsciiTest {
+            var speed by mutableStateOf(1f)
+            setAsciiContent { AsciiPieceView(stopwatch(), row, speed = speed, motion = Motion.Full) }
+            mainClock.advanceTimeBy(2_500)
+            assertEquals(2, capture().firstInkColumn(10))
+            // A new speed every 100 ms must not restart the clock, which would freeze time.
+            for (i in 1..30) {
+                speed = 1f + i % 2
+                mainClock.advanceTimeBy(100)
+            }
+            assertEquals(true, capture().firstInkColumn(10) > 2)
+        }
+
+    @Test
     fun reducedMotionHoldsTheStillFrame() =
         runAsciiTest {
             setAsciiContent { AsciiPieceView(stopwatch(still = 7f), row, motion = Motion.Reduced) }

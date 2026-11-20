@@ -9,7 +9,7 @@ import androidx.compose.runtime.withFrameNanos
 
 /**
  * Seconds since the effect started, advanced at [fps] steps per second so a component only recomposes when its
- * frame changes. The loop ends when the caller leaves the composition. When [reduced] the value stays at
+ * frame changes. The loop ends when the caller leaves the composition or the time reaches [endTime]. When [reduced] the value stays at
  * [stillTime].
  */
 @Composable
@@ -17,14 +17,16 @@ internal fun rememberClock(
     fps: Int,
     reduced: Boolean,
     stillTime: Float = 0f,
+    endTime: Float = Float.POSITIVE_INFINITY,
 ): FloatState {
     val time = remember(reduced, stillTime) { mutableFloatStateOf(if (reduced) stillTime else 0f) }
-    LaunchedEffect(fps, reduced) {
+    LaunchedEffect(fps, reduced, endTime) {
         if (reduced) return@LaunchedEffect
         val start = withFrameNanos { it }
         while (true) {
             val now = withFrameNanos { it }
             time.floatValue = quantizedSeconds(now - start, fps)
+            if (time.floatValue >= endTime) break
         }
     }
     return time

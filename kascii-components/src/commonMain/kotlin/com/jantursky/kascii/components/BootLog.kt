@@ -46,7 +46,7 @@ public fun AsciiBootLog(
     linesPerSecond: Float = 6f,
 ) {
     val reduced = rememberReducedMotion()
-    val time = rememberClock(BOOT_FPS, reduced).floatValue
+    val time = rememberClock(BOOT_FPS, reduced, endTime = entries.size / linesPerSecond).floatValue
     val visible = if (reduced) entries.size else (time * linesPerSecond).toInt()
     GridSurface(
         grid = renderBootLog(entries, visible, cols, LocalKasciiTheme.current),

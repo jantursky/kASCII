@@ -3,8 +3,8 @@ public final class com/jantursky/kascii/compose/AsciiImageKt {
 }
 
 public final class com/jantursky/kascii/compose/AsciiModifierKt {
-	public static final fun ascii-6a0pyJM (Landroidx/compose/ui/Modifier;Lcom/jantursky/kascii/core/Charset;FLcom/jantursky/kascii/core/ColorMode;Lcom/jantursky/kascii/compose/AsciiRenderer;Lcom/jantursky/kascii/core/KasciiTheme;)Landroidx/compose/ui/Modifier;
-	public static synthetic fun ascii-6a0pyJM$default (Landroidx/compose/ui/Modifier;Lcom/jantursky/kascii/core/Charset;FLcom/jantursky/kascii/core/ColorMode;Lcom/jantursky/kascii/compose/AsciiRenderer;Lcom/jantursky/kascii/core/KasciiTheme;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
+	public static final fun ascii-942rkJo (Landroidx/compose/ui/Modifier;Lcom/jantursky/kascii/core/Charset;FLcom/jantursky/kascii/core/ColorMode;Lcom/jantursky/kascii/compose/AsciiRenderer;Lcom/jantursky/kascii/core/KasciiTheme;Z)Landroidx/compose/ui/Modifier;
+	public static synthetic fun ascii-942rkJo$default (Landroidx/compose/ui/Modifier;Lcom/jantursky/kascii/core/Charset;FLcom/jantursky/kascii/core/ColorMode;Lcom/jantursky/kascii/compose/AsciiRenderer;Lcom/jantursky/kascii/core/KasciiTheme;ZILjava/lang/Object;)Landroidx/compose/ui/Modifier;
 }
 
 public final class com/jantursky/kascii/compose/AsciiRenderer : java/lang/Enum {
@@ -49,6 +49,7 @@ public final class com/jantursky/kascii/compose/ImageTonesKt {
 }
 
 public final class com/jantursky/kascii/compose/ReducedMotionKt {
+	public static final fun getLocalKasciiMotion ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun rememberReducedMotion (Lcom/jantursky/kascii/core/Motion;Landroidx/compose/runtime/Composer;II)Z
 }
 
