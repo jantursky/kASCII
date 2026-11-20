@@ -101,17 +101,22 @@ private val PALETTE_LUT: ByteArray by lazy {
     }
 }
 
-/** 5x7 letters for the neon signs. */
-private val LETTERS =
+/** Bold neon letters, rows separated by '/', 5 pixels wide unless the rows are shorter. */
+private val LETTERS7 =
     mapOf(
-        'H' to "x...xx...xx...xxxxxxx...xx...xx...x",
-        'O' to ".xxx.x...xx...xx...xx...xx...x.xxx.",
-        'T' to "xxxxx..x....x....x....x....x....x..",
-        'E' to "xxxxxx....x....xxxx.x....x....xxxxx",
-        'L' to "x....x....x....x....x....x....xxxxx",
-        'B' to "xxxx.x...xx...xxxxx.x...xx...xxxxx.",
-        'A' to ".xxx.x...xx...xxxxxxx...xx...xx...x",
-        'R' to "xxxx.x...xx...xxxxx.x.x..x..x.x...x",
+        'H' to "x...x/x...x/x...x/xxxxx/x...x/x...x/x...x",
+        'O' to ".xxx./x...x/x...x/x...x/x...x/x...x/.xxx.",
+        'T' to "xxxxx/..x../..x../..x../..x../..x../..x..",
+        'E' to "xxxx/x.../x.../xxx./x.../x.../xxxx",
+        'L' to "x.../x.../x.../x.../x.../x.../xxxx",
+        'A' to ".xxx./x...x/x...x/xxxxx/x...x/x...x/x...x",
+    )
+
+private val LETTERS9 =
+    mapOf(
+        'B' to "xxxx./x...x/x...x/x...x/xxxx./x...x/x...x/x...x/xxxx.",
+        'A' to ".xxx./x...x/x...x/x...x/xxxxx/x...x/x...x/x...x/x...x",
+        'R' to "xxxx./x...x/x...x/x...x/xxxx./x.x../x..x./x...x/x...x",
     )
 
 private val PINK = floatArrayOf(1.0f, 0.16f, 0.60f)
@@ -168,6 +173,7 @@ private class RainyCityScene(
     private val glowIdx = Array(MAX_SOURCES) { IntArray(0) }
     private val glowW = Array(MAX_SOURCES) { FloatArray(0) }
     private var sources = 0
+    private val signBox = ArrayList<IntArray>()
     private val letterMod = FloatArray(MAX_SOURCES * 8)
 
     private val skyR = FloatArray(HORIZON)
@@ -374,9 +380,9 @@ private class RainyCityScene(
     }
 
     private fun buildSignsAndShops() {
-        sign("HOTEL", 2, 12, 2, 1, 1, CYAN, 3)
-        sign("BAR", 90, 8, 2, 3, 2, PINK, 1)
-        sign("TEA", 158, 12, 2, 1, 1, CYAN, 0)
+        sign("HOTEL", 2, 12, 2, 2, 1, CYAN, 3, LETTERS7)
+        sign("BAR", 83, 8, 3, 3, 1, PINK, 1, LETTERS9)
+        sign("TEA", 158, 12, 2, 2, 1, CYAN, 0, LETTERS7)
         // a vertical tube on the corner of the narrow tower
         val tube = newSource(CYAN, 0.4f, 0, -1)
         for (y in 17..29) addEmitter(y * COLS + 139, '█', CYAN[0], CYAN[1], CYAN[2], KIND_SOURCE, tube, -1, 0, 0f)
@@ -402,14 +408,17 @@ private class RainyCityScene(
         sy: Int,
         color: FloatArray,
         flickerLetter: Int,
+        font: Map<Char, String>,
     ) {
         val src = newSource(color, 0.46f, 0, flickerLetter)
         var x = x0
+        var rowsN = 0
         for ((li, ch) in text.withIndex()) {
-            val rows = LETTERS.getValue(ch)
-            for (py in 0 until 7) {
-                for (px in 0 until 5) {
-                    if (rows[py * 5 + px] != 'x') continue
+            val rows = font.getValue(ch).split('/')
+            rowsN = rows.size
+            for (py in rows.indices) {
+                for (px in rows[py].indices) {
+                    if (rows[py][px] != 'x') continue
                     for (k in 0 until sx) {
                         for (j in 0 until sy) {
                             val cx = x + px * sx + k
@@ -429,9 +438,21 @@ private class RainyCityScene(
                     }
                 }
             }
-            x += 5 * sx + gap
+            x += rows[0].length * sx + gap
         }
         buildGlow(src, 7f + 1.5f * sx, 3.2f + 1.2f * sy)
+        signBox.add(intArrayOf(x0, y0, x - gap - 1, y0 + rowsN * sy - 1))
+        // keep the lettering crisp: no glow between or on the letters, only around them
+        val x1 = x - gap - 1
+        val y1 = y0 + rowsN * sy - 1
+        val idx = glowIdx[src]
+        val w = glowW[src]
+        for (k in idx.indices) {
+            val cx = idx[k] % COLS
+            val cy = idx[k] / COLS
+            if (cx in (x0 - 1)..(x1 + 1) && cy in (y0 - 1)..(y1 + 1)) w[k] = 0f
+            if (mat[idx[k]].toInt() != M_NEAR) w[k] = 0f
+        }
     }
 
     private fun shop(
@@ -519,6 +540,7 @@ private class RainyCityScene(
         x: Int,
         y: Int,
     ): Boolean {
+        for (b in signBox) if (y in (b[1] - 2)..(b[3] + 2) && x + 1 >= b[0] - 2 && x <= b[2] + 2) return true
         for (e in 0 until emitters) {
             if (emKind[e] != KIND_SOURCE) continue
             val ey = emIdx[e] / COLS
@@ -755,14 +777,24 @@ private class RainyCityScene(
                 var b = 0f
                 for (j in -1..1) {
                     val sy = (centre + j).toInt().coerceIn(0, HORIZON - 1)
-                    val s = sy * COLS + xx
-                    r += fr[s]
-                    g += fg[s]
-                    b += fb[s]
+                    for (dx in -2..2) {
+                        val s = sy * COLS + (xx + dx).coerceIn(0, COLS - 1)
+                        val k =
+                            if (dx == 0) {
+                                2f
+                            } else if (dx == 1 || dx == -1) {
+                                1.5f
+                            } else {
+                                0.5f
+                            }
+                        r += fr[s] * k
+                        g += fg[s] * k
+                        b += fb[s] * k
+                    }
                 }
-                r = max(0f, r / 3f - 0.12f)
-                g = max(0f, g / 3f - 0.12f)
-                b = max(0f, b / 3f - 0.12f)
+                r = max(0f, r / 18f - 0.12f)
+                g = max(0f, g / 18f - 0.12f)
+                b = max(0f, b / 18f - 0.12f)
                 val f = fall * wet[i] * 1.3f
                 r *= f
                 g *= f
@@ -874,7 +906,7 @@ private class RainyCityScene(
                 if (glyph == 0.toChar()) {
                     glyph = ' '
                     if (mat[i].toInt() == M_STREET && rv[i] > 0.02f) {
-                        val v = rv[i] + colBias[x] * 0.12f + bay * 0.03f
+                        val v = rv[i] + colBias[x] * 0.05f + bay * 0.03f
                         glyph =
                             if (v < 0.05f) {
                                 ' '

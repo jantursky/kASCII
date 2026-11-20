@@ -13,6 +13,7 @@ import androidx.compose.ui.test.v2.runDesktopComposeUiTest
 import androidx.compose.ui.unit.dp
 import com.jantursky.kascii.compose.AsciiPieceView
 import com.jantursky.kascii.core.Motion
+import com.jantursky.kascii.gallery.g.galleryPiecesG
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -20,7 +21,9 @@ import kotlin.test.assertTrue
 /** Composes every catalog piece through the real view, so a piece that cannot be drawn fails here. */
 @OptIn(ExperimentalTestApi::class)
 class GalleryComposeTest {
-    private val entries = galleryPiecesA + galleryPiecesB + galleryPiecesC + galleryPiecesD
+    private val entries =
+        galleryPiecesA + galleryPiecesB + galleryPiecesC + galleryPiecesD + galleryPiecesE +
+            galleryPiecesF + galleryPiecesG
 
     @Test
     fun catalogIsNotEmpty() {

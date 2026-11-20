@@ -28,14 +28,19 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.jantursky.kascii.core.PieceMeta
 import com.jantursky.kascii.gallery.GalleryEntry
+import com.jantursky.kascii.gallery.g.galleryPiecesG
 import com.jantursky.kascii.gallery.galleryPiecesA
 import com.jantursky.kascii.gallery.galleryPiecesB
 import com.jantursky.kascii.gallery.galleryPiecesC
 import com.jantursky.kascii.gallery.galleryPiecesD
+import com.jantursky.kascii.gallery.galleryPiecesE
+import com.jantursky.kascii.gallery.galleryPiecesF
 import com.jantursky.kascii.samples.gallery.examples.PieceExample
 
 /** Every piece of the gallery module, in catalog order. */
-val Pieces: List<GalleryEntry> = galleryPiecesA + galleryPiecesB + galleryPiecesC + galleryPiecesD
+val Pieces: List<GalleryEntry> =
+    galleryPiecesA + galleryPiecesB + galleryPiecesC + galleryPiecesD + galleryPiecesE +
+        galleryPiecesF + galleryPiecesG
 
 /** The ratio of glyph cell height to width of the bundled font: a line is 1.32 em and a glyph 0.6 em. */
 internal const val CELL_ASPECT = 2.2f

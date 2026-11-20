@@ -1,3 +1,9 @@
+public final class com/jantursky/kascii/gallery/AbyssLureKt {
+	public static final fun AsciiAbyssLure-87oMq6E (Landroidx/compose/ui/Modifier;IIIFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun abyssLurePiece-q-JaGCQ (III)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun abyssLurePiece-q-JaGCQ$default (IIIILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
 public final class com/jantursky/kascii/gallery/AlpineDawnKt {
 	public static final fun AlpineDawn-9e92oMs (Landroidx/compose/ui/Modifier;IIFFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
 	public static final fun alpineDawnPiece-RVICLaw (IIF)Lcom/jantursky/kascii/core/AsciiPiece;
@@ -48,6 +54,14 @@ public final class com/jantursky/kascii/gallery/CatalogCKt {
 
 public final class com/jantursky/kascii/gallery/CatalogDKt {
 	public static final fun getGalleryPiecesD ()Ljava/util/List;
+}
+
+public final class com/jantursky/kascii/gallery/CatalogEKt {
+	public static final fun getGalleryPiecesE ()Ljava/util/List;
+}
+
+public final class com/jantursky/kascii/gallery/CatalogFKt {
+	public static final fun getGalleryPiecesF ()Ljava/util/List;
 }
 
 public final class com/jantursky/kascii/gallery/CherryBlossomKt {
@@ -156,6 +170,12 @@ public final class com/jantursky/kascii/gallery/MatrixRainKt {
 	public static synthetic fun matrixRainPiece-_2IUw5w$default (IFLjava/lang/String;IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
 }
 
+public final class com/jantursky/kascii/gallery/OrbitSunriseKt {
+	public static final fun AsciiOrbitSunrise-87oMq6E (Landroidx/compose/ui/Modifier;IIIFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun orbitSunrisePiece-q-JaGCQ (III)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun orbitSunrisePiece-q-JaGCQ$default (IIIILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
 public final class com/jantursky/kascii/gallery/OwlKt {
 	public static final fun AsciiOwl-KFr94OY (Landroidx/compose/ui/Modifier;IIFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
 	public static final fun owlPiece-n5ujg40 (II)Lcom/jantursky/kascii/core/AsciiPiece;
@@ -226,5 +246,33 @@ public final class com/jantursky/kascii/gallery/TunnelKt {
 	public static final fun AsciiTunnel (Landroidx/compose/ui/Modifier;ILcom/jantursky/kascii/core/Charset$Ramp;Ljava/util/List;FLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
 	public static final fun tunnelPiece (ILcom/jantursky/kascii/core/Charset$Ramp;Ljava/util/List;)Lcom/jantursky/kascii/core/AsciiPiece;
 	public static synthetic fun tunnelPiece$default (ILcom/jantursky/kascii/core/Charset$Ramp;Ljava/util/List;ILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/VolcanoNightKt {
+	public static final fun AsciiVolcanoNight-KFr94OY (Landroidx/compose/ui/Modifier;IIFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun volcanoNightPiece-n5ujg40 (II)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun volcanoNightPiece-n5ujg40$default (IIILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/WitchMoonKt {
+	public static final fun AsciiWitchMoon-87oMq6E (Landroidx/compose/ui/Modifier;IIIFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun witchMoonPiece-q-JaGCQ (III)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun witchMoonPiece-q-JaGCQ$default (IIIILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/g/CatalogGKt {
+	public static final fun getGalleryPiecesG ()Ljava/util/List;
+}
+
+public final class com/jantursky/kascii/gallery/g/MoonAnglerKt {
+	public static final fun AsciiMoonAngler-KFr94OY (Landroidx/compose/ui/Modifier;IIFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun moonAnglerPiece-n5ujg40 (II)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun moonAnglerPiece-n5ujg40$default (IIILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/g/WakingGiantKt {
+	public static final fun AsciiWakingGiant-KFr94OY (Landroidx/compose/ui/Modifier;IIFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun wakingGiantPiece-n5ujg40 (II)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun wakingGiantPiece-n5ujg40$default (IIILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
 }
 

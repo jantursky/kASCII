@@ -6,7 +6,8 @@ All notable changes to kASCII are listed here. The format follows [Keep a Change
 
 ### Added
 
-- Eight new animated scenes in `kascii-gallery`: lighthouse, steam train, sailboat sunset, desert caravan, aurora cabin, rainy city, cherry blossom and rocket launch.
+- Fourteen new animated scenes in `kascii-gallery`: lighthouse, steam train, sailboat sunset, desert caravan, aurora cabin, rainy city, cherry blossom, rocket launch, orbit sunrise, volcano night, abyss lure, witch moon, waking giant and moon angler. They are 192x48 computed scenes on their own dark ground.
+- `PieceMeta.ground` and the `ground` parameter of `asciiPiece` give a piece its own backdrop color, which `AsciiPieceView` paints behind it on any theme.
 - `AsciiStrings` and `LocalAsciiStrings` translate the words components speak to screen readers and the calendar's month and weekday names.
 - `Modifier.ascii(live = true)` samples on every frame, for content that animates inside a child's own graphics layer.
 - `LocalKasciiMotion` sets the motion preference for components that have no `motion` parameter.
