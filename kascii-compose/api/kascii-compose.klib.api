@@ -1,0 +1,64 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <kascii:kascii-compose>
+final enum class com.jantursky.kascii.compose/AsciiRenderer : kotlin/Enum<com.jantursky.kascii.compose/AsciiRenderer> { // com.jantursky.kascii.compose/AsciiRenderer|null[0]
+    enum entry Auto // com.jantursky.kascii.compose/AsciiRenderer.Auto|null[0]
+    enum entry Cpu // com.jantursky.kascii.compose/AsciiRenderer.Cpu|null[0]
+    enum entry Gpu // com.jantursky.kascii.compose/AsciiRenderer.Gpu|null[0]
+    enum entry Text // com.jantursky.kascii.compose/AsciiRenderer.Text|null[0]
+
+    final val entries // com.jantursky.kascii.compose/AsciiRenderer.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.jantursky.kascii.compose/AsciiRenderer> // com.jantursky.kascii.compose/AsciiRenderer.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.jantursky.kascii.compose/AsciiRenderer // com.jantursky.kascii.compose/AsciiRenderer.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.jantursky.kascii.compose/AsciiRenderer> // com.jantursky.kascii.compose/AsciiRenderer.values|values#static(){}[0]
+}
+
+final class com.jantursky.kascii.compose/ImageTones { // com.jantursky.kascii.compose/ImageTones|null[0]
+    final val colors // com.jantursky.kascii.compose/ImageTones.colors|{}colors[0]
+        final fun <get-colors>(): kotlin/IntArray // com.jantursky.kascii.compose/ImageTones.colors.<get-colors>|<get-colors>(){}[0]
+    final val height // com.jantursky.kascii.compose/ImageTones.height|{}height[0]
+        final fun <get-height>(): kotlin/Int // com.jantursky.kascii.compose/ImageTones.height.<get-height>|<get-height>(){}[0]
+    final val tones // com.jantursky.kascii.compose/ImageTones.tones|{}tones[0]
+        final fun <get-tones>(): kotlin/FloatArray // com.jantursky.kascii.compose/ImageTones.tones.<get-tones>|<get-tones>(){}[0]
+    final val width // com.jantursky.kascii.compose/ImageTones.width|{}width[0]
+        final fun <get-width>(): kotlin/Int // com.jantursky.kascii.compose/ImageTones.width.<get-width>|<get-width>(){}[0]
+
+    final fun toColorField(): com.jantursky.kascii.core/ColorField // com.jantursky.kascii.compose/ImageTones.toColorField|toColorField(){}[0]
+    final fun toField(): com.jantursky.kascii.core/Field // com.jantursky.kascii.compose/ImageTones.toField|toField(){}[0]
+}
+
+final val com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_array$stableprop // com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_array$stableprop|#static{}com_jantursky_kascii_compose_resources_Res_array$stableprop[0]
+final val com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_drawable$stableprop // com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_drawable$stableprop|#static{}com_jantursky_kascii_compose_resources_Res_drawable$stableprop[0]
+final val com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_font$stableprop // com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_font$stableprop|#static{}com_jantursky_kascii_compose_resources_Res_font$stableprop[0]
+final val com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_plurals$stableprop // com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_plurals$stableprop|#static{}com_jantursky_kascii_compose_resources_Res_plurals$stableprop[0]
+final val com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_string$stableprop // com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_string$stableprop|#static{}com_jantursky_kascii_compose_resources_Res_string$stableprop[0]
+final val com.jantursky.kascii.compose/LocalKasciiTheme // com.jantursky.kascii.compose/LocalKasciiTheme|{}LocalKasciiTheme[0]
+    final fun <get-LocalKasciiTheme>(): androidx.compose.runtime/ProvidableCompositionLocal<com.jantursky.kascii.core/KasciiTheme> // com.jantursky.kascii.compose/LocalKasciiTheme.<get-LocalKasciiTheme>|<get-LocalKasciiTheme>(){}[0]
+final val com.jantursky.kascii.compose/SampledColors // com.jantursky.kascii.compose/SampledColors|{}SampledColors[0]
+    final fun <get-SampledColors>(): com.jantursky.kascii.core/ColorMode // com.jantursky.kascii.compose/SampledColors.<get-SampledColors>|<get-SampledColors>(){}[0]
+final val com.jantursky.kascii.compose/com_jantursky_kascii_compose_ImageTones$stableprop // com.jantursky.kascii.compose/com_jantursky_kascii_compose_ImageTones$stableprop|#static{}com_jantursky_kascii_compose_ImageTones$stableprop[0]
+
+final fun (androidx.compose.ui.graphics/ImageBitmap).com.jantursky.kascii.compose/toTones(kotlin/Int, kotlin/Int, androidx.compose.ui.graphics/Color = ...): com.jantursky.kascii.compose/ImageTones // com.jantursky.kascii.compose/toTones|toTones@androidx.compose.ui.graphics.ImageBitmap(kotlin.Int;kotlin.Int;androidx.compose.ui.graphics.Color){}[0]
+final fun (androidx.compose.ui/Modifier).com.jantursky.kascii.compose/ascii(com.jantursky.kascii.core/Charset = ..., androidx.compose.ui.unit/Dp = ..., com.jantursky.kascii.core/ColorMode = ..., com.jantursky.kascii.compose/AsciiRenderer = ..., com.jantursky.kascii.core/KasciiTheme? = ...): androidx.compose.ui/Modifier // com.jantursky.kascii.compose/ascii|ascii@androidx.compose.ui.Modifier(com.jantursky.kascii.core.Charset;androidx.compose.ui.unit.Dp;com.jantursky.kascii.core.ColorMode;com.jantursky.kascii.compose.AsciiRenderer;com.jantursky.kascii.core.KasciiTheme?){}[0]
+final fun (com.jantursky.kascii.core/Grid).com.jantursky.kascii.compose/toImageBitmap(com.jantursky.kascii.core/KasciiTheme = ..., kotlin/Int = ...): androidx.compose.ui.graphics/ImageBitmap // com.jantursky.kascii.compose/toImageBitmap|toImageBitmap@com.jantursky.kascii.core.Grid(com.jantursky.kascii.core.KasciiTheme;kotlin.Int){}[0]
+final fun com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_array$stableprop_getter(): kotlin/Int // com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_array$stableprop_getter|com_jantursky_kascii_compose_resources_Res_array$stableprop_getter(){}[0]
+final fun com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_drawable$stableprop_getter(): kotlin/Int // com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_drawable$stableprop_getter|com_jantursky_kascii_compose_resources_Res_drawable$stableprop_getter(){}[0]
+final fun com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_font$stableprop_getter(): kotlin/Int // com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_font$stableprop_getter|com_jantursky_kascii_compose_resources_Res_font$stableprop_getter(){}[0]
+final fun com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_plurals$stableprop_getter(): kotlin/Int // com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_plurals$stableprop_getter|com_jantursky_kascii_compose_resources_Res_plurals$stableprop_getter(){}[0]
+final fun com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_string$stableprop_getter(): kotlin/Int // com.jantursky.kascii.compose.resources/com_jantursky_kascii_compose_resources_Res_string$stableprop_getter|com_jantursky_kascii_compose_resources_Res_string$stableprop_getter(){}[0]
+final fun com.jantursky.kascii.compose/AsciiCanvas(com.jantursky.kascii.core/Field, androidx.compose.ui/Modifier?, com.jantursky.kascii.core/Charset?, androidx.compose.ui.unit/Dp, com.jantursky.kascii.core/ColorMode?, kotlin/Float, kotlin/Float, com.jantursky.kascii.core/Motion?, com.jantursky.kascii.compose/AsciiRenderer?, com.jantursky.kascii.core/KasciiTheme?, kotlin/String?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int, kotlin/Int) // com.jantursky.kascii.compose/AsciiCanvas|AsciiCanvas(com.jantursky.kascii.core.Field;androidx.compose.ui.Modifier?;com.jantursky.kascii.core.Charset?;androidx.compose.ui.unit.Dp;com.jantursky.kascii.core.ColorMode?;kotlin.Float;kotlin.Float;com.jantursky.kascii.core.Motion?;com.jantursky.kascii.compose.AsciiRenderer?;com.jantursky.kascii.core.KasciiTheme?;kotlin.String?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int;kotlin.Int){}[0]
+final fun com.jantursky.kascii.compose/AsciiGridView(com.jantursky.kascii.core/Grid, androidx.compose.ui/Modifier?, com.jantursky.kascii.compose/AsciiRenderer?, com.jantursky.kascii.core/KasciiTheme?, kotlin/String?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.jantursky.kascii.compose/AsciiGridView|AsciiGridView(com.jantursky.kascii.core.Grid;androidx.compose.ui.Modifier?;com.jantursky.kascii.compose.AsciiRenderer?;com.jantursky.kascii.core.KasciiTheme?;kotlin.String?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun com.jantursky.kascii.compose/AsciiImage(androidx.compose.ui.graphics/ImageBitmap, androidx.compose.ui/Modifier?, com.jantursky.kascii.core/Charset?, androidx.compose.ui.unit/Dp, com.jantursky.kascii.core/ColorMode?, com.jantursky.kascii.compose/AsciiRenderer?, com.jantursky.kascii.core/KasciiTheme?, kotlin/String?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.jantursky.kascii.compose/AsciiImage|AsciiImage(androidx.compose.ui.graphics.ImageBitmap;androidx.compose.ui.Modifier?;com.jantursky.kascii.core.Charset?;androidx.compose.ui.unit.Dp;com.jantursky.kascii.core.ColorMode?;com.jantursky.kascii.compose.AsciiRenderer?;com.jantursky.kascii.core.KasciiTheme?;kotlin.String?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun com.jantursky.kascii.compose/AsciiPieceView(com.jantursky.kascii.core/AsciiPiece, androidx.compose.ui/Modifier?, kotlin/Float, com.jantursky.kascii.core/Motion?, com.jantursky.kascii.compose/AsciiRenderer?, com.jantursky.kascii.core/KasciiTheme?, kotlin/String?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.jantursky.kascii.compose/AsciiPieceView|AsciiPieceView(com.jantursky.kascii.core.AsciiPiece;androidx.compose.ui.Modifier?;kotlin.Float;com.jantursky.kascii.core.Motion?;com.jantursky.kascii.compose.AsciiRenderer?;com.jantursky.kascii.core.KasciiTheme?;kotlin.String?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun com.jantursky.kascii.compose/ProvideKasciiTheme(com.jantursky.kascii.core/KasciiTheme, kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer?, kotlin/Int) // com.jantursky.kascii.compose/ProvideKasciiTheme|ProvideKasciiTheme(com.jantursky.kascii.core.KasciiTheme;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+final fun com.jantursky.kascii.compose/com_jantursky_kascii_compose_ImageTones$stableprop_getter(): kotlin/Int // com.jantursky.kascii.compose/com_jantursky_kascii_compose_ImageTones$stableprop_getter|com_jantursky_kascii_compose_ImageTones$stableprop_getter(){}[0]
+final fun com.jantursky.kascii.compose/kasciiFontFamily(androidx.compose.runtime/Composer?, kotlin/Int): androidx.compose.ui.text.font/FontFamily // com.jantursky.kascii.compose/kasciiFontFamily|kasciiFontFamily(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+final fun com.jantursky.kascii.compose/kasciiThemeOf(androidx.compose.ui.graphics/Color, androidx.compose.ui.graphics/Color, androidx.compose.ui.graphics/Color = ..., kotlin.collections/List<androidx.compose.ui.graphics/Color> = ...): com.jantursky.kascii.core/KasciiTheme // com.jantursky.kascii.compose/kasciiThemeOf|kasciiThemeOf(androidx.compose.ui.graphics.Color;androidx.compose.ui.graphics.Color;androidx.compose.ui.graphics.Color;kotlin.collections.List<androidx.compose.ui.graphics.Color>){}[0]
+final fun com.jantursky.kascii.compose/rememberReducedMotion(com.jantursky.kascii.core/Motion?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int): kotlin/Boolean // com.jantursky.kascii.compose/rememberReducedMotion|rememberReducedMotion(com.jantursky.kascii.core.Motion?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun com.jantursky.kascii.compose/systemKasciiTheme(androidx.compose.runtime/Composer?, kotlin/Int): com.jantursky.kascii.core/KasciiTheme // com.jantursky.kascii.compose/systemKasciiTheme|systemKasciiTheme(androidx.compose.runtime.Composer?;kotlin.Int){}[0]

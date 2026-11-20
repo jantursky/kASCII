@@ -1,5 +1,6 @@
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -15,8 +16,20 @@ plugins {
     alias(libs.plugins.roborazzi)
 }
 
+@OptIn(ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     explicitApi()
+
+    // Desktop, iOS and web share Skia, so they share the runtime-effect shader painter.
+    applyDefaultHierarchyTemplate {
+        common {
+            group("skiko") {
+                withJvm()
+                withWasmJs()
+                group("ios") { withIos() }
+            }
+        }
+    }
 
     android {
         namespace = "com.jantursky.kascii.compose"
@@ -47,6 +60,7 @@ kotlin {
             api(libs.compose.animation)
             api(libs.compose.foundation)
             api(project(":kascii-core"))
+            implementation(libs.compose.components.resources)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
@@ -75,6 +89,10 @@ tasks.named<Test>("jvmTest") {
     jvmArgs("--enable-native-access=ALL-UNNAMED")
 }
 
+compose.resources {
+    packageOfResClass = "com.jantursky.kascii.compose.resources"
+}
+
 roborazzi {
     outputDir.set(layout.projectDirectory.dir("src/jvmTest/screenshots"))
 }
@@ -86,6 +104,19 @@ apiValidation {
 
 kover {
     reports {
+        filters {
+            excludes {
+                // Reduced-motion and font readers talk to the OS; they are exercised on devices, not in host tests.
+                packages("com.jantursky.kascii.compose.platform")
+                // The AGSL painter needs Android 13; it is exercised on a device, not in host tests.
+                classes("*AgslShaderPainter*")
+                // Generated resource accessors.
+                packages("com.jantursky.kascii.compose.resources")
+                // The Compose compiler gives every composable skip and default-argument branches that depend on how
+                // the caller was compiled. UI tests drive the composables; the bound measures the logic behind them.
+                annotatedBy("androidx.compose.runtime.Composable")
+            }
+        }
         verify {
             rule {
                 bound { minValue = 90 }
@@ -108,7 +139,9 @@ mavenPublishing {
     coordinates(artifactId = "kascii-compose")
     pom {
         name.set("Kascii Compose")
-        description.set("Compose Multiplatform renderers for Kascii: AsciiCanvas, Modifier.ascii, GPU, CPU and text rendering.")
+        description.set(
+            "Compose Multiplatform renderers for Kascii: AsciiCanvas, Modifier.ascii, GPU, CPU and text rendering.",
+        )
         inceptionYear.set("2026")
         url.set("https://github.com/jantursky/kascii")
         licenses {
