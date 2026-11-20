@@ -201,8 +201,8 @@ public final class com/jantursky/kascii/core/KasciiTheme$Companion {
 }
 
 public final class com/jantursky/kascii/core/KitKt {
-	public static final fun asciiPiece (Ljava/lang/String;Ljava/lang/String;IIIFFLjava/lang/String;Lkotlin/jvm/functions/Function2;)Lcom/jantursky/kascii/core/AsciiPiece;
-	public static synthetic fun asciiPiece$default (Ljava/lang/String;Ljava/lang/String;IIIFFLjava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static final fun asciiPiece-MIDh-Ns (Ljava/lang/String;Ljava/lang/String;IIIFFLjava/lang/String;Lcom/jantursky/kascii/core/Rgb;Lkotlin/jvm/functions/Function2;)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun asciiPiece-MIDh-Ns$default (Ljava/lang/String;Ljava/lang/String;IIIFFLjava/lang/String;Lcom/jantursky/kascii/core/Rgb;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
 	public static final fun disc-GLKqeBM (Lcom/jantursky/kascii/core/Grid;FFFCLcom/jantursky/kascii/core/Rgb;F)V
 	public static synthetic fun disc-GLKqeBM$default (Lcom/jantursky/kascii/core/Grid;FFFCLcom/jantursky/kascii/core/Rgb;FILjava/lang/Object;)V
 	public static final fun label-wCC_ZdY (Lcom/jantursky/kascii/core/Grid;IILjava/lang/String;Lcom/jantursky/kascii/core/Rgb;)V
@@ -239,11 +239,12 @@ public final class com/jantursky/kascii/core/PieceClock {
 }
 
 public final class com/jantursky/kascii/core/PieceMeta {
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;IIIFFLjava/lang/String;)V
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;IIIFFLjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;IIIFFLjava/lang/String;Lcom/jantursky/kascii/core/Rgb;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;IIIFFLjava/lang/String;Lcom/jantursky/kascii/core/Rgb;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getCategory ()Ljava/lang/String;
 	public final fun getCols ()I
 	public final fun getFps ()I
+	public final fun getGround-7qJG4Oo ()Lcom/jantursky/kascii/core/Rgb;
 	public final fun getLoop ()F
 	public final fun getName ()Ljava/lang/String;
 	public final fun getNote ()Ljava/lang/String;

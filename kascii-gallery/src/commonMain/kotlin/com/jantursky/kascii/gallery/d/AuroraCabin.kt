@@ -11,258 +11,907 @@ import com.jantursky.kascii.core.Motion
 import com.jantursky.kascii.core.Noise
 import com.jantursky.kascii.core.Rgb
 import com.jantursky.kascii.core.asciiPiece
-import com.jantursky.kascii.gallery.b.gradient
 import kotlin.math.abs
-import kotlin.math.cos
+import kotlin.math.exp
+import kotlin.math.floor
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.roundToInt
 import kotlin.math.sin
+import kotlin.math.sqrt
 
-private const val COLS = 64
-private const val ROWS = 24
+private const val COLS = 128
+private const val ROWS = 64
+private const val CELLS = COLS * ROWS
 private const val LOOP = 16f
-private const val GROUND = 18
-private const val CABIN_X = 36
-private const val FLAKES = 70
-private const val SMOKE_PUFFS = 7
+private const val WL = 48
+private const val TAU = AKit.TAU
+private const val FLAKES = 46
+private const val STARS = 120
+private const val PUFFS = 10
+private const val BANDS = 3
 
-// The cabin, drawn from its top-left corner. '#' is the lit window, the rest is theme ink.
-private val CABIN =
-    listOf(
-        "            ||    ",
-        "   _________||___ ",
-        "  /.:.:.:.:.:.:.:\\",
-        " /_______________\\",
-        "  |==+--+==|  |==|",
-        "  |==|##|==|  |==|",
-        "  |==+--+==|  |==|",
-        "  |========|__|==|",
-    )
-private const val CHIMNEY_DX = 12
-private const val WINDOW_DX = 6
+private const val AIR = 0
+private const val FAR = 1
+private const val NEAR = 2
+private const val TREE = 3
+private const val WALL = 4
+private const val ROOF = 5
+private const val PANE = 6
+private const val STONE = 7
+private const val ICE = 8
+private const val SOLID = 9
+
+private const val GLYPHS = " ·•●"
+private const val CHIMNEY_X = 94.5f
+private const val CHIMNEY_TOP = 28f
+
+private val BAYER =
+    floatArrayOf(0f, 8f, 2f, 10f, 12f, 4f, 14f, 6f, 3f, 11f, 1f, 9f, 15f, 7f, 13f, 5f)
+        .map { (it + 0.5f) / 16f - 0.5f }
+        .toFloatArray()
+
+private class Col(
+    val r: Float,
+    val g: Float,
+    val b: Float,
+) {
+    fun mix(
+        o: Col,
+        t: Float,
+    ): Col = Col(r + (o.r - r) * t, g + (o.g - g) * t, b + (o.b - b) * t)
+
+    fun scale(k: Float): Col = Col(r * k, g * k, b * k)
+}
+
+private fun col(hex: String): Col = col(Rgb.fromHex(hex))
+
+private fun col(c: Rgb): Col = Col(c.red / 255f, c.green / 255f, c.blue / 255f)
+
+private fun ramp(
+    steps: Int,
+    vararg stops: Col,
+): List<Col> =
+    (0 until steps).map { k ->
+        val p = k.toFloat() / (steps - 1) * (stops.size - 1)
+        val i = min(p.toInt(), stops.size - 2)
+        stops[i].mix(stops[i + 1], p - i)
+    }
+
+private fun clamp01(v: Float): Float =
+    if (v < 0f) {
+        0f
+    } else if (v > 1f) {
+        1f
+    } else {
+        v
+    }
+
+private fun smooth(
+    a: Float,
+    b: Float,
+    v: Float,
+): Float {
+    val k = clamp01((v - a) / (b - a))
+    return k * k * (3f - 2f * k)
+}
+
+private fun gauss(
+    x: Float,
+    c: Float,
+    w: Float,
+): Float = exp(-((x - c) / w) * ((x - c) / w))
+
+private fun fract(v: Float): Float = v - floor(v)
+
+/** A tiling table of value noise, so a lookup is two lerps instead of eight hashes. */
+private class Lattice(
+    seed: Int,
+) {
+    private val table = FloatArray(256 * 256) { Noise.hash(it and 255, it shr 8, 0, seed) }
+
+    fun at(
+        x: Float,
+        y: Float,
+    ): Float {
+        val xf = floor(x)
+        val yf = floor(y)
+        val fx = (x - xf).let { it * it * (3f - 2f * it) }
+        val fy = (y - yf).let { it * it * (3f - 2f * it) }
+        val x0 = xf.toInt() and 255
+        val x1 = (x0 + 1) and 255
+        val y0 = (yf.toInt() and 255) shl 8
+        val y1 = ((yf.toInt() + 1) and 255) shl 8
+        val a = table[y0 + x0] + (table[y0 + x1] - table[y0 + x0]) * fx
+        val b = table[y1 + x0] + (table[y1 + x1] - table[y1 + x0]) * fx
+        return a + (b - a) * fy
+    }
+
+    fun fbm(
+        x: Float,
+        y: Float,
+        octaves: Int,
+    ): Float {
+        var sum = 0f
+        var amp = 0.5f
+        var norm = 0f
+        var f = 1f
+        repeat(octaves) {
+            sum += amp * at(x * f, y * f)
+            norm += amp
+            amp *= 0.5f
+            f *= 2f
+        }
+        return sum / norm
+    }
+}
+
+/** The colours the scene can show, with a 5 bits per channel table that snaps any computed colour to the nearest. */
+private class Palette(
+    colors: List<Col>,
+) {
+    private val lut = IntArray(32768)
+
+    init {
+        val argb = IntArray(colors.size) { packed(colors[it].r, colors[it].g, colors[it].b) }
+        for (k in lut.indices) {
+            val r = (((k shr 10) and 31) + 0.5f) / 32f
+            val g = (((k shr 5) and 31) + 0.5f) / 32f
+            val b = ((k and 31) + 0.5f) / 32f
+            var best = 0
+            var bd = Float.MAX_VALUE
+            for (i in colors.indices) {
+                val dr = colors[i].r - r
+                val dg = colors[i].g - g
+                val db = colors[i].b - b
+                val d = 0.35f * dr * dr + 0.45f * dg * dg + 0.2f * db * db
+                if (d < bd) {
+                    bd = d
+                    best = i
+                }
+            }
+            lut[k] = argb[best]
+        }
+    }
+
+    fun pick(
+        r: Float,
+        g: Float,
+        b: Float,
+    ): Int =
+        lut[
+            ((clamp01(r) * 31.99f).toInt() shl 10) or
+                ((clamp01(g) * 31.99f).toInt() shl 5) or
+                (clamp01(b) * 31.99f).toInt(),
+        ]
+
+    private fun packed(
+        r: Float,
+        g: Float,
+        b: Float,
+    ): Int = Rgb((r * 255f).roundToInt(), (g * 255f).roundToInt(), (b * 255f).roundToInt()).argb
+}
+
+/** One shaded layer: material, base colour, glyph coverage and how much it takes from the aurora and window light. */
+private class Layer {
+    val mat = IntArray(CELLS)
+    val r = FloatArray(CELLS)
+    val g = FloatArray(CELLS)
+    val b = FloatArray(CELLS)
+    val cov = FloatArray(CELLS)
+    val rec = FloatArray(CELLS)
+    val warmL = FloatArray(CELLS)
+    val warmR = FloatArray(CELLS)
+    val refl = FloatArray(CELLS)
+
+    fun set(
+        x: Int,
+        y: Int,
+        m: Int,
+        c: Col,
+        coverage: Float,
+        receive: Float,
+    ) {
+        if (x !in 0 until COLS || y !in 0 until ROWS) return
+        val i = y * COLS + x
+        mat[i] = m
+        r[i] = c.r
+        g[i] = c.g
+        b[i] = c.b
+        cov[i] = coverage
+        rec[i] = receive
+        warmL[i] = 0f
+        warmR[i] = 0f
+    }
+}
+
+private class Window(
+    val x0: Int,
+    val y0: Int,
+    val w: Int,
+    val h: Int,
+    val right: Boolean,
+)
+
+private class Scene(
+    private val seed: Int,
+    aurora: Rgb,
+    window: Rgb,
+) {
+    private val lat = Lattice(seed)
+    private val far = Layer()
+    private val fg = Layer()
+    private val fgCells: IntArray
+    private val windowCol = col(window)
+    private val auroraCol = col(aurora)
+    private val palette: Palette
+    private val starX = IntArray(STARS)
+    private val starY = IntArray(STARS)
+    private val starPhase = FloatArray(STARS)
+    private val starRate = IntArray(STARS)
+    private val starPower = FloatArray(STARS)
+    private val flake = Array(FLAKES) { FloatArray(5) }
+
+    // Per band: bottom edge colour, middle and top.
+    private val bandCol: Array<Array<Col>>
+
+    private val windows =
+        listOf(
+            Window(81, 41, 4, 3, false),
+            Window(92, 41, 4, 3, true),
+            Window(87, 35, 3, 2, false),
+            Window(103, 43, 4, 2, true),
+        )
+
+    init {
+        val violet = col("#9a6ae8")
+        bandCol =
+            arrayOf(
+                arrayOf(auroraCol.mix(col("#ffffff"), 0.35f), auroraCol, violet),
+                arrayOf(col("#4fe8cf"), col("#2cb5a6").mix(auroraCol, 0.3f), col("#7a7ae8")),
+                arrayOf(col("#f06ab8"), col("#b05ad0"), col("#6a5ad8")),
+            )
+        buildFar()
+        buildForeground()
+        fgCells = (0 until CELLS).filter { fg.mat[it] != AIR }.toIntArray()
+        palette = Palette(buildPalette(window))
+        val rng = AKit.rng(seed, 41)
+        for (s in 0 until STARS) {
+            var x: Int
+            var y: Int
+            do {
+                x = rng.int(COLS)
+                y = rng.int(WL - 8)
+            } while (far.mat[y * COLS + x] != AIR || fg.mat[y * COLS + x] != AIR)
+            starX[s] = x
+            starY[s] = y
+            starPhase[s] = rng.float()
+            starRate[s] = 2 + rng.int(3)
+            starPower[s] = 0.35f + 0.65f * rng.float()
+        }
+        for (f in flake) {
+            f[0] = rng.float(0f, COLS.toFloat())
+            f[1] = rng.float()
+            f[2] = if (rng.chance(0.35f)) 2f else 1f
+            f[3] = rng.float()
+            f[4] = rng.float(0.6f, 2.0f)
+        }
+    }
+
+    private fun buildPalette(window: Rgb): List<Col> {
+        val black = col("#000000")
+        val white = col("#ffffff")
+        val aur = auroraCol
+        return ramp(6, col("#1a2250"), col("#2c3b7a"), col("#4a5fa8")) +
+            ramp(7, col("#2d2060"), col("#6a3c9f"), col("#c48ae4")) +
+            ramp(9, aur.mix(black, 0.7f), aur, aur.mix(white, 0.7f)) +
+            ramp(6, col("#0f4f58"), col("#2cb5a6"), col("#a8f0e0")) +
+            ramp(9, col("#3a4a7e"), col("#8ea6d6"), col("#f4f8ff")) +
+            ramp(8, col("#4a1f10"), col(window), col("#fff2c4")) +
+            ramp(7, col("#2e1d14"), col("#6b4a32"), col("#b0814c")) +
+            ramp(6, col("#0e2230"), col("#1d4a4a"), col("#3a7060")) +
+            ramp(5, col("#2f3650"), col("#5b6478"), col("#a0a8bd")) +
+            ramp(7, col("#16304c"), col("#2d6a88"), col("#9fd8e8")) +
+            ramp(4, col("#6a2a6a"), col("#d65aa8"), col("#ffc0e0"))
+    }
+
+    // ---- the static layers, built once -----------------------------------------------------------------------
+
+    private fun farHeight(x: Float): Float =
+        6.5f + 6f * lat.fbm(x * 0.02f + 3f, 1.7f, 3) + 9f * gauss(x, 30f, 15f) + 7f * gauss(x, 112f, 13f) +
+            3.5f * gauss(x, 72f, 9f) + 2.2f * (1f - abs(2f * lat.at(x * 0.16f, 9f) - 1f))
+
+    private fun nearHeight(x: Float): Float {
+        val hill = 3.5f + 3f * lat.fbm(x * 0.045f + 20f, 5f, 2)
+        val plateau = smooth(60f, 72f, x) * smooth(124f, 112f, x)
+        return hill + (2.2f - hill) * plateau
+    }
+
+    private fun buildFar() {
+        val haze = col("#6a7cb8")
+        val shadow = col("#4a5ea0")
+        val lit = col("#d4e0fa")
+        val snowShade = col("#8aa0d4")
+        val snowDark = col("#3a4a80")
+        for (x in 0 until COLS) {
+            val farTop = WL - farHeight(x + 0.5f)
+            val nearTop = WL - nearHeight(x + 0.5f)
+            for (y in 0 until WL) {
+                val yc = y + 0.5f
+                if (yc >= nearTop) {
+                    val depth = yc - nearTop
+                    val drift = lat.fbm(x * 0.18f, yc * 0.35f, 2)
+                    val shade = clamp01(0.25f + 0.85f * drift - depth * 0.05f)
+                    far.set(
+                        x,
+                        y,
+                        NEAR,
+                        snowDark.mix(snowShade, shade),
+                        0.78f + 0.2f * shade,
+                        0.85f * exp(-depth / 3f) + 0.15f,
+                    )
+                } else if (yc >= farTop) {
+                    val depth = yc - farTop
+                    val rib = lat.at((x + depth * 0.55f) * 0.3f, 4f)
+                    val shade = clamp01(0.15f + 1.1f * rib - depth * 0.008f)
+                    val c = shadow.mix(lit, shade).mix(haze, smooth(8f, 22f, depth) * 0.5f)
+                    far.set(x, y, FAR, c, 0.7f + 0.3f * shade, 0.9f * exp(-depth / 5f) + 0.1f)
+                }
+            }
+        }
+        val rng = AKit.rng(seed, 7)
+        val deepHaze = 0.45f
+        repeat(52) {
+            val px = rng.float(0f, COLS.toFloat())
+            if (px in 70f..113f) return@repeat
+            val h = rng.float(4f, 8f)
+            paintPine(far, px, WL - nearHeight(px) + 1.8f, h, deepHaze, false)
+        }
+        val tall =
+            listOf(
+                floatArrayOf(10f, 12f),
+                floatArrayOf(22f, 9f),
+                floatArrayOf(36f, 11f),
+                floatArrayOf(48f, 8f),
+                floatArrayOf(60f, 10f),
+                floatArrayOf(69f, 14f),
+                floatArrayOf(116f, 13f),
+                floatArrayOf(122f, 9f),
+            )
+        for (p in tall) paintPine(far, p[0], WL - nearHeight(p[0]) + 2.2f, p[1], 0.18f, false)
+        paintCabin()
+        paintIce()
+    }
+
+    private fun paintCabin() {
+        val apexX = 88f
+        val apexY = 31.5f
+        val slope = 0.583f
+        val snow = col("#e4eeff")
+        val shingle = col("#3a3258")
+        val wood = col("#9a6a40")
+        val woodDark = col("#6e4a2c")
+        val planks = col("#a87a4a")
+        val stone = col("#5b6478")
+        val trim = col("#d8b98a")
+        for (y in 24 until 47) {
+            for (x in 70 until 114) {
+                val xc = x + 0.5f
+                val yc = y + 0.5f
+                val roofY = apexY + abs(xc - apexX) * slope
+                val inRoofSpan = abs(xc - apexX) <= 12.2f
+                val thick = 2.2f + 0.5f * lat.at(xc * 0.4f, 3f)
+                when {
+                    xc in 93f..96f && yc in CHIMNEY_TOP..(roofY + 1f) && !(inRoofSpan && yc >= roofY) -> {
+                        val k = lat.at(xc * 1.3f, yc * 0.9f)
+                        val cap = yc < CHIMNEY_TOP + 1.2f
+                        far.set(
+                            x,
+                            y,
+                            STONE,
+                            if (cap) snow else stone.scale(0.8f + 0.5f * k),
+                            0.95f,
+                            if (cap) 1f else 0.3f,
+                        )
+                    }
+
+                    inRoofSpan && yc >= roofY && yc < roofY + thick -> {
+                        val snowy = yc < roofY + 1.15f + 0.4f * lat.at(xc * 0.6f, 8f)
+                        far.set(x, y, ROOF, if (snowy) snow else shingle, 1f, if (snowy) 1f else 0.12f)
+                    }
+
+                    inRoofSpan && yc >= roofY + thick && yc < 38.5f -> {
+                        val plank = if (x % 2 == 0) planks else planks.scale(0.82f)
+                        far.set(x, y, WALL, plank, 0.95f, 0.1f)
+                    }
+
+                    xc in 79f..97f && yc in 38.5f..46f -> {
+                        val log = if (y % 2 == 0) wood else woodDark
+                        val end = xc < 80.6f || xc > 95.4f
+                        far.set(x, y, WALL, if (end) wood.mix(trim, 0.35f) else log, 0.95f, 0.1f)
+                    }
+
+                    xc in 99f..111f && yc >= 38.5f + (xc - 99f) * 0.22f && yc < 41.2f + (xc - 99f) * 0.22f -> {
+                        val edge = yc > 40.2f + (xc - 99f) * 0.22f
+                        far.set(x, y, ROOF, if (edge) shingle else snow, 1f, if (edge) 0.12f else 1f)
+                    }
+
+                    xc in 100f..110f && yc >= 41.2f + (xc - 99f) * 0.22f && yc < 46f -> {
+                        far.set(x, y, WALL, if (y % 2 == 0) wood else woodDark, 0.95f, 0.1f)
+                    }
+                }
+            }
+        }
+        for (w in windows) paintWindow(w, trim)
+        for (y in 41 until 46) {
+            for (x in 87 until 90) {
+                far.set(x, y, WALL, if (x == 89 && y == 43) trim else col("#4a2f20"), 1f, 0.05f)
+            }
+        }
+        spillWarm()
+    }
+
+    private fun paintWindow(
+        w: Window,
+        trim: Col,
+    ) {
+        for (y in w.y0 - 1..w.y0 + w.h) {
+            for (x in w.x0 - 1..w.x0 + w.w) {
+                val inside = x in w.x0 until w.x0 + w.w && y in w.y0 until w.y0 + w.h
+                if (!inside) {
+                    far.set(x, y, WALL, trim.scale(0.75f), 1f, 0.1f)
+                } else {
+                    val bar = x == w.x0 + w.w / 2
+                    far.set(x, y, if (bar) WALL else PANE, if (bar) col("#5a3a22") else windowCol, 1f, 0f)
+                    val i = y * COLS + x
+                    if (w.right) far.warmR[i] = 1f else far.warmL[i] = 1f
+                }
+            }
+        }
+    }
+
+    /** Window light spilling onto what stands near the windows, each window with its own flicker. */
+    private fun spillWarm() {
+        for (w in windows) {
+            val cx = w.x0 + w.w / 2f
+            val cy = w.y0 + w.h / 2f
+            val radius = if (w.h == 2) 11f else 17f
+            for (y in 20 until WL) {
+                for (x in 60 until 120) {
+                    val i = y * COLS + x
+                    val m = far.mat[i]
+                    if (m == AIR || m == PANE || m == FAR) continue
+                    val dx = x + 0.5f - cx
+                    val dy = (y + 0.5f - cy) * 2f
+                    val d = sqrt(dx * dx + dy * dy)
+                    if (d >= radius) continue
+                    val k = (1f - d / radius).let { it * it }
+                    val gain =
+                        if (m == NEAR) {
+                            1.0f
+                        } else if (m == WALL) {
+                            0.45f
+                        } else if (m == TREE) {
+                            0.5f
+                        } else {
+                            0.25f
+                        }
+                    if (w.right) far.warmR[i] += k * gain else far.warmL[i] += k * gain
+                }
+            }
+        }
+    }
+
+    private fun paintIce() {
+        val top = col("#2d6a88")
+        val bottom = col("#16304c")
+        val crack = col("#9fd8e8")
+        val patch = col("#a8bbe0")
+        for (y in WL until ROWS) {
+            val k = (y - WL) / (ROWS - WL - 1f)
+            for (x in 0 until COLS) {
+                val i = y * COLS + x
+                val n = lat.fbm(x * 0.07f, y * 0.22f + 40f, 3)
+                val c = top.mix(bottom, k * 0.85f).mix(top, 0.3f * n)
+                val line = abs(lat.fbm(x * 0.05f + 70f, y * 0.12f, 2) - 0.5f)
+                val snowy = lat.fbm(x * 0.045f + 11f, y * 0.14f + 5f, 3)
+                far.set(x, y, ICE, c, 0.2f + 0.1f * n, 0.3f)
+                far.refl[i] = 1f
+                if (line < 0.018f) {
+                    far.set(x, y, ICE, crack, 0.55f, 0.5f)
+                    far.refl[i] = 0.5f
+                }
+                if (snowy > 0.6f + 0.1f * (1f - k)) {
+                    val s = smooth(0.6f, 0.68f, snowy)
+                    far.set(x, y, SOLID, c.mix(patch, s), 0.45f + 0.4f * s, 0.9f * s + 0.3f)
+                    far.refl[i] = 0.15f * (1f - s)
+                }
+            }
+        }
+    }
+
+    private fun buildForeground() {
+        val snowDark = col("#3a4a7e")
+        val snowLit = col("#a9bddd")
+        for (x in 0 until COLS) {
+            val left = if (x < 44) 54f + 9f * smooth(0f, 42f, x.toFloat()) else 99f
+            val right = if (x > 92) 55f + 8f * smooth(128f, 94f, x.toFloat()) else 99f
+            val top = min(left, right) + 1.4f * (lat.at(x * 0.11f, 2f) - 0.5f)
+            for (y in 0 until ROWS) {
+                if (y + 0.5f < top) continue
+                val n = lat.fbm(x * 0.2f, y * 0.5f, 2)
+                val c = snowDark.mix(snowLit, clamp01(0.35f + 0.9f * n - (y + 0.5f - top) * 0.04f))
+                fg.set(x, y, SOLID, c, 0.88f, 0.95f)
+            }
+        }
+        paintPine(fg, 9f, 55.5f, 40f, 0f, true)
+        paintPine(fg, 25f, 60f, 27f, 0f, true)
+        paintPine(fg, 121f, 57f, 36f, 0f, true)
+        paintPine(fg, 107f, 62f, 23f, 0f, true)
+    }
+
+    private fun paintPine(
+        l: Layer,
+        px: Float,
+        baseY: Float,
+        h: Float,
+        haze: Float,
+        foreground: Boolean,
+    ) {
+        val halfW = h * 0.36f
+        val dark = if (foreground) col("#0e2230") else col("#12303c")
+        val mid = if (foreground) col("#1b4046") else col("#245358")
+        val tip = col("#a9bddd")
+        val hazeCol = col("#34407a")
+        val tier = max(2.4f, h * 0.11f)
+        val topY = baseY - h
+        for (y in max(0, floor(topY).toInt())..min(ROWS - 1, baseY.toInt())) {
+            val yc = y + 0.5f
+            val d = yc - topY
+            if (d < 0f) continue
+            val fr = fract(d / tier)
+            val w = max(0.65f, halfW * (d / h) * (0.62f + 0.38f * fr) + 0.8f * (lat.at(yc * 0.9f, px) - 0.5f))
+            for (x in floor(px - w).toInt()..floor(px + w).toInt() + 1) {
+                val xc = x + 0.5f
+                if (abs(xc - px) > w) continue
+                val side = ((xc - px) / w).coerceIn(-1f, 1f)
+                val n = lat.at(xc * 0.5f, yc * 0.8f)
+                if (fr < 0.38f && n > 0.42f && d > 1.5f) {
+                    l.set(x, y, TREE, tip.scale(0.6f + 0.4f * n).mix(hazeCol, haze), 0.95f, 0.9f)
+                } else {
+                    val c = mid.mix(dark, clamp01(0.5f + 0.5f * side + 0.2f * n)).mix(hazeCol, haze)
+                    l.set(x, y, TREE, c, if (foreground) 0.95f else 0.9f, 0.2f)
+                }
+            }
+        }
+    }
+
+    // ---- one frame --------------------------------------------------------------------------------------------
+
+    private class Frame {
+        val r = FloatArray(CELLS)
+        val g = FloatArray(CELLS)
+        val b = FloatArray(CELLS)
+        val cov = FloatArray(CELLS)
+        val lr = FloatArray(COLS)
+        val lg = FloatArray(COLS)
+        val lb = FloatArray(COLS)
+        val bottom = FloatArray(BANDS * COLS)
+        val height = FloatArray(BANDS * COLS)
+        val gain = FloatArray(BANDS * COLS)
+    }
+
+    private val base = floatArrayOf(26f, 20.5f, 31f)
+    private val amp1 = floatArrayOf(3.2f, 2.6f, 2f)
+    private val freq1 = floatArrayOf(0.05f, 0.071f, 0.043f)
+    private val turns1 = intArrayOf(1, 2, 1)
+    private val phase1 = floatArrayOf(0f, 1.9f, 4.1f)
+    private val amp2 = floatArrayOf(1.6f, 1.3f, 1.1f)
+    private val freq2 = floatArrayOf(0.13f, 0.16f, 0.11f)
+    private val turns2 = intArrayOf(2, 1, 3)
+    private val phase2 = floatArrayOf(2f, 0.5f, 3.3f)
+    private val tall = floatArrayOf(27f, 20f, 12f)
+    private val strength = floatArrayOf(1f, 0.78f, 0.45f)
+    private val tilt = floatArrayOf(0.05f, -0.04f, 0.03f)
+
+    private fun curtains(
+        f: Frame,
+        phi: Float,
+    ) {
+        val cs = kotlin.math.cos(phi)
+        val sn = sin(phi)
+        for (b in 0 until BANDS) {
+            for (x in 0 until COLS) {
+                val k = b * COLS + x
+                val xf = x.toFloat()
+                val pres = smooth(0.15f, 0.42f, lat.at(xf * 0.028f + b * 17.3f + 2.2f * cs, b * 5.1f + 2.2f * sn))
+                val n2 = lat.at(xf * 0.42f + b * 31f + 1.6f * sin(phi + b), 7.3f * b + 1.6f * kotlin.math.cos(phi * 2f))
+                val n3 = lat.at(xf * 1.1f + b * 5f + 1.2f * cs, 3f + 1.2f * sn)
+                val ray = 0.1f + 1.5f * (0.65f * n2 + 0.35f * n3).let { it * it }
+                f.bottom[k] =
+                    base[b] + (xf - 64f) * tilt[b] +
+                    amp1[b] * sin(freq1[b] * xf + turns1[b] * phi + phase1[b]) +
+                    amp2[b] * sin(freq2[b] * xf - turns2[b] * phi + phase2[b])
+                f.height[k] = tall[b] * (0.7f + 0.5f * n2)
+                f.gain[k] = pres * ray * strength[b]
+            }
+        }
+        for (x in 0 until COLS) {
+            var r = 0f
+            var g = 0f
+            var bl = 0f
+            for (b in 0 until BANDS) {
+                val a = f.gain[b * COLS + x] * 0.3f
+                val m = bandCol[b][1]
+                r += m.r * a
+                g += m.g * a
+                bl += m.b * a
+            }
+            f.lr[x] = r
+            f.lg[x] = g
+            f.lb[x] = bl
+        }
+        repeat(2) {
+            for (x in 1 until COLS - 1) {
+                f.lr[x] = (f.lr[x - 1] + 2f * f.lr[x] + f.lr[x + 1]) * 0.25f
+                f.lg[x] = (f.lg[x - 1] + 2f * f.lg[x] + f.lg[x + 1]) * 0.25f
+                f.lb[x] = (f.lb[x - 1] + 2f * f.lb[x] + f.lb[x + 1]) * 0.25f
+            }
+        }
+    }
+
+    private fun sky(
+        f: Frame,
+        x: Int,
+        y: Int,
+        phi: Float,
+    ) {
+        val i = y * COLS + x
+        val yc = y + 0.5f
+        val h = yc / WL
+        var r = 0.10f + 0.07f * h + f.lr[x] * 0.18f
+        var g = 0.13f + 0.08f * h + f.lg[x] * 0.18f
+        var bl = 0.31f + 0.14f * h + f.lb[x] * 0.18f
+        var amount = 0f
+        for (b in 0 until BANDS) {
+            val k = b * COLS + x
+            val gain = f.gain[k]
+            if (gain < 0.01f) continue
+            val d = (f.bottom[k] - yc) / f.height[k]
+            if (d < -0.25f || d > 1f) continue
+            val prof = if (d < 0f) 1f + 4f * d else (1f - d) * (1f - d) * (1f - d)
+            val a = prof * gain * 1.5f
+            val c = bandCol[b]
+            val u = clamp01(d)
+            val from = if (u < 0.5f) c[0] else c[1]
+            val to = if (u < 0.5f) c[1] else c[2]
+            val m = if (u < 0.5f) u * 2f else (u - 0.5f) * 2f
+            r += (from.r + (to.r - from.r) * m) * a
+            g += (from.g + (to.g - from.g) * m) * a
+            bl += (from.b + (to.b - from.b) * m) * a
+            amount += a
+        }
+        if (amount > 0.02f) {
+            val patch = 0.8f + 0.4f * lat.at(x * 0.12f + 4f * kotlin.math.cos(phi), y * 0.15f + 4f * sin(phi))
+            r = 0.1f + (r - 0.1f) * patch
+            g = 0.13f + (g - 0.13f) * patch
+        }
+        f.r[i] = r
+        f.g[i] = g
+        f.b[i] = bl
+        f.cov[i] = 0.1f + 0.95f * clamp01(amount * 1.1f)
+    }
+
+    private fun smoke(
+        f: Frame,
+        t: Float,
+    ) {
+        for (p in 0 until PUFFS) {
+            val age = fract(3f * t / LOOP + p / PUFFS.toFloat())
+            val cx = CHIMNEY_X + age * age * 11f + 1.6f * sin(TAU * age * 1.5f + p)
+            val cy = CHIMNEY_TOP - 0.5f - age * 21f
+            val rad = 1.4f + age * 4.8f
+            val dens = 1.3f * smooth(0f, 0.12f, age) * (1f - age) * (1f - age)
+            for (y in floor(cy - rad / 2f).toInt()..floor(cy + rad / 2f).toInt() + 1) {
+                for (x in floor(cx - rad).toInt()..floor(cx + rad).toInt() + 1) {
+                    if (x !in 0 until COLS || y !in 0 until WL) continue
+                    val dx = x + 0.5f - cx
+                    val dy = (y + 0.5f - cy) * 2f
+                    val q = 1f - (dx * dx + dy * dy) / (rad * rad)
+                    if (q <= 0f) continue
+                    val i = y * COLS + x
+                    val a = min(0.9f, q * dens * 1.7f)
+                    f.r[i] += (0.55f + f.lr[x] * 0.6f - f.r[i]) * a
+                    f.g[i] += (0.62f + f.lg[x] * 0.6f - f.g[i]) * a
+                    f.b[i] += (0.78f + f.lb[x] * 0.4f - f.b[i]) * a
+                    f.cov[i] += (0.85f - f.cov[i]).coerceAtLeast(0f) * a
+                }
+            }
+        }
+    }
+
+    private fun land(
+        f: Frame,
+        x: Int,
+        y: Int,
+        fl: Float,
+        fr: Float,
+    ) {
+        val i = y * COLS + x
+        val m = far.mat[i]
+        if (m == PANE) {
+            val k = if (far.warmR[i] > 0f) fr else fl
+            val c = windowCol.mix(col("#fff2c4"), 0.45f).scale(0.7f + 0.4f * k)
+            f.r[i] = c.r
+            f.g[i] = c.g
+            f.b[i] = c.b
+            f.cov[i] = if (k > 0.8f) 2f else 1.9f
+            return
+        }
+        val rec = far.rec[i]
+        val warm = far.warmL[i] * fl + far.warmR[i] * fr
+        val ar = f.lr[x] * rec
+        val ag = f.lg[x] * rec
+        val ab = f.lb[x] * rec
+        f.r[i] = far.r[i] + ar + windowCol.r * warm * 0.7f
+        f.g[i] = far.g[i] + ag + windowCol.g * warm * 0.55f
+        f.b[i] = far.b[i] + ab + windowCol.b * warm * 0.35f
+        f.cov[i] = min(1f, far.cov[i] + 0.7f * (0.3f * ar + 0.59f * ag + 0.11f * ab) + 0.35f * warm)
+    }
+
+    private fun lake(
+        f: Frame,
+        phi: Float,
+    ) {
+        for (y in WL until ROWS) {
+            val d = (y - WL).toFloat()
+            val wobble = 0.35f + 0.9f * d / (ROWS - WL - 1f)
+            val ys = max(0, (WL - 1 - d * 1.9f).toInt())
+            for (x in 0 until COLS) {
+                val i = y * COLS + x
+                val sx = (x + wobble * sin(0.85f * y + 0.21f * x + 2f * phi)).roundToInt().coerceIn(0, COLS - 1)
+                val j = ys * COLS + sx
+                val shimmer = 0.85f + 0.15f * sin(1.9f * y + 3f * phi + 0.15f * x)
+                val w = far.refl[i] * (0.82f - 0.025f * d) * shimmer
+                val rec = far.rec[i] * 0.5f
+                f.r[i] = far.r[i] * (1f - w) + f.r[j] * w * 0.9f + f.lr[x] * rec
+                f.g[i] = far.g[i] * (1f - w) + f.g[j] * w * 0.9f + f.lg[x] * rec
+                f.b[i] = far.b[i] * (1f - w) + f.b[j] * w * 0.9f + f.lb[x] * rec
+                val lum = 0.3f * f.lr[x] + 0.59f * f.lg[x] + 0.11f * f.lb[x]
+                f.cov[i] = min(1f, far.cov[i] * (1f - w) + min(1f, f.cov[j] * 0.9f + 0.1f) * w + lum * rec * 0.6f)
+            }
+        }
+    }
+
+    private fun foreground(f: Frame) {
+        for (i in fgCells) {
+            val x = i and (COLS - 1)
+            val rec = fg.rec[i]
+            val ar = f.lr[x] * rec
+            val ag = f.lg[x] * rec
+            val ab = f.lb[x] * rec
+            f.r[i] = fg.r[i] + ar
+            f.g[i] = fg.g[i] + ag
+            f.b[i] = fg.b[i] + ab
+            f.cov[i] = min(1f, fg.cov[i] + 0.5f * (0.3f * ar + 0.59f * ag + 0.11f * ab))
+        }
+    }
+
+    fun draw(
+        t: Float,
+        grid: Grid,
+    ) {
+        val phi = TAU * t / LOOP
+        val f = Frame()
+        curtains(f, phi)
+        val fl = clamp01(0.8f + 0.1f * sin(phi * 5f + 0.6f) + 0.08f * sin(phi * 11f + 2f))
+        val fr = clamp01(0.78f + 0.12f * sin(phi * 7f + 1.9f) + 0.08f * sin(phi * 13f + 0.3f))
+        for (y in 0 until WL) {
+            for (x in 0 until COLS) {
+                if (far.mat[y * COLS + x] == AIR) sky(f, x, y, phi) else land(f, x, y, fl, fr)
+            }
+        }
+        smoke(f, t)
+        lake(f, phi)
+        foreground(f)
+        output(f, grid)
+        stars(f, grid, t)
+        flakes(grid, t)
+    }
+
+    private fun output(
+        f: Frame,
+        grid: Grid,
+    ) {
+        for (i in 0 until CELLS) {
+            val c = f.cov[i]
+            if (c > 1.5f) {
+                grid.glyphs[i] = if (c > 1.95f) '█' else '▓'
+                grid.colors[i] = palette.pick(f.r[i], f.g[i], f.b[i])
+                continue
+            }
+            val q = c * 3f + BAYER[((i shr 7) and 3) * 4 + (i and 3)]
+            val idx = min(3, (q + 0.5f).toInt())
+            if (idx <= 0) {
+                grid.glyphs[i] = ' '
+                grid.colors[i] = 0
+            } else {
+                grid.glyphs[i] = GLYPHS[idx]
+                grid.colors[i] = palette.pick(f.r[i], f.g[i], f.b[i])
+            }
+        }
+    }
+
+    private fun stars(
+        f: Frame,
+        grid: Grid,
+        t: Float,
+    ) {
+        for (s in 0 until STARS) {
+            val i = starY[s] * COLS + starX[s]
+            if (f.cov[i] > 0.6f) continue
+            val tw = (0.55f + 0.45f * sin(TAU * (starRate[s] * t / LOOP + starPhase[s]))) * starPower[s]
+            if (tw < 0.22f) continue
+            grid.glyphs[i] =
+                if (tw > 0.7f) {
+                    '*'
+                } else if (tw > 0.42f) {
+                    '+'
+                } else {
+                    '.'
+                }
+            grid.colors[i] = palette.pick(0.55f + 0.45f * tw, 0.6f + 0.4f * tw, 0.85f + 0.15f * tw)
+        }
+    }
+
+    private fun flakes(
+        grid: Grid,
+        t: Float,
+    ) {
+        for (fk in flake) {
+            val y = (fract(fk[1] + fk[2] * t / LOOP) * (ROWS + 2)).toInt() - 1
+            val x = (fk[0] + fk[4] * sin(TAU * (2f * t / LOOP + fk[3]))).toInt()
+            if (x !in 0 until COLS || y !in 0 until ROWS) continue
+            val i = y * COLS + x
+            grid.glyphs[i] = if (fk[2] > 1.5f) '*' else '.'
+            grid.colors[i] = palette.pick(0.85f, 0.9f, 1f)
+        }
+    }
+}
 
 /**
- * A snowy night in the hills: aurora curtains wave across the sky above twinkling stars, a log cabin glows from its
- * window, chimney smoke drifts away and snow falls between the pines. The seed shapes the aurora, the drifts and
- * the stars and plants the trees. Every motion completes a whole number of cycles per loop.
+ * A snowy night by a frozen lake: aurora curtains with rays sweep over a far shore of ridges and pines, a log cabin
+ * glows from its windows and sends smoke up the chimney, and the dark ice mirrors the lot with a slow shimmer. Every
+ * cell is computed from its position and the time, shaded in its own colour and drawn as a four level dithered
+ * halftone. The seed shapes the aurora, the ridges, the pines, the stars and the snow. Every motion completes a
+ * whole number of cycles per loop.
  */
 public fun auroraCabinPiece(
     seed: Int = 0,
     aurora: Rgb = AKit.Green,
     window: Rgb = AKit.Amber,
 ): AsciiPiece {
-    val rng = AKit.rng(seed, 41)
-    val pines = listOf(3, 12, 22, 29, 57).map { intArrayOf(it + rng.int(4), 4 + rng.int(3)) }
-    val flakes =
-        List(FLAKES) {
-            floatArrayOf(rng.float(0f, COLS.toFloat()), if (rng.chance(0.3f)) 2f else 1f, rng.float(), rng.float())
-        }
+    val scene = Scene(seed, aurora, window)
     return asciiPiece(
         name = "aurora cabin",
+        ground = Rgb.fromHex("#05080f"),
         category = "scenes",
         cols = COLS,
         rows = ROWS,
         fps = 15,
         still = 5f,
         loop = LOOP,
-        note = "aurora curtains over a snowy cabin with a glowing window and falling snow",
-    ) { time, grid ->
-        val t = loopTime(time, LOOP)
-        val angle = AKit.TAU * t / LOOP
-        paintStars(grid, seed, t)
-        paintAurora(grid, seed, angle, aurora)
-        paintFlakes(grid, flakes, t, behind = true)
-        paintSnowField(grid, seed)
-        pines.forEach { paintPine(grid, it[0], surface(it[0], seed), it[1]) }
-        paintCabin(grid, angle, window)
-        paintSmoke(grid, t)
-        paintFlakes(grid, flakes, t, behind = false)
-    }
-}
-
-private fun rawSurface(
-    x: Int,
-    seed: Int,
-): Int {
-    if (x in CABIN_X - 2..CABIN_X + CABIN[0].length + 1) return GROUND
-    return GROUND + (Noise.fbm(x * 0.07f, 3f, 0f, 3, seed) * 3f - 1.5f).toInt()
-}
-
-/** The first snow row of column [x]; one-column dips are filled so the drift line stays smooth. */
-private fun surface(
-    x: Int,
-    seed: Int,
-): Int {
-    val h = rawSurface(x, seed)
-    return if (rawSurface(x - 1, seed) < h && rawSurface(x + 1, seed) < h) h - 1 else h
-}
-
-private fun paintStars(
-    grid: Grid,
-    seed: Int,
-    t: Float,
-) {
-    for (y in 0 until GROUND - 4) {
-        for (x in 0 until COLS) {
-            val h = Noise.hash(x, y, 11, seed)
-            if (h < 0.975f) continue
-            val glint = sin(AKit.TAU * (2f * t / LOOP + h * 50f))
-            grid.put(x, y, if (glint > 0.6f) '+' else '.')
-        }
-    }
-}
-
-private fun paintAurora(
-    grid: Grid,
-    seed: Int,
-    angle: Float,
-    color: Rgb,
-) {
-    val colors = listOf(AKit.Violet, color, color, AKit.Blue)
-    for (band in 0..1) {
-        val base = if (band == 0) 2.5f else 6.5f
-        val depth = if (band == 0) 6f else 4f
-        for (x in 0 until COLS) {
-            // Where along the sky this curtain hangs, and how bright it is there.
-            val presence =
-                Noise.value(x * 0.06f + band * 13f + 0.7f * cos(angle), 0.7f * sin(angle) + band * 4f, 0f, seed)
-            val envelope = ((presence - 0.2f) * 2.5f).coerceIn(0f, 1f) * (if (band == 0) 1f else 0.8f)
-            if (envelope <= 0f) continue
-            val top = base + 2f * sin(x * 0.09f + angle * (band + 1) + band * 2f)
-            val ray = Noise.value(x * 0.5f + 2f * cos(angle + band), 2f * sin(angle + band), band * 5f, seed + 7)
-            val topRow = top.toInt()
-            for (y in topRow..(top + depth).toInt()) {
-                if (y !in 0 until GROUND - 4) continue
-                val d = (y - top).coerceAtLeast(0f)
-                val tone = envelope * (0.3f + 0.7f * ray) * (1f - d / depth)
-                val glyph =
-                    when {
-                        y == topRow && tone > 0.3f -> '~'
-                        tone > 0.62f -> '|'
-                        tone > 0.45f -> '!'
-                        tone > 0.3f -> ':'
-                        tone > 0.18f -> '.'
-                        else -> continue
-                    }
-                grid.put(x, y, glyph, gradient(colors, (d / depth).coerceIn(0f, 1f)))
-            }
-        }
-    }
-}
-
-private fun paintSnowField(
-    grid: Grid,
-    seed: Int,
-) {
-    for (x in 0 until COLS) {
-        val h = surface(x, seed)
-        val left = surface(x - 1, seed)
-        val right = surface(x + 1, seed)
-        val edge =
-            when {
-                right < h -> '/'
-                left < h -> '\\'
-                else -> '_'
-            }
-        grid.put(x, h - 1, edge)
-        for (y in h until ROWS) {
-            val glow = abs(x - (CABIN_X + WINDOW_DX + 1.5f)) < 4f - (y - GROUND) && y in GROUND until GROUND + 3
-            when {
-                glow -> grid.put(x, y, if (y == GROUND) ':' else '.', AKit.Amber)
-                Noise.hash(x, y, 13, seed) > 0.9f -> grid.put(x, y, '.', AKit.Blue)
-                else -> grid.put(x, y, ' ')
-            }
-        }
-    }
-}
-
-private fun paintPine(
-    grid: Grid,
-    x: Int,
-    ground: Int,
-    height: Int,
-) {
-    val top = ground - height - 1
-    grid.put(x, top, '^', AKit.Green)
-    for (k in 1 until height) {
-        grid.put(x - k, top + k, '/')
-        grid.put(x + k, top + k, '\\')
-        for (dx in -k + 1 until k) grid.put(x + dx, top + k, '^', AKit.Green)
-    }
-    grid.put(x, ground - 1, '|')
-}
-
-private fun paintCabin(
-    grid: Grid,
-    angle: Float,
-    window: Rgb,
-) {
-    val top = GROUND - CABIN.size
-    // Firelight inside: the window brightens and dims, a whole number of times per loop.
-    val flicker = 0.5f + 0.25f * sin(angle * 5f) + 0.25f * sin(angle * 9f + 1f)
-    val glow = window.lerp(AKit.Red, 1f - flicker)
-    CABIN.forEachIndexed { row, line ->
-        line.forEachIndexed { col, ch ->
-            when (ch) {
-                ' ' -> {}
-
-                '#' -> {
-                    grid.put(CABIN_X + col, top + row, if (flicker > 0.35f) '█' else '▓', glow)
-                }
-
-                else -> {
-                    grid.put(CABIN_X + col, top + row, ch)
-                }
-            }
-        }
-    }
-}
-
-private fun paintSmoke(
-    grid: Grid,
-    t: Float,
-) {
-    val x0 = CABIN_X + CHIMNEY_DX
-    val y0 = GROUND - CABIN.size - 1
-    for (k in 0 until SMOKE_PUFFS) {
-        val age = AKit.frac(4f * t / LOOP + k.toFloat() / SMOKE_PUFFS)
-        val rise = age * 9f
-        val drift = age * age * 7f + sin(AKit.TAU * age * 2f + k) * 0.8f
-        val glyph =
-            when {
-                age < 0.25f -> 'o'
-                age < 0.55f -> 'O'
-                age < 0.8f -> '~'
-                else -> '.'
-            }
-        grid.put(x0 + drift.toInt(), y0 - rise.toInt(), glyph)
-    }
-}
-
-/** Snowflakes; slow ones (far) fall [behind] the cabin and trees, fast ones (near) in front of them. */
-private fun paintFlakes(
-    grid: Grid,
-    flakes: List<FloatArray>,
-    t: Float,
-    behind: Boolean,
-) {
-    for (f in flakes) {
-        if ((f[1] == 1f) != behind) continue
-        val y = (AKit.frac(f[2] + f[1] * t / LOOP) * (ROWS + 1)).toInt() - 1
-        val x = (f[0] + sin(AKit.TAU * (2f * t / LOOP + f[3])) * 1.2f).toInt()
-        if (behind) {
-            if (grid.glyphAt(x, y) == ' ') grid.put(x, y, '.')
-        } else {
-            grid.put(x, y, '*')
-        }
-    }
+        note = "aurora curtains over a log cabin by a frozen lake, with smoke, lit windows and a reflection",
+    ) { time, grid -> scene.draw(loopTime(time, LOOP), grid) }
 }
 
 /**
- * A snowy night: aurora curtains waving over a log cabin with a glowing window, chimney smoke, pines and falling
- * snow.
+ * A snowy night: aurora curtains over a log cabin by a frozen lake, with lit windows, chimney smoke, pines, twinkling
+ * stars and falling snow.
  *
- * @param seed shapes the aurora, the drifts and the stars and plants the trees.
+ * @param seed shapes the aurora, the ridges, the pines, the stars and the snow.
  * @param aurora the main color of the aurora curtains.
- * @param window the color of the lit window.
+ * @param window the color of the lit windows.
  */
 @Composable
 public fun AsciiAuroraCabin(
@@ -273,7 +922,7 @@ public fun AsciiAuroraCabin(
     speed: Float = 1f,
     motion: Motion = Motion.System,
     renderer: AsciiRenderer = AsciiRenderer.Auto,
-    contentDescription: String? = "A log cabin in the snow at night, with aurora curtains waving in the sky",
+    contentDescription: String? = "A log cabin by a frozen lake at night, with aurora curtains waving in the sky",
 ) {
     val piece = remember(seed, aurora, window) { auroraCabinPiece(seed, aurora, window) }
     AsciiPieceView(piece, modifier, speed, motion, renderer, contentDescription = contentDescription)

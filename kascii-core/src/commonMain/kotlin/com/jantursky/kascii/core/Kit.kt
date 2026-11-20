@@ -5,7 +5,8 @@ import kotlin.math.roundToInt
 
 /**
  * What a piece says about itself. [fps] 0 marks a still. [still] is the time shown under reduced motion, [loop]
- * the seconds after which the animation repeats (0 for never).
+ * the seconds after which the animation repeats (0 for never). [ground] is the backdrop color of scenes that draw
+ * their own night or dusk sky, so they read the same on light and dark pages.
  */
 public class PieceMeta(
     /** Display name of the piece. */
@@ -24,6 +25,8 @@ public class PieceMeta(
     public val loop: Float = 0f,
     /** A short description. */
     public val note: String = "",
+    /** Opaque backdrop the piece is drawn on, or null to draw straight onto the page. */
+    public val ground: Rgb? = null,
 )
 
 /** A piece draws the frame for time `t` seconds into a cleared grid. Build one with [asciiPiece]. */
@@ -47,8 +50,9 @@ public fun asciiPiece(
     still: Float = 0f,
     loop: Float = 0f,
     note: String = "",
+    ground: Rgb? = null,
     draw: (t: Float, grid: Grid) -> Unit,
-): AsciiPiece = AsciiPiece(PieceMeta(name, category, cols, rows, fps, still, loop, note), draw)
+): AsciiPiece = AsciiPiece(PieceMeta(name, category, cols, rows, fps, still, loop, note, ground), draw)
 
 /** Draws a straight line of [glyph] between two cells (Bresenham). */
 public fun Grid.line(

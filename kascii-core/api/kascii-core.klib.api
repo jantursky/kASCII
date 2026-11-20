@@ -178,7 +178,7 @@ final class com.jantursky.kascii.core/KasciiTheme { // com.jantursky.kascii.core
 }
 
 final class com.jantursky.kascii.core/PieceMeta { // com.jantursky.kascii.core/PieceMeta|null[0]
-    constructor <init>(kotlin/String, kotlin/String, kotlin/Int, kotlin/Int, kotlin/Int = ..., kotlin/Float = ..., kotlin/Float = ..., kotlin/String = ...) // com.jantursky.kascii.core/PieceMeta.<init>|<init>(kotlin.String;kotlin.String;kotlin.Int;kotlin.Int;kotlin.Int;kotlin.Float;kotlin.Float;kotlin.String){}[0]
+    constructor <init>(kotlin/String, kotlin/String, kotlin/Int, kotlin/Int, kotlin/Int = ..., kotlin/Float = ..., kotlin/Float = ..., kotlin/String = ..., com.jantursky.kascii.core/Rgb? = ...) // com.jantursky.kascii.core/PieceMeta.<init>|<init>(kotlin.String;kotlin.String;kotlin.Int;kotlin.Int;kotlin.Int;kotlin.Float;kotlin.Float;kotlin.String;com.jantursky.kascii.core.Rgb?){}[0]
 
     final val category // com.jantursky.kascii.core/PieceMeta.category|{}category[0]
         final fun <get-category>(): kotlin/String // com.jantursky.kascii.core/PieceMeta.category.<get-category>|<get-category>(){}[0]
@@ -186,6 +186,8 @@ final class com.jantursky.kascii.core/PieceMeta { // com.jantursky.kascii.core/P
         final fun <get-cols>(): kotlin/Int // com.jantursky.kascii.core/PieceMeta.cols.<get-cols>|<get-cols>(){}[0]
     final val fps // com.jantursky.kascii.core/PieceMeta.fps|{}fps[0]
         final fun <get-fps>(): kotlin/Int // com.jantursky.kascii.core/PieceMeta.fps.<get-fps>|<get-fps>(){}[0]
+    final val ground // com.jantursky.kascii.core/PieceMeta.ground|{}ground[0]
+        final fun <get-ground>(): com.jantursky.kascii.core/Rgb? // com.jantursky.kascii.core/PieceMeta.ground.<get-ground>|<get-ground>(){}[0]
     final val loop // com.jantursky.kascii.core/PieceMeta.loop|{}loop[0]
         final fun <get-loop>(): kotlin/Float // com.jantursky.kascii.core/PieceMeta.loop.<get-loop>|<get-loop>(){}[0]
     final val name // com.jantursky.kascii.core/PieceMeta.name|{}name[0]
@@ -350,4 +352,4 @@ final fun (com.jantursky.kascii.core/Grid).com.jantursky.kascii.core/disc(kotlin
 final fun (com.jantursky.kascii.core/Grid).com.jantursky.kascii.core/label(kotlin/Int, kotlin/Int, kotlin/String, com.jantursky.kascii.core/Rgb? = ...) // com.jantursky.kascii.core/label|label@com.jantursky.kascii.core.Grid(kotlin.Int;kotlin.Int;kotlin.String;com.jantursky.kascii.core.Rgb?){}[0]
 final fun (com.jantursky.kascii.core/Grid).com.jantursky.kascii.core/line(kotlin/Int, kotlin/Int, kotlin/Int, kotlin/Int, kotlin/Char = ..., com.jantursky.kascii.core/Rgb? = ...) // com.jantursky.kascii.core/line|line@com.jantursky.kascii.core.Grid(kotlin.Int;kotlin.Int;kotlin.Int;kotlin.Int;kotlin.Char;com.jantursky.kascii.core.Rgb?){}[0]
 final fun (com.jantursky.kascii.core/Grid).com.jantursky.kascii.core/rect(kotlin/Int, kotlin/Int, kotlin/Int, kotlin/Int, com.jantursky.kascii.core/BoxStyle? = ..., kotlin/Char? = ..., com.jantursky.kascii.core/Rgb? = ...) // com.jantursky.kascii.core/rect|rect@com.jantursky.kascii.core.Grid(kotlin.Int;kotlin.Int;kotlin.Int;kotlin.Int;com.jantursky.kascii.core.BoxStyle?;kotlin.Char?;com.jantursky.kascii.core.Rgb?){}[0]
-final fun com.jantursky.kascii.core/asciiPiece(kotlin/String, kotlin/String, kotlin/Int, kotlin/Int, kotlin/Int = ..., kotlin/Float = ..., kotlin/Float = ..., kotlin/String = ..., kotlin/Function2<kotlin/Float, com.jantursky.kascii.core/Grid, kotlin/Unit>): com.jantursky.kascii.core/AsciiPiece // com.jantursky.kascii.core/asciiPiece|asciiPiece(kotlin.String;kotlin.String;kotlin.Int;kotlin.Int;kotlin.Int;kotlin.Float;kotlin.Float;kotlin.String;kotlin.Function2<kotlin.Float,com.jantursky.kascii.core.Grid,kotlin.Unit>){}[0]
+final fun com.jantursky.kascii.core/asciiPiece(kotlin/String, kotlin/String, kotlin/Int, kotlin/Int, kotlin/Int = ..., kotlin/Float = ..., kotlin/Float = ..., kotlin/String = ..., com.jantursky.kascii.core/Rgb? = ..., kotlin/Function2<kotlin/Float, com.jantursky.kascii.core/Grid, kotlin/Unit>): com.jantursky.kascii.core/AsciiPiece // com.jantursky.kascii.core/asciiPiece|asciiPiece(kotlin.String;kotlin.String;kotlin.Int;kotlin.Int;kotlin.Int;kotlin.Float;kotlin.Float;kotlin.String;com.jantursky.kascii.core.Rgb?;kotlin.Function2<kotlin.Float,com.jantursky.kascii.core.Grid,kotlin.Unit>){}[0]

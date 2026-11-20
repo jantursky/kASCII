@@ -114,5 +114,5 @@ class PiecesDTest {
     }
 
     /** Printable ASCII, box drawing and block elements: the glyphs every renderer and the bundled font draw. */
-    private fun allowed(c: Char): Boolean = c in ' '..'~' || c in '─'..'▟'
+    private fun allowed(c: Char): Boolean = c in ' '..'~' || c in '─'..'▟' || c in "·•●"
 }

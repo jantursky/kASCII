@@ -98,7 +98,7 @@ class PiecesCTest {
                 val t = piece.meta.loop * step / FRAMES
                 for (ch in piece.render(t).toText()) {
                     assertTrue(
-                        ch == '\n' || ch.code in ASCII || ch.code in BOXES_AND_BLOCKS,
+                        ch == '\n' || ch.code in ASCII || ch.code in BOXES_AND_BLOCKS || ch in "·•●",
                         "${case.name} draws '$ch'",
                     )
                 }

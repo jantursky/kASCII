@@ -43,7 +43,7 @@ public fun AsciiCanvas(
 
 /**
  * Plays an [AsciiPiece]. The grid is [AsciiPiece.meta]'s size, scaled to fit [modifier]. Pauses offscreen, honours
- * reduced motion by showing the piece's still frame.
+ * reduced motion by showing the piece's still frame. A piece with a ground is drawn on that color, whatever the theme.
  */
 @Composable
 public fun AsciiPieceView(
@@ -63,7 +63,9 @@ public fun AsciiPieceView(
             still = meta.still,
             loop = meta.loop,
         )
-    AsciiView(PieceSource(piece), DefaultCell, clock, renderer, theme, contentDescription, modifier)
+    val ground = meta.ground
+    val stage = if (ground == null) theme else KasciiTheme(theme.ink, ground, theme.accent, theme.palette)
+    AsciiView(PieceSource(piece), DefaultCell, clock, renderer, stage, contentDescription, modifier)
 }
 
 /** Draws a static [grid] once. Use [renderer] = [AsciiRenderer.Text] for selectable text. */
