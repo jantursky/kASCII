@@ -74,6 +74,8 @@ tasks.withType<Test>().matching { it.name == "testAndroidHostTest" }.configureEa
 tasks.named<Test>("jvmTest") {
     // Skiko loads its native library; recent JDKs warn unless native access is granted.
     jvmArgs("--enable-native-access=ALL-UNNAMED")
+    // The golden tests rewrite their files when this is set, so a change of it must rerun them.
+    inputs.property("updateGolden", providers.environmentVariable("KASCII_UPDATE_GOLDEN").orElse(""))
 }
 
 roborazzi {
