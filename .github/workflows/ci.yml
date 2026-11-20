@@ -30,6 +30,13 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
       - name: Format, API, JVM and Android host tests, coverage gate
         run: ./gradlew spotlessCheck apiCheck jvmTest testAndroidHostTest koverXmlReport koverVerify
+      - name: Keep JVM crash reports
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: jvm-crash-reports
+          path: '**/hs_err_pid*.log'
+          if-no-files-found: ignore
       - name: Upload coverage to Codecov
         if: ${{ !cancelled() && env.CODECOV_TOKEN != '' }}
         uses: codecov/codecov-action@v7
