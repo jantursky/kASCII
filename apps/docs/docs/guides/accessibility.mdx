@@ -1,0 +1,37 @@
+---
+title: Accessibility
+description: Reduced motion, contrast, semantics and keyboard support.
+sidebar:
+  order: 10
+---
+
+## Reduced motion
+
+Animation holds a still frame under reduced motion. Kascii reads the setting from:
+
+| Target | Source |
+| --- | --- |
+| Android | The animator duration scale (`ValueAnimator.areAnimatorsEnabled`). |
+| iOS | Reduce Motion in Accessibility settings. |
+| wasmJs | The `prefers-reduced-motion: reduce` media query. |
+| JVM desktop | No system source: motion is full unless you set the `kascii.reducedMotion` system property. |
+
+Override it per element with the `motion` parameter (`System`, `Full` or `Reduced`). A piece's still frame is its `still` time from the metadata.
+
+## Semantics
+
+- Art with a `contentDescription` is exposed with that description. Art without one is marked invisible to accessibility services.
+- The `Text` renderer exposes the grid as real text.
+- Interactive components set a role and state (checkbox, radio, switch, slider, tab, button), so screen readers announce them.
+
+## Keyboard and touch
+
+Interactive components are focusable. On desktop and web, Enter and Space activate buttons and toggles, arrow keys move in tabs, sliders and radio groups, and the focused control is drawn with a visible marker, such as brackets around a button. Touch targets are at least 48 dp.
+
+## Contrast
+
+Keep ink and paper at a contrast ratio of at least 4.5. `KasciiTheme.contrastRatio()` gives the ratio for any theme.
+
+## Decorative art
+
+Animated art is decoration. Do not put essential information only in an animated piece, and give meaningful art a description in plain text.

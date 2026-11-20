@@ -1,0 +1,38 @@
+---
+title: Charsets
+description: The built-in glyph sets and how to make your own.
+sidebar:
+  order: 2
+---
+
+| Charset | Glyphs | Cell samples | Use |
+| --- | --- | --- | --- |
+| `Standard` | `" .:-=+*#%@"` | 1 | The classic ramp. |
+| `Dense` | 70 glyphs | 1 | Smooth gradients and photos. |
+| `Short` | `" .oO@"` | 1 | Chunky, graphic. |
+| `Blocks` | `" ░▒▓█"` | 1 | Solid fills. |
+| `Quadrants` | 16 blocks | 2 x 2 | Twice the resolution in blocks. |
+| `Braille` | 256 patterns | 2 x 4 | The finest built-in resolution. |
+| `BoxDrawing` | `" ·┄┈─┼╬▒█"` | 1 | Technical drawings. |
+| `Cp437` | DOS box and block glyphs | 1 | Old terminal look. |
+| `Petscii` | block and bar glyphs | 1 | Commodore feel. |
+| `Katakana` | `" ・ノヲ力ヨ卜ホ"` | 1 | Digital rain. |
+| `Dots` | `" ·∙•⦁●"` | 1 | Halftone. |
+| `Binary`, `Digits` | `" 01"`, `" 1234567890"` | 1 | Number fields. |
+| `Edge` | `- / \ |` on edges, `Standard` elsewhere | 3 x 3 look-around | Shape-aware image mode. |
+
+## Your own ramp
+
+```kotlin
+val mine = Charsets.custom(" .oO@")
+```
+
+List the glyphs from lightest to darkest. If you do not know their weight, `Charset.Ramp.byCoverage(name, glyphs) { coverage(it) }` orders them from a measured ink coverage per glyph.
+
+## Braille and quadrants
+
+Both are bit masks. For Braille, each of the eight dots in a cell is lit when its tone sample is above the `threshold` (0.5 by default). Change it with `Charsets.Braille.withThreshold(0.3f)`. Because one cell covers 2 by 4 samples, Braille draws smooth shapes without shrinking the cell, which is why the pie chart and sparkline components use it.
+
+## Fonts
+
+Braille and katakana are not in most monospace fonts. Kascii bundles JetBrains Mono for Latin, box drawing and blocks, and a subset of GNU Unifont for Braille and katakana. Both are under the SIL Open Font License 1.1, and their licenses ship with the library.

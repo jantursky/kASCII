@@ -1,0 +1,57 @@
+/* Kascii design tokens (design/tokens.css) mapped onto Blume's. */
+@import '@fontsource-variable/jetbrains-mono';
+@import '@fontsource-variable/dm-sans';
+@import '../../../../../design/tokens.css';
+
+:root,
+:root[data-theme='light'],
+:root[data-theme='dark'] {
+  --blume-background: var(--kascii-void);
+  --blume-foreground: var(--kascii-text);
+  --blume-muted: var(--kascii-surface-1);
+  --blume-muted-foreground: var(--kascii-muted);
+  --blume-border: var(--kascii-border);
+  --blume-accent: var(--kascii-link);
+  --blume-accent-foreground: var(--kascii-void);
+  --blume-code-background: var(--kascii-code);
+  --blume-radius: var(--kascii-radius);
+  --blume-font-display: var(--kascii-font-mono);
+  --blume-font-body: var(--kascii-font-prose);
+  --blume-font-mono: var(--kascii-font-mono);
+}
+
+*,
+*::before,
+*::after {
+  box-shadow: none !important;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--kascii-font-mono);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+table,
+td,
+th {
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--kascii-focus) !important;
+}
+
+.live-example {
+  display: block;
+  width: 100%;
+  height: 420px;
+  margin: 24px 0;
+  border: 1px solid var(--kascii-border);
+  border-radius: var(--kascii-radius);
+  background: var(--kascii-void);
+}

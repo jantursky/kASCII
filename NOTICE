@@ -1,0 +1,8 @@
+Kascii
+Copyright (c) 2026 Jan Tursky
+
+Pieces of Kascii ported from other projects say so in their KDoc, with the source project named there. Their
+license texts are reproduced in THIRD_PARTY_NOTICES.
+
+The bundled monospace font, JetBrains Mono with a subset of GNU Unifont, is distributed under the SIL Open Font
+License 1.1. Its license text is in THIRD_PARTY_NOTICES.

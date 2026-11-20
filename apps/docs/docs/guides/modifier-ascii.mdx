@@ -1,0 +1,30 @@
+---
+title: Modifier.ascii
+description: Turn any element into ASCII.
+sidebar:
+  order: 5
+---
+
+```kotlin
+Box(Modifier.ascii(charset = Charsets.Blocks, cell = 8.dp)) {
+    Image(painter = painterResource(Res.drawable.photo), contentDescription = null)
+}
+```
+
+`Modifier.ascii` draws the element's content into a graphics layer, samples it down to one tone per cell (and a color per cell when the color mode asks for it), maps the tones through the charset and draws the glyphs on top. Layout is unchanged.
+
+| Parameter | Default | Meaning |
+| --- | --- | --- |
+| `charset` | `Charsets.Blocks` | Glyphs, see [charsets](/guides/charsets). |
+| `cell` | `8.dp` | Width of one glyph cell. |
+| `colorMode` | `ColorMode.Theme` | See [color modes](/guides/color-modes). |
+| `renderer` | `AsciiRenderer.Auto` | See [renderers](/guides/renderers). |
+| `theme` | `null` | Falls back to `LocalKasciiTheme`. |
+
+For an image from a `Bitmap` use `AsciiImage(bitmap)`, which samples tones and per-cell colors directly and is cheaper than capturing a layer.
+
+## Notes
+
+- The content is re-sampled when it changes, so an animated child stays in sync.
+- Semantics of the child are kept. The glyph layer adds nothing a screen reader would read twice.
+- Sampling happens off the main thread. The first frame can show the original content until the first sample is ready.

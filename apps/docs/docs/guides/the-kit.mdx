@@ -1,0 +1,41 @@
+---
+title: The kit
+description: Build your own animated piece.
+sidebar:
+  order: 6
+---
+
+A piece is a size, a frame rate and a function of time that writes glyphs into a grid.
+
+```kotlin
+val orbit = asciiPiece(name = "orbit", category = "space", cols = 64, rows = 24, still = 2f, loop = 10f) { t, grid ->
+    val rng = Rng(7)
+    repeat(40) { grid.put(rng.int(grid.cols), rng.int(grid.rows), '.') }
+    grid.disc(32f, 12f, 4f, '@')
+    grid.disc(32f + 18f * cos(t), 12f + 6f * sin(t), 1.5f, 'o')
+}
+
+AsciiPieceView(orbit, Modifier.fillMaxWidth().aspectRatio(64f / 24f))
+```
+
+| Meta | Meaning |
+| --- | --- |
+| `cols`, `rows` | Grid size. |
+| `fps` | Frame rate, 0 for a still. |
+| `still` | The time shown under reduced motion. Pick a representative moment. |
+| `loop` | Seconds after which the animation repeats, 0 for never. |
+
+## Rules for a good piece
+
+- A pure function of `t` and the seed. The same `t` gives the same grid whatever order frames are requested in. Stateful simulations such as a cellular automaton recompute or step from a cache keyed by frame index.
+- All randomness through `Rng(seed)` or `Noise`.
+- Write glyphs into the grid. Do not draw pixels.
+- Test it as text: `piece.render(t).toText()` is platform independent, so keep a golden file per piece.
+
+## Helpers
+
+`Grid.put`, `write`, `fill`, `line`, `rect`, `disc`, `label` and `blit`; `BoxStyle` (single, double, rounded, heavy, ASCII); `BrailleCanvas` for sub-cell dots; `Rng`; `Noise`; `Fields`.
+
+## Your own marks
+
+The gallery does not ship third-party logos. To render your own mark, load it as an image and use `AsciiImage` with the `Edge` or `Braille` charset, or sample it to tones with `ImageBitmap.toTones` and rasterize it with `Rasterizer.fromTones`.

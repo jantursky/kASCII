@@ -1,0 +1,67 @@
+---
+title: Getting started
+description: Add Kascii to a Compose Multiplatform project and draw your first field.
+sidebar:
+  order: 2
+---
+
+## Install
+
+Add the modules you need to `commonMain`. They are published to Maven Central under `io.github.jantursky`.
+
+```kotlin
+commonMain.dependencies {
+    implementation("io.github.jantursky:kascii-compose:{{version}}")
+    implementation("io.github.jantursky:kascii-components:{{version}}")
+    implementation("io.github.jantursky:kascii-gallery:{{version}}")
+}
+```
+
+`kascii-core` comes in through the others. Use it alone when you only want fields, charsets and export without any UI.
+
+## A first field
+
+```kotlin
+AsciiCanvas(
+    field = Fields.plasma(),
+    modifier = Modifier.fillMaxSize(),
+    charset = Charsets.Blocks,
+    cell = 8.dp,
+)
+```
+
+The canvas samples the field at every cell, maps the tone through the charset and draws the glyphs. It animates while visible, pauses offscreen and holds one still frame under reduced motion.
+
+## Any element as ASCII
+
+```kotlin
+Box(Modifier.ascii(charset = Charsets.Blocks, cell = 8.dp)) {
+    Image(painter = painterResource(Res.drawable.photo), contentDescription = null)
+}
+```
+
+## Your own field
+
+```kotlin
+val rings = Field { x, y, t, aspect ->
+    val d = hypot((x - 0.5f) * aspect, y - 0.5f)
+    sin(d * 20f - t * 2f) * 0.5f + 0.5f
+}
+AsciiCanvas(rings, Modifier.fillMaxSize(), charset = Charsets.Dense)
+```
+
+A field gets `x` and `y` from 0 to 1 across the grid, `t` in seconds, and `aspect`, the grid's width over its height in pixels, so circles stay round. Return a tone from 0 to 1.
+
+## A theme
+
+Everything reads `LocalKasciiTheme`. Build one from your own colors and provide it:
+
+```kotlin
+ProvideKasciiTheme(kasciiThemeOf(ink = onSurface, paper = surface, accent = primary)) {
+    AsciiCanvas(Fields.noise(), Modifier.fillMaxSize())
+}
+```
+
+## Next
+
+Read [engine concepts](/guides/engine-concepts) for how the pieces fit, then browse the [gallery](/guides/gallery).

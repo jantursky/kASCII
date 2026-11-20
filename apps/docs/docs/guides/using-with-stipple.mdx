@@ -1,0 +1,34 @@
+---
+title: Using with Stipple
+description: Dithers and glyphs in one app.
+sidebar:
+  order: 11
+---
+
+[Stipple](https://github.com/jantursky/stipple) turns tone into ink and paper dots, Kascii turns it into glyphs. They are independent libraries with no dependency on each other, and they share an architecture, so they combine well.
+
+## Dither behind, glyphs on top
+
+```kotlin
+Box(Modifier.fillMaxSize().dither(field = DitherFields.mesh(), pattern = DitherPatterns.Bayer4)) {
+    AsciiCanvas(Fields.noise(), Modifier.fillMaxSize(), charset = Charsets.Dots)
+}
+```
+
+## Glyph art as a dithered mask
+
+Render a piece to a bitmap with `grid.toImageBitmap(theme)` and hand it to Stipple's image modifiers, or the other way round: dither an image, then use `AsciiImage` to turn the result into glyphs.
+
+## Shared look
+
+Give both libraries the same ink and paper so the two layers read as one:
+
+```kotlin
+val ink = Color(0xFFCAD5E2)
+val paper = Color(0xFF06051D)
+ProvideKasciiTheme(kasciiThemeOf(ink = ink, paper = paper)) {
+    ProvideStippleTheme(StippleTheme(ink = ink, paper = paper)) { Screen() }
+}
+```
+
+Both clocks pause offscreen and follow reduced motion, so a screen that uses both stays calm under the same setting.

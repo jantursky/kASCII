@@ -1,0 +1,29 @@
+---
+title: Renderers
+description: GPU, CPU and text, and how Kascii picks one.
+sidebar:
+  order: 4
+---
+
+`AsciiRenderer` selects how the grid is drawn.
+
+| Renderer | How | Choose it when |
+| --- | --- | --- |
+| `Cpu` | A glyph atlas is built once from the font, then each cell is drawn from it with a tint. | The safe baseline, and for small grids. |
+| `Gpu` | The atlas and a per-cell glyph map go to a runtime shader. | Large animated grids. |
+| `Text` | The grid becomes an `AnnotatedString` in selectable text. | The art should be selectable, copyable and readable by accessibility services. Slowest. |
+| `Auto` | `Gpu` where the platform supports it and the grid is big enough, otherwise `Cpu`. | The default. |
+
+## GPU path
+
+The shader reads the atlas as a child shader: AGSL `RuntimeShader` with `setInputShader` on Android 13 and newer, and a Skia `RuntimeEffect` with a child shader on iOS, desktop and the web. Anything that fails, such as Android 12 and older or a program that does not compile, falls back to the CPU path and stays there.
+
+> **Unverified:** the GPU path is only verified where the [gallery](/guides/gallery) status table says so. Image children in the web (wasmJs) shader path have not been checked in a browser, so the web build falls back to the CPU renderer until they are.
+
+## The atlas
+
+The atlas is built from the font at runtime with the cell size in device pixels, so glyph density follows the display. The cell's aspect ratio is measured from the font with fixed line height, so a field's circles stay round.
+
+## Text mode
+
+`Text` is the only renderer that makes the art real text. Use it for screens where the art carries meaning, such as an ASCII table or a terminal, and give it a content description when it does not.

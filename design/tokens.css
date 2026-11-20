@@ -1,0 +1,52 @@
+/* Kascii design tokens. Source of truth: design/DESIGN.md. Dark is native, light is derived. */
+:root,
+:root[data-theme='dark'] {
+  --kascii-void: #06051d;
+  --kascii-void-end: #061434;
+  --kascii-surface-1: #0f1c36;
+  --kascii-surface-2: #1d293d;
+  --kascii-surface-3: #314062;
+  --kascii-text: #cad5e2;
+  --kascii-text-strong: #ffffff;
+  --kascii-muted: rgb(202 213 226 / 65%);
+  --kascii-border: rgb(229 231 235 / 12%);
+  --kascii-link: #63b3ed;
+  --kascii-green: #00bc7d;
+  --kascii-green-fill: rgb(0 79 59 / 20%);
+  --kascii-amber: #f0b100;
+  --kascii-amber-fill: rgb(115 62 10 / 20%);
+  --kascii-red: #ff2056;
+  --kascii-red-fill: rgb(139 8 54 / 20%);
+  --kascii-code: #0f1c36;
+  --kascii-focus: 0 0 0 2px rgb(99 179 237 / 70%);
+
+  --kascii-logo-a: #7f52ff;
+  --kascii-logo-b: #e44857;
+
+  --kascii-radius: 8px;
+  --kascii-radius-pill: 9999px;
+
+  --kascii-font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  --kascii-font-prose: 'DM Sans Variable', 'DM Sans', system-ui, sans-serif;
+}
+
+:root[data-theme='light'] {
+  --kascii-void: #f4f6fb;
+  --kascii-void-end: #e8edf6;
+  --kascii-surface-1: #e8edf6;
+  --kascii-surface-2: #dbe3f0;
+  --kascii-surface-3: #c9d3e6;
+  --kascii-text: #1d293d;
+  --kascii-text-strong: #06051d;
+  --kascii-muted: rgb(29 41 61 / 70%);
+  --kascii-border: rgb(29 41 61 / 12%);
+  --kascii-link: #1d6fb8;
+  --kascii-green: #00785a;
+  --kascii-green-fill: rgb(0 188 125 / 20%);
+  --kascii-amber: #9a6a00;
+  --kascii-amber-fill: rgb(240 177 0 / 20%);
+  --kascii-red: #c2143f;
+  --kascii-red-fill: rgb(255 32 86 / 16%);
+  --kascii-code: #e8edf6;
+  --kascii-focus: 0 0 0 2px rgb(29 111 184 / 60%);
+}

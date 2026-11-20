@@ -1,0 +1,36 @@
+---
+title: Types
+description: The main types of kascii-core and kascii-compose.
+sidebar:
+  order: 2
+---
+
+## kascii-core
+
+| Type | Role |
+| --- | --- |
+| `Field`, `ColorField` | Functions returning a tone or a color at a position and time. |
+| `Fields` | Procedural fields: `plasma`, `noise`, `waves`, `ripples`, `gradient`, `radial`, `solid`, `fromTones`. |
+| `Charset`, `Charsets` | `Ramp`, `Mask` (Braille, quadrants) and `Edge`, plus the built-ins. |
+| `ColorMode` | `Mono`, `Theme`, `Source`, `Gradient`, `Duotone`, `Palette`. |
+| `KasciiTheme` | `ink`, `paper`, `accent`, `palette`, with `Light`, `Dark`, `Phosphor`, `Amber`. |
+| `Rgb` | An ARGB color as an `Int`, with `lerp`, `toHex` and `fromHex`. |
+| `Grid` | Glyph and color per cell, with drawing helpers and `toText()`. |
+| `Rasterizer` | Turns a field or tones into a grid. |
+| `Export` | `toText`, `toAnsi`, `toSvg`. |
+| `Motion`, `PieceClock` | Reduced-motion preference and time bookkeeping. |
+| `AsciiPiece`, `PieceMeta`, `asciiPiece` | The piece kit. |
+| `Rng`, `Noise` | Seeded randomness and value noise. |
+| `BoxStyle`, `BrailleCanvas` | Frame glyphs and sub-cell dots. |
+
+## kascii-compose
+
+| Type | Role |
+| --- | --- |
+| `AsciiRenderer` | `Auto`, `Gpu`, `Cpu`, `Text`. |
+| `AsciiCanvas`, `AsciiPieceView`, `AsciiGridView`, `AsciiImage` | The composables that draw. |
+| `Modifier.ascii` | Any element as ASCII. |
+| `LocalKasciiTheme`, `ProvideKasciiTheme`, `systemKasciiTheme`, `kasciiThemeOf` | Theme access. |
+| `kasciiFontFamily` | The bundled font family. |
+| `rememberReducedMotion` | The resolved reduced-motion flag. |
+| `Grid.toImageBitmap` | Rasterize a grid for PNG export. |

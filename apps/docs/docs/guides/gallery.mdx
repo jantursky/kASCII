@@ -1,0 +1,20 @@
+---
+title: Gallery
+description: Every animated piece, where it comes from and how far along it is.
+sidebar:
+  order: 7
+---
+
+The gallery lives in `kascii-gallery`. Each piece is a public composable with a few typed parameters (speed, density, charset, colors), is deterministic for a given seed, pauses offscreen and shows a still frame under reduced motion. Browse them live in the [demo]({{demo}}), with the source next to each one.
+
+Pieces that port a specific piece from [ascii.rest](https://github.com/bas3line/ascii) say so in their KDoc and in the table below. The ascii.rest "Logos", "Companies" and "Distros" groups are not ported: they are third-party trademarks.
+
+## Status
+
+Status values are `planned`, `text-tested` (renders to a golden text grid on the JVM, nothing else checked) and `verified` (watched running on the listed platforms). Anything not listed under "Checked on" is unverified.
+
+<include>/_generated/pieces.md</include>
+
+## Phase 2 and later
+
+Later phases add the rest of the ascii.rest catalogue (scenes, shapes, space, physics, nature, creatures, objects, generative, effects) re-implemented in Kotlin, plus city skylines, painted landscapes, simulations (boids, sorting, A\*, cloth, n-body), interactive pieces, data and system widgets, an ANSI art viewer, QR code in Braille, seasonal pieces and glitch transitions between screens.

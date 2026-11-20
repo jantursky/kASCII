@@ -1,0 +1,30 @@
+---
+title: Color modes
+description: Mono, theme, source, gradient, duotone and palette.
+sidebar:
+  order: 3
+---
+
+A `ColorMode` decides the color of each glyph. Pass it to `AsciiCanvas`, `Modifier.ascii` or `Rasterizer`.
+
+| Mode | Color | Notes |
+| --- | --- | --- |
+| `Theme` | The theme ink | The default. Follows light and dark. |
+| `Mono(color)` | One fixed color | |
+| `Duotone(dark, light)` | A blend by tone | Dark tones get the first color. |
+| `Gradient(stops)` | Several stops by tone | At least two. |
+| `Palette` | A theme palette color by tone | |
+| `Source(colorField)` | A color per cell from a `ColorField` | Use it for images and per-cell colored pieces. |
+
+```kotlin
+AsciiCanvas(
+    field = Fields.plasma(),
+    colorMode = ColorMode.Gradient(listOf(Rgb.fromHex("#7f52ff"), Rgb.fromHex("#e44857"))),
+)
+```
+
+## Themes
+
+`KasciiTheme` has `ink`, `paper`, `accent` and a `palette`. `Light` and `Dark` follow the Kascii design system, `Phosphor` and `Amber` are CRT looks. Build one from Compose colors with `kasciiThemeOf(ink, paper, accent, palette)`, so it can read Material 3 colors, and provide it with `ProvideKasciiTheme`. `systemKasciiTheme()` picks the built-in light or dark theme from the system setting.
+
+Large colored fills should stay readable on both themes. Aim for a contrast ratio of at least 4.5 between ink and paper; `contrastRatio()` tells you.

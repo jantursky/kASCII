@@ -1,0 +1,44 @@
+---
+title: Engine concepts
+description: Fields, charsets, grids, color modes, themes and the clock.
+sidebar:
+  order: 1
+---
+
+The engine lives in `kascii-core` and is plain Kotlin. Nothing in it draws; it produces a `Grid` of glyphs that a renderer, an exporter or a test can read.
+
+## Field
+
+A `Field` is a function of position and time that returns a tone from 0 to 1.
+
+```kotlin
+fun interface Field {
+    fun tone(x: Float, y: Float, t: Float, aspect: Float): Float
+}
+```
+
+`x` and `y` run from 0 to 1 across the grid, `t` is in seconds and `aspect` is the grid's width over its height in pixels. `Fields` has procedural ones: `plasma`, `noise`, `waves`, `ripples`, `gradient`, `radial`, `solid` and `fromTones` for a tone grid you sampled elsewhere. A `ColorField` is the same idea returning a color, used by the `Source` color mode.
+
+## Charset
+
+A `Charset` says how many tone samples one cell takes and which glyph they give. A `Ramp` is one sample per cell, glyphs ordered light to dark. A `Mask` takes several samples and sets one bit for each one above a threshold: Braille uses 2 by 4, quadrants 2 by 2. `Edge` is shape-aware and picks slashes and bars along sharp changes. See [charsets](/guides/charsets).
+
+## Rasterizer
+
+`Rasterizer.rasterize(field, charset, cols, rows, t, cellAspect, colorMode, theme)` samples the field at `cols * subX` by `rows * subY` points, maps them through the charset and returns a `Grid`. `cellAspect` is a cell's height over its width, about 2 for monospace fonts. It is pure: the same inputs give the same grid on every platform, so you can test it with plain text.
+
+## Grid
+
+A `Grid` holds one glyph and one color per cell. `put`, `write`, `fill`, `line`, `rect`, `disc`, `label` and `blit` draw into it, `toText()` reads it. A color of 0 means "use the theme ink".
+
+## Color mode and theme
+
+A `ColorMode` colors the glyphs, see [color modes](/guides/color-modes). A `KasciiTheme` holds the `ink`, `paper`, `accent` and `palette` colors, with `Light`, `Dark`, `Phosphor` and `Amber` built in. `KasciiTheme.contrastRatio()` returns the WCAG ratio between ink and paper.
+
+## Clock and motion
+
+Time is bookkeeping in `PieceClock`: it advances by the frame delta times `speed`, wraps at `loop`, and stays at `still` when motion is reduced. `Motion` is `System`, `Full` or `Reduced`; `System` follows the platform setting. The Compose layer drives the clock with the frame clock, reads time only while drawing so frames never recompose, and stops it when the element is offscreen or the app is in the background.
+
+## Determinism
+
+Every random choice goes through `Rng(seed)` or `Noise`, so a piece with the same seed draws the same frames on every platform. That is what makes golden-text tests of animations possible.

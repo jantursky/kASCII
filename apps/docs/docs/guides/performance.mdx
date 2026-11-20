@@ -1,0 +1,26 @@
+---
+title: Performance
+description: Frame budget, the atlas, and what to do when a grid is too big.
+sidebar:
+  order: 9
+---
+
+## Where the time goes
+
+- **Field sampling** is `cols * subX * rows * subY` calls of `Field.tone` per frame. Braille samples eight times per cell.
+- **Glyph lookup** is cheap.
+- **Drawing** is the big cost on the CPU path: one atlas blit per cell.
+
+The GPU path moves drawing to a shader, and the clock reads time only while drawing, so frames never recompose.
+
+## Budget
+
+The target is the display's frame time, 16 ms at 60 Hz, split between sampling and drawing. Measured numbers per piece on a mid-range Android device and in a browser are not available yet: the benchmark runs are still to do, and this page will list them when they exist.
+
+## Tips
+
+- Raise `cell` before lowering the frame rate. Doubling the cell width quarters the work.
+- Prefer `Charsets.Braille` over a smaller cell when you want detail: eight dots per cell cost samples, not draws.
+- Keep fields cheap. Precompute anything that does not depend on `t`.
+- Use `Rng(seed)` outside the per-frame path, or cache stateful pieces by frame index.
+- Offscreen pieces pause, but a piece you keep composed offscreen still holds its memory. Remove it from composition when you can.

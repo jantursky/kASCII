@@ -1,0 +1,19 @@
+---
+title: Agent skill
+description: Teach a coding agent to build with Kascii.
+sidebar:
+  order: 12
+---
+
+The repository ships a skill for coding agents at `skills/kascii/SKILL.md`. It follows the open Agent Skills format: a short description that says when to use it, and four steps (set up, pick the technique, build it, check it), each with a "done when" check.
+
+It teaches an agent to:
+
+- add the right modules,
+- choose between `AsciiCanvas`, `Modifier.ascii`, `AsciiImage`, a gallery piece or a component,
+- write a field or a piece with the kit,
+- test pieces as golden text, and check reduced motion, accessibility and export.
+
+Copy the folder into your agent's skills directory, or point the agent at the file in the repository.
+
+The site also serves the skill and an `llms.txt` of these docs for agents that read the web.

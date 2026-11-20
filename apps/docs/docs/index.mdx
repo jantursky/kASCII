@@ -1,0 +1,37 @@
+---
+title: Introduction
+description: ASCII and text-mode art for Compose Multiplatform.
+sidebar:
+  order: 1
+---
+
+Kascii draws text-mode art. A tone, a number from 0 to 1, becomes a glyph: a dot, a hash, a block, a Braille pattern. The glyph comes from a small engine, and anything in Compose can use it: a background, a photo, a button, a chart, a line of big text, or a whole animated scene.
+
+It runs on Android, iOS, JVM desktop and wasmJs from one `commonMain` source set. The engine has no UI dependency, and the Compose layer has no Material dependency.
+
+Four ideas carry everything:
+
+- A **field** says how bright each point is. It is a pure function of position and time.
+- A **charset** is an ordered set of glyphs, light to dark, or a bit mask such as Braille.
+- A **color mode** says how a glyph is colored: the theme ink, one color, a gradient, a duotone, or a color per cell.
+- A **renderer** draws the grid: a GPU shader, a cached glyph atlas, or real selectable text.
+
+The library is split so you take only what you use:
+
+| Module | What it holds |
+| --- | --- |
+| `kascii-core` | Fields, charsets, grid, themes, export and the piece kit. No UI dependency. |
+| `kascii-compose` | `AsciiCanvas`, `Modifier.ascii`, `AsciiImage`, the renderers, theme and font. |
+| `kascii-components` | Text-mode interface and data components, and text effects. |
+| `kascii-gallery` | Animated pieces: scenes, shapes, space, physics, nature, creatures, objects, generative, effects. |
+
+Every animation pauses when it is offscreen or the app is in the background, and holds a still frame when the user asks for reduced motion. The current version is {{version}}. See the [changelog](/changelog) for what each release changed.
+
+<include example="overview">./_snippets/live-example.mdx</include>
+
+## Where to go next
+
+- [Getting started](/getting-started) installs the library and draws a first piece of text-mode art.
+- The guides cover [engine concepts](/guides/engine-concepts), [charsets](/guides/charsets), [color modes](/guides/color-modes), [renderers](/guides/renderers), [`Modifier.ascii`](/guides/modifier-ascii), [the kit](/guides/the-kit), [export](/guides/export), [performance](/guides/performance), [accessibility](/guides/accessibility) and [using it with Stipple](/guides/using-with-stipple).
+- The [gallery](/guides/gallery) lists every piece and how far along it is.
+- [Prior art](/prior-art) says what exists already and how Kascii differs.

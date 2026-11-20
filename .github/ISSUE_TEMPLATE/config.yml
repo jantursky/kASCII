@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: API reference
+    url: https://jantursky.github.io/kascii/
+    about: The reference for every public symbol of the four modules.

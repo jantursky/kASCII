@@ -1,0 +1,40 @@
+---
+title: Components
+description: Interface, data and text-effect components.
+sidebar:
+  order: 1
+---
+
+Every component renders from a pure function that builds a `Grid` and is covered by golden-text tests. The composable adds interaction and accessibility. All of them read colors from `LocalKasciiTheme`.
+
+## Interface
+
+| Component | What it is |
+| --- | --- |
+| `AsciiButton` | `[ OK ]` button with pressed and focus states. |
+| `AsciiCard` | Box frame: single, double, rounded or heavy. |
+| `AsciiDivider` | Horizontal rule. |
+| `AsciiProgressBar` | Determinate and indeterminate. |
+| `AsciiSpinner` | At least ten classic frame sets. |
+| `AsciiSkeleton` | Loading placeholder. |
+| `AsciiCheckbox`, `AsciiRadio`, `AsciiToggle`, `AsciiSlider`, `AsciiTextField` | Form controls. |
+| `AsciiTabs`, `AsciiTable`, `AsciiTree` | Navigation and structure. |
+| `AsciiCalendar`, `AsciiClock` | Date and time. |
+| `AsciiTerminal`, `AsciiBootLog`, `AsciiNotFound` | Terminal screens. |
+| `AsciiDialog`, `AsciiToast`, `AsciiBadge`, `AsciiAvatar` | Overlays and small elements. |
+
+## Data
+
+`AsciiBarChart`, `AsciiLineChart`, `AsciiSparkline`, `AsciiCandlesticks`, `AsciiGauge`, `AsciiHeatmap`, `AsciiRadar`, `AsciiEqualizer`, `AsciiCpuMeters`, `AsciiHeartbeat`, `AsciiUptimeBar`, `AsciiPieChart` (Braille) and `AsciiStatCard`.
+
+## Text effects
+
+`AsciiBigText` (own drawn block fonts), typewriter, scramble and decode, glitch, dissolve, marquee, wave, split-flap, morse, rainbow and shimmer. Under reduced motion they show the final text, and a screen reader always reads the final text.
+
+## Media
+
+`AsciiImage` and `Modifier.ascii` ship in `kascii-compose`. `AsciiVideo` and `AsciiCamera` are not covered yet.
+
+## Status
+
+Which of these are implemented and how far each is checked is in the repository's `CHANGELOG.md` and the [gallery](/guides/gallery) status table. Anything not run on a platform is unverified.

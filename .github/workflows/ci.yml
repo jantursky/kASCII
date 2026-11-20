@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  # The release workflow runs the whole suite at the tag before it publishes.
+  workflow_call:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    # macOS, so the klib API dump covers the iOS targets too; Linux cannot build them.
+    runs-on: macos-latest
+    env:
+      # Forks and pull requests from them have no secret; the upload is skipped there instead of failing.
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Format, API, JVM and Android host tests, coverage gate
+        run: ./gradlew spotlessCheck apiCheck jvmTest testAndroidHostTest koverXmlReport koverVerify
+      - name: Upload coverage to Codecov
+        if: ${{ !cancelled() && env.CODECOV_TOKEN != '' }}
+        uses: codecov/codecov-action@v7
+        with:
+          files: kascii-core/build/reports/kover/report.xml,kascii-compose/build/reports/kover/report.xml,kascii-components/build/reports/kover/report.xml,kascii-gallery/build/reports/kover/report.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+
+  wasm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Wasm tests (headless Chrome)
+        run: ./gradlew wasmJsTest
+
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Simulator tests
+        run: ./gradlew iosSimulatorArm64Test
+
+  pack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Publish to Maven Local and compile a consumer against it
+        run: ./scripts/pack-test.sh
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        if: hashFiles('apps/docs/package.json') != ''
+        with:
+          bun-version-file: .bun-version
+      - uses: actions/setup-node@v7
+        if: hashFiles('apps/docs/package.json') != ''
+        with:
+          node-version: 22
+      - name: Install docs dependencies
+        if: hashFiles('apps/docs/package.json') != ''
+        run: bun install --frozen-lockfile
+      - name: Build the docs site
+        if: hashFiles('apps/docs/package.json') != ''
+        run: bun run build:docs

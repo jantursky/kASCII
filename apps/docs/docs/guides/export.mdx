@@ -1,0 +1,26 @@
+---
+title: Export
+description: Text, ANSI, SVG and PNG.
+sidebar:
+  order: 8
+---
+
+`Export` turns a `Grid` into a string. Because the output is text, you can test it against a golden file.
+
+| Format | Call | Notes |
+| --- | --- | --- |
+| Plain text | `Export.toText(grid, trimEnd = false)` | One line per row. |
+| ANSI | `Export.toAnsi(grid, truecolor = true)` | 24-bit foreground per colored run, or the nearest of the 16 basic colors with `truecolor = false`. |
+| SVG | `Export.toSvg(grid, theme, cellWidth, cellHeight, fontFamily)` | One `<text>` per colored run on a fixed cell grid, drawn on the theme's paper. |
+| PNG | `grid.toImageBitmap(theme, cellHeightPx)` | In `kascii-compose`. Encode the bitmap with your platform's encoder. |
+
+```kotlin
+val grid = piece.render(t = 2f)
+clipboard.setText(Export.toText(grid))
+File("art.ans").writeText(Export.toAnsi(grid))
+File("art.svg").writeText(Export.toSvg(grid, KasciiTheme.Dark))
+```
+
+## Animated export
+
+GIF and WebM export are not covered yet. There is no common Kotlin Multiplatform encoder, so for now render frames with `piece.render(t)` at a fixed step and encode them with a tool of your choice.
