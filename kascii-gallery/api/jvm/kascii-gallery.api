@@ -10,6 +10,12 @@ public final class com/jantursky/kascii/gallery/AnalogClockKt {
 	public static synthetic fun analogClockPiece-n5ujg40$default (Lkotlin/jvm/functions/Function0;IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
 }
 
+public final class com/jantursky/kascii/gallery/AuroraCabinKt {
+	public static final fun AsciiAuroraCabin-87oMq6E (Landroidx/compose/ui/Modifier;IIIFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun auroraCabinPiece-q-JaGCQ (III)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun auroraCabinPiece-q-JaGCQ$default (IIIILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
 public final class com/jantursky/kascii/gallery/BeatingHeartKt {
 	public static final fun BeatingHeart-mA37j38 (Landroidx/compose/ui/Modifier;ILcom/jantursky/kascii/core/Charset$Ramp;FLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
 	public static final fun heartPiece-UJe3e1g (ILcom/jantursky/kascii/core/Charset$Ramp;)Lcom/jantursky/kascii/core/AsciiPiece;
@@ -36,10 +42,30 @@ public final class com/jantursky/kascii/gallery/CatalogBKt {
 	public static final fun getGalleryPiecesB ()Ljava/util/List;
 }
 
+public final class com/jantursky/kascii/gallery/CatalogCKt {
+	public static final fun getGalleryPiecesC ()Ljava/util/List;
+}
+
+public final class com/jantursky/kascii/gallery/CatalogDKt {
+	public static final fun getGalleryPiecesD ()Ljava/util/List;
+}
+
+public final class com/jantursky/kascii/gallery/CherryBlossomKt {
+	public static final fun AsciiCherryBlossom-9e92oMs (Landroidx/compose/ui/Modifier;IIFFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun cherryBlossomPiece-RVICLaw (IIF)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun cherryBlossomPiece-RVICLaw$default (IIFILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
 public final class com/jantursky/kascii/gallery/CrtFilterKt {
 	public static final fun AsciiCrtFilter (Landroidx/compose/ui/Modifier;ILcom/jantursky/kascii/core/Charset$Ramp;FLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
 	public static final fun crtFilterPiece (ILcom/jantursky/kascii/core/Charset$Ramp;)Lcom/jantursky/kascii/core/AsciiPiece;
 	public static synthetic fun crtFilterPiece$default (ILcom/jantursky/kascii/core/Charset$Ramp;ILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/DesertCaravanKt {
+	public static final fun AsciiDesertCaravan-68A6uTI (Landroidx/compose/ui/Modifier;IIIFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun desertCaravanPiece-CZtBsx0 (III)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun desertCaravanPiece-CZtBsx0$default (IIIILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
 }
 
 public final class com/jantursky/kascii/gallery/DonutKt {
@@ -112,6 +138,12 @@ public final class com/jantursky/kascii/gallery/LavaLampKt {
 	public static synthetic fun lavaLampPiece-n5ujg40$default (IIILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
 }
 
+public final class com/jantursky/kascii/gallery/LighthouseKt {
+	public static final fun AsciiLighthouse-87oMq6E (Landroidx/compose/ui/Modifier;IIIFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun lighthousePiece-q-JaGCQ (III)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun lighthousePiece-q-JaGCQ$default (IIIILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
 public final class com/jantursky/kascii/gallery/MandelbrotKt {
 	public static final fun AsciiMandelbrot (Landroidx/compose/ui/Modifier;ILcom/jantursky/kascii/core/Charset$Ramp;Ljava/util/List;FLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
 	public static final fun mandelbrotPiece (ILcom/jantursky/kascii/core/Charset$Ramp;Ljava/util/List;)Lcom/jantursky/kascii/core/AsciiPiece;
@@ -142,6 +174,24 @@ public final class com/jantursky/kascii/gallery/RainShowerKt {
 	public static synthetic fun rainPiece-_2IUw5w$default (IFFIILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
 }
 
+public final class com/jantursky/kascii/gallery/RainyCityKt {
+	public static final fun AsciiRainyCity-h-0QeHs (Landroidx/compose/ui/Modifier;IIIFFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun rainyCityPiece-S-b4DGU (IIIF)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun rainyCityPiece-S-b4DGU$default (IIIFILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/RocketLaunchKt {
+	public static final fun AsciiRocketLaunch-87oMq6E (Landroidx/compose/ui/Modifier;IIIFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun rocketLaunchPiece-q-JaGCQ (III)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun rocketLaunchPiece-q-JaGCQ$default (IIIILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/SailboatSunsetKt {
+	public static final fun AsciiSailboatSunset-87oMq6E (Landroidx/compose/ui/Modifier;IIIFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun sailboatSunsetPiece-q-JaGCQ (III)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun sailboatSunsetPiece-q-JaGCQ$default (IIIILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
 public final class com/jantursky/kascii/gallery/SolarSystemKt {
 	public static final fun SolarSystem-KFr94OY (Landroidx/compose/ui/Modifier;IIFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
 	public static final fun solarSystemPiece-n5ujg40 (II)Lcom/jantursky/kascii/core/AsciiPiece;
@@ -158,6 +208,12 @@ public final class com/jantursky/kascii/gallery/StarfieldKt {
 	public static final fun Starfield-68A6uTI (Landroidx/compose/ui/Modifier;IIIFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
 	public static final fun starfieldPiece-CZtBsx0 (III)Lcom/jantursky/kascii/core/AsciiPiece;
 	public static synthetic fun starfieldPiece-CZtBsx0$default (IIIILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/SteamTrainKt {
+	public static final fun AsciiSteamTrain-68A6uTI (Landroidx/compose/ui/Modifier;IIIFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun steamTrainPiece-CZtBsx0 (III)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun steamTrainPiece-CZtBsx0$default (IIIILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
 }
 
 public final class com/jantursky/kascii/gallery/SynthwaveKt {

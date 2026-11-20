@@ -15,7 +15,7 @@ import kotlin.test.assertTrue
 /** Composes every catalog piece through the real view, so a piece that cannot be drawn fails here. */
 @OptIn(ExperimentalTestApi::class)
 class GalleryComposeTest {
-    private val entries = galleryPiecesA + galleryPiecesB
+    private val entries = galleryPiecesA + galleryPiecesB + galleryPiecesC + galleryPiecesD
 
     @Test
     fun catalogIsNotEmpty() {

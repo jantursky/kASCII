@@ -17,7 +17,7 @@ class CatalogTest {
 
     @Test
     fun everyPieceHasAPage() {
-        assertEquals(26, Pieces.size)
+        assertEquals(34, Pieces.size)
         Pieces.forEach { assertEquals(Group.Pieces, pageFor(it.id).group) }
     }
 

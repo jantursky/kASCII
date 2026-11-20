@@ -24,7 +24,7 @@ const WIDTH = 560
 
 /** One GIF per gallery category. Piece pages open in embed mode, so the stage fills the viewport. */
 const GIFS = [
-  { name: 'scenes', pages: ['alpine-dawn', 'hilltop-night'] },
+  { name: 'scenes', pages: ['alpine-dawn', 'hilltop-night', 'lighthouse', 'steam-train', 'sailboat-sunset', 'aurora-cabin', 'rainy-city', 'cherry-blossom'] },
   { name: 'shapes', pages: ['donut', 'cube', 'heart'] },
   { name: 'space', pages: ['starfield', 'solar-system'] },
   { name: 'physics', pages: ['pond-ripples', 'bouncing-balls'] },
