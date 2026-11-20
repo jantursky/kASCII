@@ -28,7 +28,13 @@ public fun AsciiCard(
     )
 }
 
-internal fun renderCard(title: String?, text: String, cols: Int, border: BoxStyle, theme: KasciiTheme): Grid {
+internal fun renderCard(
+    title: String?,
+    text: String,
+    cols: Int,
+    border: BoxStyle,
+    theme: KasciiTheme,
+): Grid {
     val width = cols.coerceAtLeast(MIN_CARD_COLS)
     val lines = wrapText(text, width - 4)
     val grid = Grid(width, lines.size + 2)

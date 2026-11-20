@@ -20,7 +20,12 @@ public fun AsciiLineChart(
     GridSurface(renderLineChart(values, cols, rows, LocalKasciiTheme.current), modifier, description)
 }
 
-internal fun renderLineChart(values: List<Float>, cols: Int, rows: Int, theme: KasciiTheme): Grid {
+internal fun renderLineChart(
+    values: List<Float>,
+    cols: Int,
+    rows: Int,
+    theme: KasciiTheme,
+): Grid {
     val grid = Grid(cols, rows)
     if (values.isEmpty()) return grid
     val low = values.min()
@@ -30,8 +35,10 @@ internal fun renderLineChart(values: List<Float>, cols: Int, rows: Int, theme: K
     grid.write(0, rows - 1, low.pretty().padStart(axis - 1), theme.dim())
     val canvas = BrailleCanvas((cols - axis).coerceAtLeast(1), rows)
     val span = high - low
+
     fun dotY(v: Float) =
         if (span <= 0f) canvas.dotHeight / 2 else ((1f - (v - low) / span) * (canvas.dotHeight - 1)).roundToInt()
+
     fun dotX(i: Int) = if (values.size == 1) 0 else (i * (canvas.dotWidth - 1) / (values.size - 1f)).roundToInt()
     if (values.size == 1) canvas.plot(0, dotY(values[0]))
     for (i in 1 until values.size) canvas.line(dotX(i - 1), dotY(values[i - 1]), dotX(i), dotY(values[i]))

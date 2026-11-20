@@ -17,13 +17,20 @@ public fun AsciiHeatmap(
     modifier: Modifier = Modifier,
     rowLabels: List<String> = emptyList(),
 ) {
-    val description = "Heat map, ${values.size} rows: " + values.mapIndexed { i, row ->
-        "${rowLabels.getOrElse(i) { "row ${i + 1}" }} ${row.joinToString(" ") { it.pretty() }}"
-    }.joinToString(". ")
+    val description =
+        "Heat map, ${values.size} rows: " +
+            values
+                .mapIndexed { i, row ->
+                    "${rowLabels.getOrElse(i) { "row ${i + 1}" }} ${row.joinToString(" ") { it.pretty() }}"
+                }.joinToString(". ")
     GridSurface(renderHeatmap(values, rowLabels, LocalKasciiTheme.current), modifier, description)
 }
 
-internal fun renderHeatmap(values: List<List<Float>>, rowLabels: List<String>, theme: KasciiTheme): Grid {
+internal fun renderHeatmap(
+    values: List<List<Float>>,
+    rowLabels: List<String>,
+    theme: KasciiTheme,
+): Grid {
     val flat = values.flatten()
     val low = flat.minOrNull() ?: 0f
     val span = ((flat.maxOrNull() ?: 0f) - low).takeIf { it > 0f } ?: 1f

@@ -6,10 +6,19 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 class PiecesATest {
-    private val seeded = setOf(
-        "alpine-dawn", "hilltop-night", "starfield", "solar-system", "pond-ripples",
-        "bouncing-balls", "rain", "campfire", "fractal-tree", "interference-field",
-    )
+    private val seeded =
+        setOf(
+            "alpine-dawn",
+            "hilltop-night",
+            "starfield",
+            "solar-system",
+            "pond-ripples",
+            "bouncing-balls",
+            "rain",
+            "campfire",
+            "fractal-tree",
+            "interference-field",
+        )
 
     @Test
     fun coversTheFirstBatchOfCategories() {

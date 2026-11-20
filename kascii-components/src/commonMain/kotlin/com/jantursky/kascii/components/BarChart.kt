@@ -19,9 +19,11 @@ public fun AsciiBarChart(
     barWidth: Int = 3,
     gap: Int = 1,
 ) {
-    val description = "Bar chart: " + values.indices.joinToString(", ") { i ->
-        "${labels.getOrElse(i) { (i + 1).toString() }} ${values[i].pretty()}"
-    }
+    val description =
+        "Bar chart: " +
+            values.indices.joinToString(", ") { i ->
+                "${labels.getOrElse(i) { (i + 1).toString() }} ${values[i].pretty()}"
+            }
     GridSurface(renderBarChart(values, labels, rows, barWidth, gap, LocalKasciiTheme.current), modifier, description)
 }
 

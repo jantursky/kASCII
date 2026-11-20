@@ -6,11 +6,11 @@ import androidx.compose.ui.Modifier
 import com.jantursky.kascii.compose.AsciiPieceView
 import com.jantursky.kascii.compose.AsciiRenderer
 import com.jantursky.kascii.core.AsciiPiece
+import com.jantursky.kascii.core.Grid
 import com.jantursky.kascii.core.Motion
 import com.jantursky.kascii.core.Rgb
-import com.jantursky.kascii.core.asciiPiece
-import com.jantursky.kascii.core.Grid
 import com.jantursky.kascii.core.Rng
+import com.jantursky.kascii.core.asciiPiece
 import com.jantursky.kascii.core.line
 import kotlin.math.abs
 import kotlin.math.cos
@@ -65,7 +65,14 @@ public fun fractalTreePiece(
     }
 }
 
-private fun branch(f: TreeFrame, x: Float, y: Float, angle: Float, length: Float, level: Int) {
+private fun branch(
+    f: TreeFrame,
+    x: Float,
+    y: Float,
+    angle: Float,
+    length: Float,
+    level: Int,
+) {
     val lean = f.depth - level
     val sway = f.wind * sin(f.phase + lean * 0.5f) * 0.03f * (lean + 1)
     val a = angle + sway
@@ -75,12 +82,13 @@ private fun branch(f: TreeFrame, x: Float, y: Float, angle: Float, length: Float
     val shrink = 0.72f + f.rng.float() * 0.08f
     val dx = x1 - x
     val dy = y1 - y
-    val glyph = when {
-        abs(dx) < abs(dy) * 0.45f -> '|'
-        abs(dy) < abs(dx) * 0.45f -> '-'
-        dx * dy < 0f -> '/'
-        else -> '\\'
-    }
+    val glyph =
+        when {
+            abs(dx) < abs(dy) * 0.45f -> '|'
+            abs(dy) < abs(dx) * 0.45f -> '-'
+            dx * dy < 0f -> '/'
+            else -> '\\'
+        }
     f.grid.line(x.toInt(), (y / ROW_UNITS).toInt(), x1.toInt(), (y1 / ROW_UNITS).toInt(), glyph)
     if (level == 1) {
         val cx = x1.toInt()

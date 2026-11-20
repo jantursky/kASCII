@@ -9,12 +9,18 @@ import kotlin.math.roundToInt
 
 /** A one-line trend of [values], one block glyph per value, scaled between their minimum and maximum. */
 @Composable
-public fun AsciiSparkline(values: List<Float>, modifier: Modifier = Modifier) {
+public fun AsciiSparkline(
+    values: List<Float>,
+    modifier: Modifier = Modifier,
+) {
     val description = describeSeries("Sparkline", "values", values)
     GridSurface(renderSparkline(values, LocalKasciiTheme.current), modifier, description)
 }
 
-internal fun renderSparkline(values: List<Float>, theme: KasciiTheme): Grid {
+internal fun renderSparkline(
+    values: List<Float>,
+    theme: KasciiTheme,
+): Grid {
     val grid = Grid(values.size, 1)
     val low = values.minOrNull() ?: return grid
     val span = values.max() - low
@@ -26,7 +32,11 @@ internal fun renderSparkline(values: List<Float>, theme: KasciiTheme): Grid {
 }
 
 /** Spoken summary of a data series: its size, where it starts and ends, and its range. */
-internal fun describeSeries(name: String, unit: String, values: List<Float>): String =
+internal fun describeSeries(
+    name: String,
+    unit: String,
+    values: List<Float>,
+): String =
     if (values.isEmpty()) {
         "$name, no data"
     } else {

@@ -8,7 +8,10 @@ import com.jantursky.kascii.core.Grid
 import com.jantursky.kascii.core.KasciiTheme
 
 /** How a boot step ended. */
-public enum class AsciiBootStatus(internal val tag: String, internal val tone: AsciiTone) {
+public enum class AsciiBootStatus(
+    internal val tag: String,
+    internal val tone: AsciiTone,
+) {
     /** The step succeeded. */
     Ok("  OK  ", AsciiTone.Success),
 
@@ -25,7 +28,10 @@ public enum class AsciiBootStatus(internal val tag: String, internal val tone: A
  * @property message What was started or checked.
  * @property status How it ended.
  */
-public class AsciiBootEntry(public val message: String, public val status: AsciiBootStatus = AsciiBootStatus.Ok)
+public class AsciiBootEntry(
+    public val message: String,
+    public val status: AsciiBootStatus = AsciiBootStatus.Ok,
+)
 
 /**
  * A boot log in the style of a Linux init: `[  OK  ] message`. Lines appear one after the other at
@@ -49,7 +55,12 @@ public fun AsciiBootLog(
     )
 }
 
-internal fun renderBootLog(entries: List<AsciiBootEntry>, visible: Int, cols: Int, theme: KasciiTheme): Grid {
+internal fun renderBootLog(
+    entries: List<AsciiBootEntry>,
+    visible: Int,
+    cols: Int,
+    theme: KasciiTheme,
+): Grid {
     val grid = Grid(cols, entries.size)
     entries.take(visible).forEachIndexed { y, entry ->
         grid.write(0, y, "[${entry.status.tag}]", entry.status.tone.color(theme))

@@ -24,7 +24,11 @@ private val DX = intArrayOf(0, 1, 0, -1)
 private val DY = intArrayOf(-1, 0, 1, 0)
 
 /** The torus the ant walks on: black or white cells, and the ant's cell and heading (0 up, then clockwise). */
-private class Field(startX: Int, startY: Int, var heading: Int) {
+private class Field(
+    startX: Int,
+    startY: Int,
+    var heading: Int,
+) {
     val cells = BooleanArray(WIDTH * HEIGHT)
     var x = startX
     var y = startY
@@ -49,14 +53,19 @@ private class Field(startX: Int, startY: Int, var heading: Int) {
  * Ported from ascii.rest `langtons ant` (MIT, Copyright (c) 2026 bas3line): same rule, re-implemented on a
  * wrapping field with half-block cells and a colored ant.
  */
-public fun langtonsAntPiece(seed: Int = 0, stepsPerFrame: Int = 12, ant: Rgb = Palette.Red): AsciiPiece {
+public fun langtonsAntPiece(
+    seed: Int = 0,
+    stepsPerFrame: Int = 12,
+    ant: Rgb = Palette.Red,
+): AsciiPiece {
     val rng = rngFor(seed, 4)
     val startX = if (seed == 0) WIDTH / 2 else rng.int(WIDTH)
     val startY = if (seed == 0) HEIGHT / 2 else rng.int(HEIGHT)
-    val stepper = Stepper(
-        create = { Field(startX, startY, 0) },
-        advance = { f -> repeat(stepsPerFrame) { f.step() } },
-    )
+    val stepper =
+        Stepper(
+            create = { Field(startX, startY, 0) },
+            advance = { f -> repeat(stepsPerFrame) { f.step() } },
+        )
     return asciiPiece(
         name = "langton's ant",
         category = "generative",
@@ -67,11 +76,13 @@ public fun langtonsAntPiece(seed: Int = 0, stepsPerFrame: Int = 12, ant: Rgb = P
         note = "an ant flipping cells until it builds a diagonal highway",
     ) { t, grid ->
         val field = stepper.at(frameIndex(t, FPS))
-        for (r in 0 until ROWS) for (c in 0 until COLS) {
-            val top = field.cells[2 * r * WIDTH + c]
-            val bottom = field.cells[(2 * r + 1) * WIDTH + c]
-            val glyph = GLYPHS[(if (top) 1 else 0) + (if (bottom) 2 else 0)]
-            if (glyph != ' ') grid.put(c, r, glyph)
+        for (r in 0 until ROWS) {
+            for (c in 0 until COLS) {
+                val top = field.cells[2 * r * WIDTH + c]
+                val bottom = field.cells[(2 * r + 1) * WIDTH + c]
+                val glyph = GLYPHS[(if (top) 1 else 0) + (if (bottom) 2 else 0)]
+                if (glyph != ' ') grid.put(c, r, glyph)
+            }
         }
         grid.put(field.x, field.y / 2, if (field.y % 2 == 0) '▀' else '▄', ant)
     }

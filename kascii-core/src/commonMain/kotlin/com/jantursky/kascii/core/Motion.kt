@@ -18,16 +18,27 @@ public object PieceClock {
      * The next time value. When [reduced] the clock stays at [still]. [speed] scales real time. A positive [loop]
      * wraps the time so a piece repeats seamlessly.
      */
-    public fun next(time: Float, deltaSeconds: Float, speed: Float, reduced: Boolean, still: Float, loop: Float = 0f): Float {
+    public fun next(
+        time: Float,
+        deltaSeconds: Float,
+        speed: Float,
+        reduced: Boolean,
+        still: Float,
+        loop: Float = 0f,
+    ): Float {
         if (reduced) return still
         val t = time + deltaSeconds.coerceAtLeast(0f) * speed
         return if (loop > 0f) t % loop else t
     }
 
     /** Resolves [motion] against the platform preference. */
-    public fun isReduced(motion: Motion, platformReduced: Boolean): Boolean = when (motion) {
-        Motion.System -> platformReduced
-        Motion.Full -> false
-        Motion.Reduced -> true
-    }
+    public fun isReduced(
+        motion: Motion,
+        platformReduced: Boolean,
+    ): Boolean =
+        when (motion) {
+            Motion.System -> platformReduced
+            Motion.Full -> false
+            Motion.Reduced -> true
+        }
 }

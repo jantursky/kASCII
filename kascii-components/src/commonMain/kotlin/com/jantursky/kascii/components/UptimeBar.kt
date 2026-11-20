@@ -7,7 +7,9 @@ import com.jantursky.kascii.core.Grid
 import com.jantursky.kascii.core.KasciiTheme
 
 /** The state of one slot of an uptime bar. */
-public enum class AsciiUptimeState(internal val glyph: Char) {
+public enum class AsciiUptimeState(
+    internal val glyph: Char,
+) {
     /** The service was up. */
     Up('█'),
 
@@ -23,7 +25,10 @@ public enum class AsciiUptimeState(internal val glyph: Char) {
 
 /** An uptime history, one glyph per slot, followed by the share of slots that were up. */
 @Composable
-public fun AsciiUptimeBar(states: List<AsciiUptimeState>, modifier: Modifier = Modifier) {
+public fun AsciiUptimeBar(
+    states: List<AsciiUptimeState>,
+    modifier: Modifier = Modifier,
+) {
     val description = "Uptime ${uptimeLabel(states)}: ${states.count { it == AsciiUptimeState.Down }} slots down"
     GridSurface(renderUptimeBar(states, LocalKasciiTheme.current), modifier, description)
 }
@@ -37,16 +42,20 @@ internal fun uptimePercent(states: List<AsciiUptimeState>): Float? {
 private fun uptimeLabel(states: List<AsciiUptimeState>): String =
     uptimePercent(states)?.let { "${it.pretty()}%" } ?: "n/a"
 
-internal fun renderUptimeBar(states: List<AsciiUptimeState>, theme: KasciiTheme): Grid {
+internal fun renderUptimeBar(
+    states: List<AsciiUptimeState>,
+    theme: KasciiTheme,
+): Grid {
     val label = " ${uptimeLabel(states)} uptime"
     val grid = Grid(states.size + label.length, 1)
     states.forEachIndexed { x, state ->
-        val color = when (state) {
-            AsciiUptimeState.Up -> theme.good()
-            AsciiUptimeState.Degraded -> theme.warn()
-            AsciiUptimeState.Down -> theme.bad()
-            AsciiUptimeState.Unknown -> theme.dim()
-        }
+        val color =
+            when (state) {
+                AsciiUptimeState.Up -> theme.good()
+                AsciiUptimeState.Degraded -> theme.warn()
+                AsciiUptimeState.Down -> theme.bad()
+                AsciiUptimeState.Unknown -> theme.dim()
+            }
         grid.put(x, 0, state.glyph, color)
     }
     grid.write(states.size, 0, label)

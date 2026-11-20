@@ -50,19 +50,21 @@ public fun interferencePiece(
         val height = ROWS * 2f
         val xs = FloatArray(sources) { 0.69f + 0.45f * cos(angle + AKit.TAU * it / sources) }
         val ys = FloatArray(sources) { 0.5f + 0.3f * sin(angle + AKit.TAU * it / sources) }
-        for (row in 0 until ROWS) for (col in 0 until COLS) {
-            val ux = (col + 0.5f) / height
-            val uy = (row + 0.5f) / ROWS
-            val bend = (Noise.value(ux * 3f, uy * 3f, 0f, seed) - 0.5f) * WARP
-            var sum = 0f
-            for (k in 0 until sources) {
-                val dx = ux - xs[k]
-                val dy = uy - ys[k]
-                sum += sin((sqrt(dx * dx + dy * dy) + bend) * FREQUENCY - 2f * angle)
+        for (row in 0 until ROWS) {
+            for (col in 0 until COLS) {
+                val ux = (col + 0.5f) / height
+                val uy = (row + 0.5f) / ROWS
+                val bend = (Noise.value(ux * 3f, uy * 3f, 0f, seed) - 0.5f) * WARP
+                var sum = 0f
+                for (k in 0 until sources) {
+                    val dx = ux - xs[k]
+                    val dy = uy - ys[k]
+                    sum += sin((sqrt(dx * dx + dy * dy) + bend) * FREQUENCY - 2f * angle)
+                }
+                val tone = sum / sources * 0.5f + 0.5f
+                val glyph = charset.glyphFor(tone)
+                if (glyph != ' ') grid.put(col, row, glyph, from.lerp(to, tone))
             }
-            val tone = sum / sources * 0.5f + 0.5f
-            val glyph = charset.glyphFor(tone)
-            if (glyph != ' ') grid.put(col, row, glyph, from.lerp(to, tone))
         }
     }
 }

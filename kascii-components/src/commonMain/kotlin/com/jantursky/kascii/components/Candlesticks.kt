@@ -37,11 +37,16 @@ public fun AsciiCandlesticks(
     GridSurface(renderCandlesticks(candles, rows, LocalKasciiTheme.current), modifier, description)
 }
 
-internal fun renderCandlesticks(candles: List<Candle>, rows: Int, theme: KasciiTheme): Grid {
+internal fun renderCandlesticks(
+    candles: List<Candle>,
+    rows: Int,
+    theme: KasciiTheme,
+): Grid {
     val grid = Grid((candles.size * 2 - 1).coerceAtLeast(0), rows)
     if (candles.isEmpty()) return grid
     val top = candles.maxOf { it.high }
     val span = (top - candles.minOf { it.low }).takeIf { it > 0f } ?: 1f
+
     fun rowOf(price: Float) = ((top - price) / span * (rows - 1)).roundToInt()
     candles.forEachIndexed { i, c ->
         val color = if (c.close >= c.open) theme.good() else theme.bad()

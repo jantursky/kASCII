@@ -1,0 +1,300 @@
+public final class com/jantursky/kascii/core/AsciiPiece {
+	public fun <init> (Lcom/jantursky/kascii/core/PieceMeta;Lkotlin/jvm/functions/Function2;)V
+	public final fun getDraw ()Lkotlin/jvm/functions/Function2;
+	public final fun getMeta ()Lcom/jantursky/kascii/core/PieceMeta;
+	public final fun render (F)Lcom/jantursky/kascii/core/Grid;
+	public static synthetic fun render$default (Lcom/jantursky/kascii/core/AsciiPiece;FILjava/lang/Object;)Lcom/jantursky/kascii/core/Grid;
+}
+
+public final class com/jantursky/kascii/core/BoxStyle {
+	public static final field Companion Lcom/jantursky/kascii/core/BoxStyle$Companion;
+	public fun <init> (CCCCCC)V
+	public final fun getBottomLeft ()C
+	public final fun getBottomRight ()C
+	public final fun getHorizontal ()C
+	public final fun getTopLeft ()C
+	public final fun getTopRight ()C
+	public final fun getVertical ()C
+}
+
+public final class com/jantursky/kascii/core/BoxStyle$Companion {
+	public final fun getAscii ()Lcom/jantursky/kascii/core/BoxStyle;
+	public final fun getDouble ()Lcom/jantursky/kascii/core/BoxStyle;
+	public final fun getHeavy ()Lcom/jantursky/kascii/core/BoxStyle;
+	public final fun getRounded ()Lcom/jantursky/kascii/core/BoxStyle;
+	public final fun getSingle ()Lcom/jantursky/kascii/core/BoxStyle;
+}
+
+public final class com/jantursky/kascii/core/BrailleCanvas {
+	public fun <init> (II)V
+	public final fun drawTo-6H7caio (Lcom/jantursky/kascii/core/Grid;IILcom/jantursky/kascii/core/Rgb;)V
+	public static synthetic fun drawTo-6H7caio$default (Lcom/jantursky/kascii/core/BrailleCanvas;Lcom/jantursky/kascii/core/Grid;IILcom/jantursky/kascii/core/Rgb;ILjava/lang/Object;)V
+	public final fun getCols ()I
+	public final fun getDotHeight ()I
+	public final fun getDotWidth ()I
+	public final fun getRows ()I
+	public final fun line (IIII)V
+	public final fun plot (II)V
+}
+
+public abstract class com/jantursky/kascii/core/Charset {
+	public synthetic fun <init> (Ljava/lang/String;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getName ()Ljava/lang/String;
+	public final fun getSubX ()I
+	public final fun getSubY ()I
+}
+
+public final class com/jantursky/kascii/core/Charset$Edge : com/jantursky/kascii/core/Charset {
+	public fun <init> (Lcom/jantursky/kascii/core/Charset$Ramp;F)V
+	public synthetic fun <init> (Lcom/jantursky/kascii/core/Charset$Ramp;FILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getBase ()Lcom/jantursky/kascii/core/Charset$Ramp;
+	public final fun getThreshold ()F
+}
+
+public final class com/jantursky/kascii/core/Charset$Mask : com/jantursky/kascii/core/Charset {
+	public final fun getThreshold ()F
+	public final fun glyphFor ([F)C
+	public final fun withThreshold (F)Lcom/jantursky/kascii/core/Charset$Mask;
+}
+
+public final class com/jantursky/kascii/core/Charset$Ramp : com/jantursky/kascii/core/Charset {
+	public static final field Companion Lcom/jantursky/kascii/core/Charset$Ramp$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun getGlyphs ()Ljava/lang/String;
+	public final fun glyphFor (F)C
+}
+
+public final class com/jantursky/kascii/core/Charset$Ramp$Companion {
+	public final fun byCoverage (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/jantursky/kascii/core/Charset$Ramp;
+}
+
+public final class com/jantursky/kascii/core/Charsets {
+	public static final field INSTANCE Lcom/jantursky/kascii/core/Charsets;
+	public final fun custom (Ljava/lang/String;)Lcom/jantursky/kascii/core/Charset$Ramp;
+	public final fun getAll ()Ljava/util/List;
+	public final fun getBinary ()Lcom/jantursky/kascii/core/Charset$Ramp;
+	public final fun getBlocks ()Lcom/jantursky/kascii/core/Charset$Ramp;
+	public final fun getBoxDrawing ()Lcom/jantursky/kascii/core/Charset$Ramp;
+	public final fun getBraille ()Lcom/jantursky/kascii/core/Charset$Mask;
+	public final fun getCp437 ()Lcom/jantursky/kascii/core/Charset$Ramp;
+	public final fun getDense ()Lcom/jantursky/kascii/core/Charset$Ramp;
+	public final fun getDigits ()Lcom/jantursky/kascii/core/Charset$Ramp;
+	public final fun getDots ()Lcom/jantursky/kascii/core/Charset$Ramp;
+	public final fun getEdge ()Lcom/jantursky/kascii/core/Charset$Edge;
+	public final fun getKatakana ()Lcom/jantursky/kascii/core/Charset$Ramp;
+	public final fun getPetscii ()Lcom/jantursky/kascii/core/Charset$Ramp;
+	public final fun getQuadrants ()Lcom/jantursky/kascii/core/Charset$Mask;
+	public final fun getShort ()Lcom/jantursky/kascii/core/Charset$Ramp;
+	public final fun getStandard ()Lcom/jantursky/kascii/core/Charset$Ramp;
+}
+
+public abstract interface class com/jantursky/kascii/core/ColorField {
+	public abstract fun color-9CGu1-0 (FFF)I
+}
+
+public abstract interface class com/jantursky/kascii/core/ColorMode {
+}
+
+public final class com/jantursky/kascii/core/ColorMode$Duotone : com/jantursky/kascii/core/ColorMode {
+	public synthetic fun <init> (IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getDark-MxGdj6g ()I
+	public final fun getLight-MxGdj6g ()I
+}
+
+public final class com/jantursky/kascii/core/ColorMode$Gradient : com/jantursky/kascii/core/ColorMode {
+	public fun <init> (Ljava/util/List;)V
+	public final fun getStops ()Ljava/util/List;
+}
+
+public final class com/jantursky/kascii/core/ColorMode$Mono : com/jantursky/kascii/core/ColorMode {
+	public synthetic fun <init> (ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getColor-MxGdj6g ()I
+}
+
+public final class com/jantursky/kascii/core/ColorMode$Palette : com/jantursky/kascii/core/ColorMode {
+	public static final field INSTANCE Lcom/jantursky/kascii/core/ColorMode$Palette;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/jantursky/kascii/core/ColorMode$Source : com/jantursky/kascii/core/ColorMode {
+	public fun <init> (Lcom/jantursky/kascii/core/ColorField;)V
+	public final fun getField ()Lcom/jantursky/kascii/core/ColorField;
+}
+
+public final class com/jantursky/kascii/core/ColorMode$Theme : com/jantursky/kascii/core/ColorMode {
+	public static final field INSTANCE Lcom/jantursky/kascii/core/ColorMode$Theme;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/jantursky/kascii/core/Export {
+	public static final field INSTANCE Lcom/jantursky/kascii/core/Export;
+	public final fun toAnsi (Lcom/jantursky/kascii/core/Grid;Z)Ljava/lang/String;
+	public static synthetic fun toAnsi$default (Lcom/jantursky/kascii/core/Export;Lcom/jantursky/kascii/core/Grid;ZILjava/lang/Object;)Ljava/lang/String;
+	public final fun toSvg (Lcom/jantursky/kascii/core/Grid;Lcom/jantursky/kascii/core/KasciiTheme;FFLjava/lang/String;)Ljava/lang/String;
+	public static synthetic fun toSvg$default (Lcom/jantursky/kascii/core/Export;Lcom/jantursky/kascii/core/Grid;Lcom/jantursky/kascii/core/KasciiTheme;FFLjava/lang/String;ILjava/lang/Object;)Ljava/lang/String;
+	public final fun toText (Lcom/jantursky/kascii/core/Grid;Z)Ljava/lang/String;
+	public static synthetic fun toText$default (Lcom/jantursky/kascii/core/Export;Lcom/jantursky/kascii/core/Grid;ZILjava/lang/Object;)Ljava/lang/String;
+}
+
+public abstract interface class com/jantursky/kascii/core/Field {
+	public abstract fun tone (FFFF)F
+}
+
+public final class com/jantursky/kascii/core/Fields {
+	public static final field INSTANCE Lcom/jantursky/kascii/core/Fields;
+	public final fun fromTones ([FII)Lcom/jantursky/kascii/core/Field;
+	public final fun gradient (F)Lcom/jantursky/kascii/core/Field;
+	public static synthetic fun gradient$default (Lcom/jantursky/kascii/core/Fields;FILjava/lang/Object;)Lcom/jantursky/kascii/core/Field;
+	public final fun noise (FFII)Lcom/jantursky/kascii/core/Field;
+	public static synthetic fun noise$default (Lcom/jantursky/kascii/core/Fields;FFIIILjava/lang/Object;)Lcom/jantursky/kascii/core/Field;
+	public final fun plasma (FF)Lcom/jantursky/kascii/core/Field;
+	public static synthetic fun plasma$default (Lcom/jantursky/kascii/core/Fields;FFILjava/lang/Object;)Lcom/jantursky/kascii/core/Field;
+	public final fun radial (FFF)Lcom/jantursky/kascii/core/Field;
+	public static synthetic fun radial$default (Lcom/jantursky/kascii/core/Fields;FFFILjava/lang/Object;)Lcom/jantursky/kascii/core/Field;
+	public final fun ripples (FFFF)Lcom/jantursky/kascii/core/Field;
+	public static synthetic fun ripples$default (Lcom/jantursky/kascii/core/Fields;FFFFILjava/lang/Object;)Lcom/jantursky/kascii/core/Field;
+	public final fun solid (F)Lcom/jantursky/kascii/core/Field;
+	public final fun waves (IFF)Lcom/jantursky/kascii/core/Field;
+	public static synthetic fun waves$default (Lcom/jantursky/kascii/core/Fields;IFFILjava/lang/Object;)Lcom/jantursky/kascii/core/Field;
+}
+
+public final class com/jantursky/kascii/core/Grid {
+	public fun <init> (II)V
+	public final fun blit (Lcom/jantursky/kascii/core/Grid;II)V
+	public final fun clear ()V
+	public final fun colorAt-FwQpXMs (II)Lcom/jantursky/kascii/core/Rgb;
+	public final fun contains (II)Z
+	public final fun fill--5TMG9M (IIIICLcom/jantursky/kascii/core/Rgb;)V
+	public static synthetic fun fill--5TMG9M$default (Lcom/jantursky/kascii/core/Grid;IIIICLcom/jantursky/kascii/core/Rgb;ILjava/lang/Object;)V
+	public final fun getColors ()[I
+	public final fun getCols ()I
+	public final fun getGlyphs ()[C
+	public final fun getRows ()I
+	public final fun glyphAt (II)C
+	public final fun put-6H7caio (IICLcom/jantursky/kascii/core/Rgb;)V
+	public static synthetic fun put-6H7caio$default (Lcom/jantursky/kascii/core/Grid;IICLcom/jantursky/kascii/core/Rgb;ILjava/lang/Object;)V
+	public final fun toText ()Ljava/lang/String;
+	public final fun write-6H7caio (IILjava/lang/String;Lcom/jantursky/kascii/core/Rgb;)V
+	public static synthetic fun write-6H7caio$default (Lcom/jantursky/kascii/core/Grid;IILjava/lang/String;Lcom/jantursky/kascii/core/Rgb;ILjava/lang/Object;)V
+}
+
+public final class com/jantursky/kascii/core/KasciiTheme {
+	public static final field Companion Lcom/jantursky/kascii/core/KasciiTheme$Companion;
+	public synthetic fun <init> (IIILjava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (IIILjava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun contrastRatio ()F
+	public final fun getAccent-MxGdj6g ()I
+	public final fun getInk-MxGdj6g ()I
+	public final fun getPalette ()Ljava/util/List;
+	public final fun getPaper-MxGdj6g ()I
+}
+
+public final class com/jantursky/kascii/core/KasciiTheme$Companion {
+	public final fun getAmber ()Lcom/jantursky/kascii/core/KasciiTheme;
+	public final fun getDark ()Lcom/jantursky/kascii/core/KasciiTheme;
+	public final fun getLight ()Lcom/jantursky/kascii/core/KasciiTheme;
+	public final fun getPhosphor ()Lcom/jantursky/kascii/core/KasciiTheme;
+}
+
+public final class com/jantursky/kascii/core/KitKt {
+	public static final fun asciiPiece (Ljava/lang/String;Ljava/lang/String;IIIFFLjava/lang/String;Lkotlin/jvm/functions/Function2;)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun asciiPiece$default (Ljava/lang/String;Ljava/lang/String;IIIFFLjava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static final fun disc-GLKqeBM (Lcom/jantursky/kascii/core/Grid;FFFCLcom/jantursky/kascii/core/Rgb;F)V
+	public static synthetic fun disc-GLKqeBM$default (Lcom/jantursky/kascii/core/Grid;FFFCLcom/jantursky/kascii/core/Rgb;FILjava/lang/Object;)V
+	public static final fun label-wCC_ZdY (Lcom/jantursky/kascii/core/Grid;IILjava/lang/String;Lcom/jantursky/kascii/core/Rgb;)V
+	public static synthetic fun label-wCC_ZdY$default (Lcom/jantursky/kascii/core/Grid;IILjava/lang/String;Lcom/jantursky/kascii/core/Rgb;ILjava/lang/Object;)V
+	public static final fun line--_-e5R0 (Lcom/jantursky/kascii/core/Grid;IIIICLcom/jantursky/kascii/core/Rgb;)V
+	public static synthetic fun line--_-e5R0$default (Lcom/jantursky/kascii/core/Grid;IIIICLcom/jantursky/kascii/core/Rgb;ILjava/lang/Object;)V
+	public static final fun rect-9B9IFfo (Lcom/jantursky/kascii/core/Grid;IIIILcom/jantursky/kascii/core/BoxStyle;Ljava/lang/Character;Lcom/jantursky/kascii/core/Rgb;)V
+	public static synthetic fun rect-9B9IFfo$default (Lcom/jantursky/kascii/core/Grid;IIIILcom/jantursky/kascii/core/BoxStyle;Ljava/lang/Character;Lcom/jantursky/kascii/core/Rgb;ILjava/lang/Object;)V
+}
+
+public final class com/jantursky/kascii/core/Motion : java/lang/Enum {
+	public static final field Full Lcom/jantursky/kascii/core/Motion;
+	public static final field Reduced Lcom/jantursky/kascii/core/Motion;
+	public static final field System Lcom/jantursky/kascii/core/Motion;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/jantursky/kascii/core/Motion;
+	public static fun values ()[Lcom/jantursky/kascii/core/Motion;
+}
+
+public final class com/jantursky/kascii/core/Noise {
+	public static final field INSTANCE Lcom/jantursky/kascii/core/Noise;
+	public final fun fbm (FFFII)F
+	public static synthetic fun fbm$default (Lcom/jantursky/kascii/core/Noise;FFFIIILjava/lang/Object;)F
+	public final fun hash (IIII)F
+	public final fun value (FFFI)F
+	public static synthetic fun value$default (Lcom/jantursky/kascii/core/Noise;FFFIILjava/lang/Object;)F
+}
+
+public final class com/jantursky/kascii/core/PieceClock {
+	public static final field INSTANCE Lcom/jantursky/kascii/core/PieceClock;
+	public final fun isReduced (Lcom/jantursky/kascii/core/Motion;Z)Z
+	public final fun next (FFFZFF)F
+	public static synthetic fun next$default (Lcom/jantursky/kascii/core/PieceClock;FFFZFFILjava/lang/Object;)F
+}
+
+public final class com/jantursky/kascii/core/PieceMeta {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;IIIFFLjava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;IIIFFLjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getCategory ()Ljava/lang/String;
+	public final fun getCols ()I
+	public final fun getFps ()I
+	public final fun getLoop ()F
+	public final fun getName ()Ljava/lang/String;
+	public final fun getNote ()Ljava/lang/String;
+	public final fun getRows ()I
+	public final fun getStill ()F
+}
+
+public final class com/jantursky/kascii/core/Rasterizer {
+	public static final field INSTANCE Lcom/jantursky/kascii/core/Rasterizer;
+	public final fun fromTones ([FLcom/jantursky/kascii/core/Charset;IIFLcom/jantursky/kascii/core/ColorMode;Lcom/jantursky/kascii/core/KasciiTheme;Lcom/jantursky/kascii/core/Grid;)Lcom/jantursky/kascii/core/Grid;
+	public static synthetic fun fromTones$default (Lcom/jantursky/kascii/core/Rasterizer;[FLcom/jantursky/kascii/core/Charset;IIFLcom/jantursky/kascii/core/ColorMode;Lcom/jantursky/kascii/core/KasciiTheme;Lcom/jantursky/kascii/core/Grid;ILjava/lang/Object;)Lcom/jantursky/kascii/core/Grid;
+	public final fun rasterize (Lcom/jantursky/kascii/core/Field;Lcom/jantursky/kascii/core/Charset;IIFFLcom/jantursky/kascii/core/ColorMode;Lcom/jantursky/kascii/core/KasciiTheme;Lcom/jantursky/kascii/core/Grid;)Lcom/jantursky/kascii/core/Grid;
+	public static synthetic fun rasterize$default (Lcom/jantursky/kascii/core/Rasterizer;Lcom/jantursky/kascii/core/Field;Lcom/jantursky/kascii/core/Charset;IIFFLcom/jantursky/kascii/core/ColorMode;Lcom/jantursky/kascii/core/KasciiTheme;Lcom/jantursky/kascii/core/Grid;ILjava/lang/Object;)Lcom/jantursky/kascii/core/Grid;
+}
+
+public final class com/jantursky/kascii/core/Rgb {
+	public static final field Companion Lcom/jantursky/kascii/core/Rgb$Companion;
+	public static final synthetic fun box-impl (I)Lcom/jantursky/kascii/core/Rgb;
+	public static fun constructor-impl (I)I
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (ILjava/lang/Object;)Z
+	public static final fun equals-impl0 (II)Z
+	public static final fun getAlpha-impl (I)I
+	public final fun getArgb ()I
+	public static final fun getBlue-impl (I)I
+	public static final fun getGreen-impl (I)I
+	public static final fun getRed-impl (I)I
+	public fun hashCode ()I
+	public static fun hashCode-impl (I)I
+	public static final fun lerp-zQBxyeg (IIF)I
+	public static final fun toHex-impl (I)Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (I)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()I
+}
+
+public final class com/jantursky/kascii/core/Rgb$Companion {
+	public final fun fromHex-RqXZwxc (Ljava/lang/String;)I
+	public final fun getBlack-MxGdj6g ()I
+	public final fun getWhite-MxGdj6g ()I
+	public final fun invoke-9CGu1-0 (III)I
+	public final fun invoke-ez-FiLM (IIII)I
+}
+
+public final class com/jantursky/kascii/core/Rng {
+	public fun <init> ()V
+	public fun <init> (J)V
+	public synthetic fun <init> (JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun chance (F)Z
+	public final fun float ()F
+	public final fun float (FF)F
+	public final fun int (I)I
+}
+

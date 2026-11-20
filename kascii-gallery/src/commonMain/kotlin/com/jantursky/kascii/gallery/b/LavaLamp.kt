@@ -31,24 +31,51 @@ private const val TOP_EM = 6.5f
 private const val FLOOR_EM = 24f
 
 /** One blob: how many laps it makes per loop, where in its lap it starts, its side, sway and radius in em. */
-private class Blob(val laps: Int, val phase: Float, val side: Float, val sway: Float, val radius: Float)
+private class Blob(
+    val laps: Int,
+    val phase: Float,
+    val side: Float,
+    val sway: Float,
+    val radius: Float,
+)
 
 /** Half the lamp's width in a row: cap, tapered glass, then a flared base. */
-private fun halfWidth(row: Int): Int = when {
-    row < 1 -> 2
-    row < GLASS_TOP -> row + 1
-    row < GLASS_BOTTOM -> 5 + (row - GLASS_TOP) / 4
-    row == GLASS_BOTTOM -> 9
-    else -> 8 + (row - GLASS_BOTTOM)
-}
+private fun halfWidth(row: Int): Int =
+    when {
+        row < 1 -> 2
+        row < GLASS_TOP -> row + 1
+        row < GLASS_BOTTOM -> 5 + (row - GLASS_TOP) / 4
+        row == GLASS_BOTTOM -> 9
+        else -> 8 + (row - GLASS_BOTTOM)
+    }
 
 private fun Grid.shell() {
     for (r in 0 until ROWS) {
         val h = halfWidth(r)
         val glass = r in GLASS_TOP until GLASS_BOTTOM
         val grow = halfWidth(r + 1) - h
-        put((MID - h).toInt(), r, if (glass) '|' else if (grow > 0) '/' else '\\')
-        put((MID + h).toInt() - 1, r, if (glass) '|' else if (grow > 0) '\\' else '/')
+        put(
+            (MID - h).toInt(),
+            r,
+            if (glass) {
+                '|'
+            } else if (grow > 0) {
+                '/'
+            } else {
+                '\\'
+            },
+        )
+        put(
+            (MID + h).toInt() - 1,
+            r,
+            if (glass) {
+                '|'
+            } else if (grow > 0) {
+                '\\'
+            } else {
+                '/'
+            },
+        )
     }
     for (x in (MID - 2).toInt() until (MID + 2).toInt()) put(x, 0, '_')
     for (x in (MID - 9).toInt() until (MID + 9).toInt()) put(x, GLASS_BOTTOM, '_')
@@ -56,7 +83,12 @@ private fun Grid.shell() {
 }
 
 /** Sum of blob influences at a point in em, where 1 is the wax surface. The pool and the cap are fixed blobs. */
-private fun field(blobs: List<Pair<Float, Float>>, radii: List<Float>, x: Float, y: Float): Float {
+private fun field(
+    blobs: List<Pair<Float, Float>>,
+    radii: List<Float>,
+    x: Float,
+    y: Float,
+): Float {
     var sum = 0f
     for (i in blobs.indices) {
         val dx = x - blobs[i].first
@@ -75,13 +107,17 @@ private fun field(blobs: List<Pair<Float, Float>>, radii: List<Float>, x: Float,
  * Ported from ascii.rest `lava lamp` (MIT, Copyright (c) 2026 bas3line): the same metaball wax in a glass with a
  * base, with a new field function and a colored wax.
  */
-public fun lavaLampPiece(seed: Int = 0, wax: Rgb = Palette.Red): AsciiPiece {
+public fun lavaLampPiece(
+    seed: Int = 0,
+    wax: Rgb = Palette.Red,
+): AsciiPiece {
     val rng = rngFor(seed, 3)
-    val blobs = listOf(
-        Blob(2, rng.float(), -0.5f, 0.7f, 3.0f),
-        Blob(3, rng.float(), 0.6f, 0.6f, 2.7f),
-        Blob(1, rng.float(), 0.1f, 0.8f, 3.3f),
-    )
+    val blobs =
+        listOf(
+            Blob(2, rng.float(), -0.5f, 0.7f, 3.0f),
+            Blob(3, rng.float(), 0.6f, 0.6f, 2.7f),
+            Blob(1, rng.float(), 0.1f, 0.8f, 3.3f),
+        )
     return asciiPiece(
         name = "lava lamp",
         category = "objects",
@@ -92,11 +128,12 @@ public fun lavaLampPiece(seed: Int = 0, wax: Rgb = Palette.Red): AsciiPiece {
         loop = LOOP,
         note = "wax blobs rising, merging and sinking in a lit glass",
     ) { t, grid ->
-        val centers = blobs.map {
-            val a = TAU * (it.laps * t / LOOP + it.phase)
-            val y = TOP_EM + (FLOOR_EM - TOP_EM) * (1f + cos(a)) / 2f
-            (it.side * 1.5f + it.sway * sin(a * 2f)) to y
-        }
+        val centers =
+            blobs.map {
+                val a = TAU * (it.laps * t / LOOP + it.phase)
+                val y = TOP_EM + (FLOOR_EM - TOP_EM) * (1f + cos(a)) / 2f
+                (it.side * 1.5f + it.sway * sin(a * 2f)) to y
+            }
         val radii = blobs.map { it.radius }
         for (r in GLASS_TOP until GLASS_BOTTOM) {
             val room = halfWidth(r) - 1

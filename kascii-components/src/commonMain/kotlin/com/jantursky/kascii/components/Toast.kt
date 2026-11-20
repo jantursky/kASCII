@@ -49,7 +49,11 @@ public fun AsciiToast(
     }
 }
 
-internal fun renderToast(message: String, tone: AsciiTone, theme: KasciiTheme): Grid {
+internal fun renderToast(
+    message: String,
+    tone: AsciiTone,
+    theme: KasciiTheme,
+): Grid {
     val grid = Grid(message.length + TOAST_CHROME, 3)
     grid.rect(0, 0, grid.cols, 3, BoxStyle.Rounded, color = theme.dim())
     grid.write(2, 1, "(${tone.marker()})", tone.color(theme))

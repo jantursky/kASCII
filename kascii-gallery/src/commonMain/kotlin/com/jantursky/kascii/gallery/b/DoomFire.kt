@@ -24,7 +24,9 @@ private const val WARM_UP = 80
 private const val GLYPHS = " .:;+*#%@"
 
 /** The heat of every cell, with the bottom row held at the maximum. */
-private class Flames(val rng: Rng) {
+private class Flames(
+    val rng: Rng,
+) {
     val heat = IntArray(COLS * HEAT_ROWS)
 
     init {
@@ -34,10 +36,12 @@ private class Flames(val rng: Rng) {
 
     /** Every cell passes its heat to the cell above, one column to either side or straight up, a little cooler. */
     fun spread() {
-        for (y in 1 until HEAT_ROWS) for (x in 0 until COLS) {
-            val r = rng.int(3)
-            val to = (x - r + 1).coerceIn(0, COLS - 1)
-            heat[(y - 1) * COLS + to] = (heat[y * COLS + x] - r).coerceAtLeast(0)
+        for (y in 1 until HEAT_ROWS) {
+            for (x in 0 until COLS) {
+                val r = rng.int(3)
+                val to = (x - r + 1).coerceIn(0, COLS - 1)
+                heat[(y - 1) * COLS + to] = (heat[y * COLS + x] - r).coerceAtLeast(0)
+            }
         }
     }
 }
@@ -51,7 +55,11 @@ private class Flames(val rng: Rng) {
  * Ported from ascii.rest `doom fire` (MIT, Copyright (c) 2026 bas3line): the same PSX fire spread, simplified to
  * the original rule and extended with seeds and per-cell colors.
  */
-public fun doomFirePiece(seed: Int = 0, cool: Rgb = Palette.Red, hot: Rgb = Palette.Amber): AsciiPiece {
+public fun doomFirePiece(
+    seed: Int = 0,
+    cool: Rgb = Palette.Red,
+    hot: Rgb = Palette.Amber,
+): AsciiPiece {
     val stepper = Stepper(create = { Flames(rngFor(seed, 5)) }, advance = { it.spread() })
     return asciiPiece(
         name = "doom fire",
@@ -63,10 +71,12 @@ public fun doomFirePiece(seed: Int = 0, cool: Rgb = Palette.Red, hot: Rgb = Pale
         note = "the psx fire spread climbing off a white-hot bed",
     ) { t, grid ->
         val flames = stepper.at(frameIndex(t, FPS))
-        for (y in 0 until ROWS) for (x in 0 until COLS) {
-            val level = (flames.heat[2 * y * COLS + x] + flames.heat[(2 * y + 1) * COLS + x]) / 2f / MAX_HEAT
-            val glyph = GLYPHS[(level * (GLYPHS.length - 1) + 0.5f).toInt().coerceIn(0, GLYPHS.length - 1)]
-            if (glyph != ' ') grid.put(x, y, glyph, if (level > 0.9f) null else cool.lerp(hot, level))
+        for (y in 0 until ROWS) {
+            for (x in 0 until COLS) {
+                val level = (flames.heat[2 * y * COLS + x] + flames.heat[(2 * y + 1) * COLS + x]) / 2f / MAX_HEAT
+                val glyph = GLYPHS[(level * (GLYPHS.length - 1) + 0.5f).toInt().coerceIn(0, GLYPHS.length - 1)]
+                if (glyph != ' ') grid.put(x, y, glyph, if (level > 0.9f) null else cool.lerp(hot, level))
+            }
         }
     }
 }

@@ -1,0 +1,353 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <kascii:kascii-core>
+final enum class com.jantursky.kascii.core/Motion : kotlin/Enum<com.jantursky.kascii.core/Motion> { // com.jantursky.kascii.core/Motion|null[0]
+    enum entry Full // com.jantursky.kascii.core/Motion.Full|null[0]
+    enum entry Reduced // com.jantursky.kascii.core/Motion.Reduced|null[0]
+    enum entry System // com.jantursky.kascii.core/Motion.System|null[0]
+
+    final val entries // com.jantursky.kascii.core/Motion.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.jantursky.kascii.core/Motion> // com.jantursky.kascii.core/Motion.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.jantursky.kascii.core/Motion // com.jantursky.kascii.core/Motion.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.jantursky.kascii.core/Motion> // com.jantursky.kascii.core/Motion.values|values#static(){}[0]
+}
+
+abstract fun interface com.jantursky.kascii.core/ColorField { // com.jantursky.kascii.core/ColorField|null[0]
+    abstract fun color(kotlin/Float, kotlin/Float, kotlin/Float): com.jantursky.kascii.core/Rgb // com.jantursky.kascii.core/ColorField.color|color(kotlin.Float;kotlin.Float;kotlin.Float){}[0]
+}
+
+abstract fun interface com.jantursky.kascii.core/Field { // com.jantursky.kascii.core/Field|null[0]
+    abstract fun tone(kotlin/Float, kotlin/Float, kotlin/Float, kotlin/Float): kotlin/Float // com.jantursky.kascii.core/Field.tone|tone(kotlin.Float;kotlin.Float;kotlin.Float;kotlin.Float){}[0]
+}
+
+sealed interface com.jantursky.kascii.core/ColorMode { // com.jantursky.kascii.core/ColorMode|null[0]
+    final class Duotone : com.jantursky.kascii.core/ColorMode { // com.jantursky.kascii.core/ColorMode.Duotone|null[0]
+        constructor <init>(com.jantursky.kascii.core/Rgb, com.jantursky.kascii.core/Rgb) // com.jantursky.kascii.core/ColorMode.Duotone.<init>|<init>(com.jantursky.kascii.core.Rgb;com.jantursky.kascii.core.Rgb){}[0]
+
+        final val dark // com.jantursky.kascii.core/ColorMode.Duotone.dark|{}dark[0]
+            final fun <get-dark>(): com.jantursky.kascii.core/Rgb // com.jantursky.kascii.core/ColorMode.Duotone.dark.<get-dark>|<get-dark>(){}[0]
+        final val light // com.jantursky.kascii.core/ColorMode.Duotone.light|{}light[0]
+            final fun <get-light>(): com.jantursky.kascii.core/Rgb // com.jantursky.kascii.core/ColorMode.Duotone.light.<get-light>|<get-light>(){}[0]
+    }
+
+    final class Gradient : com.jantursky.kascii.core/ColorMode { // com.jantursky.kascii.core/ColorMode.Gradient|null[0]
+        constructor <init>(kotlin.collections/List<com.jantursky.kascii.core/Rgb>) // com.jantursky.kascii.core/ColorMode.Gradient.<init>|<init>(kotlin.collections.List<com.jantursky.kascii.core.Rgb>){}[0]
+
+        final val stops // com.jantursky.kascii.core/ColorMode.Gradient.stops|{}stops[0]
+            final fun <get-stops>(): kotlin.collections/List<com.jantursky.kascii.core/Rgb> // com.jantursky.kascii.core/ColorMode.Gradient.stops.<get-stops>|<get-stops>(){}[0]
+    }
+
+    final class Mono : com.jantursky.kascii.core/ColorMode { // com.jantursky.kascii.core/ColorMode.Mono|null[0]
+        constructor <init>(com.jantursky.kascii.core/Rgb) // com.jantursky.kascii.core/ColorMode.Mono.<init>|<init>(com.jantursky.kascii.core.Rgb){}[0]
+
+        final val color // com.jantursky.kascii.core/ColorMode.Mono.color|{}color[0]
+            final fun <get-color>(): com.jantursky.kascii.core/Rgb // com.jantursky.kascii.core/ColorMode.Mono.color.<get-color>|<get-color>(){}[0]
+    }
+
+    final class Source : com.jantursky.kascii.core/ColorMode { // com.jantursky.kascii.core/ColorMode.Source|null[0]
+        constructor <init>(com.jantursky.kascii.core/ColorField) // com.jantursky.kascii.core/ColorMode.Source.<init>|<init>(com.jantursky.kascii.core.ColorField){}[0]
+
+        final val field // com.jantursky.kascii.core/ColorMode.Source.field|{}field[0]
+            final fun <get-field>(): com.jantursky.kascii.core/ColorField // com.jantursky.kascii.core/ColorMode.Source.field.<get-field>|<get-field>(){}[0]
+    }
+
+    final object Palette : com.jantursky.kascii.core/ColorMode { // com.jantursky.kascii.core/ColorMode.Palette|null[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.jantursky.kascii.core/ColorMode.Palette.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.jantursky.kascii.core/ColorMode.Palette.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.jantursky.kascii.core/ColorMode.Palette.toString|toString(){}[0]
+    }
+
+    final object Theme : com.jantursky.kascii.core/ColorMode { // com.jantursky.kascii.core/ColorMode.Theme|null[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.jantursky.kascii.core/ColorMode.Theme.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.jantursky.kascii.core/ColorMode.Theme.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.jantursky.kascii.core/ColorMode.Theme.toString|toString(){}[0]
+    }
+}
+
+final class com.jantursky.kascii.core/AsciiPiece { // com.jantursky.kascii.core/AsciiPiece|null[0]
+    constructor <init>(com.jantursky.kascii.core/PieceMeta, kotlin/Function2<kotlin/Float, com.jantursky.kascii.core/Grid, kotlin/Unit>) // com.jantursky.kascii.core/AsciiPiece.<init>|<init>(com.jantursky.kascii.core.PieceMeta;kotlin.Function2<kotlin.Float,com.jantursky.kascii.core.Grid,kotlin.Unit>){}[0]
+
+    final val draw // com.jantursky.kascii.core/AsciiPiece.draw|{}draw[0]
+        final fun <get-draw>(): kotlin/Function2<kotlin/Float, com.jantursky.kascii.core/Grid, kotlin/Unit> // com.jantursky.kascii.core/AsciiPiece.draw.<get-draw>|<get-draw>(){}[0]
+    final val meta // com.jantursky.kascii.core/AsciiPiece.meta|{}meta[0]
+        final fun <get-meta>(): com.jantursky.kascii.core/PieceMeta // com.jantursky.kascii.core/AsciiPiece.meta.<get-meta>|<get-meta>(){}[0]
+
+    final fun render(kotlin/Float = ...): com.jantursky.kascii.core/Grid // com.jantursky.kascii.core/AsciiPiece.render|render(kotlin.Float){}[0]
+}
+
+final class com.jantursky.kascii.core/BoxStyle { // com.jantursky.kascii.core/BoxStyle|null[0]
+    constructor <init>(kotlin/Char, kotlin/Char, kotlin/Char, kotlin/Char, kotlin/Char, kotlin/Char) // com.jantursky.kascii.core/BoxStyle.<init>|<init>(kotlin.Char;kotlin.Char;kotlin.Char;kotlin.Char;kotlin.Char;kotlin.Char){}[0]
+
+    final val bottomLeft // com.jantursky.kascii.core/BoxStyle.bottomLeft|{}bottomLeft[0]
+        final fun <get-bottomLeft>(): kotlin/Char // com.jantursky.kascii.core/BoxStyle.bottomLeft.<get-bottomLeft>|<get-bottomLeft>(){}[0]
+    final val bottomRight // com.jantursky.kascii.core/BoxStyle.bottomRight|{}bottomRight[0]
+        final fun <get-bottomRight>(): kotlin/Char // com.jantursky.kascii.core/BoxStyle.bottomRight.<get-bottomRight>|<get-bottomRight>(){}[0]
+    final val horizontal // com.jantursky.kascii.core/BoxStyle.horizontal|{}horizontal[0]
+        final fun <get-horizontal>(): kotlin/Char // com.jantursky.kascii.core/BoxStyle.horizontal.<get-horizontal>|<get-horizontal>(){}[0]
+    final val topLeft // com.jantursky.kascii.core/BoxStyle.topLeft|{}topLeft[0]
+        final fun <get-topLeft>(): kotlin/Char // com.jantursky.kascii.core/BoxStyle.topLeft.<get-topLeft>|<get-topLeft>(){}[0]
+    final val topRight // com.jantursky.kascii.core/BoxStyle.topRight|{}topRight[0]
+        final fun <get-topRight>(): kotlin/Char // com.jantursky.kascii.core/BoxStyle.topRight.<get-topRight>|<get-topRight>(){}[0]
+    final val vertical // com.jantursky.kascii.core/BoxStyle.vertical|{}vertical[0]
+        final fun <get-vertical>(): kotlin/Char // com.jantursky.kascii.core/BoxStyle.vertical.<get-vertical>|<get-vertical>(){}[0]
+
+    final object Companion { // com.jantursky.kascii.core/BoxStyle.Companion|null[0]
+        final val Ascii // com.jantursky.kascii.core/BoxStyle.Companion.Ascii|{}Ascii[0]
+            final fun <get-Ascii>(): com.jantursky.kascii.core/BoxStyle // com.jantursky.kascii.core/BoxStyle.Companion.Ascii.<get-Ascii>|<get-Ascii>(){}[0]
+        final val Double // com.jantursky.kascii.core/BoxStyle.Companion.Double|{}Double[0]
+            final fun <get-Double>(): com.jantursky.kascii.core/BoxStyle // com.jantursky.kascii.core/BoxStyle.Companion.Double.<get-Double>|<get-Double>(){}[0]
+        final val Heavy // com.jantursky.kascii.core/BoxStyle.Companion.Heavy|{}Heavy[0]
+            final fun <get-Heavy>(): com.jantursky.kascii.core/BoxStyle // com.jantursky.kascii.core/BoxStyle.Companion.Heavy.<get-Heavy>|<get-Heavy>(){}[0]
+        final val Rounded // com.jantursky.kascii.core/BoxStyle.Companion.Rounded|{}Rounded[0]
+            final fun <get-Rounded>(): com.jantursky.kascii.core/BoxStyle // com.jantursky.kascii.core/BoxStyle.Companion.Rounded.<get-Rounded>|<get-Rounded>(){}[0]
+        final val Single // com.jantursky.kascii.core/BoxStyle.Companion.Single|{}Single[0]
+            final fun <get-Single>(): com.jantursky.kascii.core/BoxStyle // com.jantursky.kascii.core/BoxStyle.Companion.Single.<get-Single>|<get-Single>(){}[0]
+    }
+}
+
+final class com.jantursky.kascii.core/BrailleCanvas { // com.jantursky.kascii.core/BrailleCanvas|null[0]
+    constructor <init>(kotlin/Int, kotlin/Int) // com.jantursky.kascii.core/BrailleCanvas.<init>|<init>(kotlin.Int;kotlin.Int){}[0]
+
+    final val cols // com.jantursky.kascii.core/BrailleCanvas.cols|{}cols[0]
+        final fun <get-cols>(): kotlin/Int // com.jantursky.kascii.core/BrailleCanvas.cols.<get-cols>|<get-cols>(){}[0]
+    final val dotHeight // com.jantursky.kascii.core/BrailleCanvas.dotHeight|{}dotHeight[0]
+        final fun <get-dotHeight>(): kotlin/Int // com.jantursky.kascii.core/BrailleCanvas.dotHeight.<get-dotHeight>|<get-dotHeight>(){}[0]
+    final val dotWidth // com.jantursky.kascii.core/BrailleCanvas.dotWidth|{}dotWidth[0]
+        final fun <get-dotWidth>(): kotlin/Int // com.jantursky.kascii.core/BrailleCanvas.dotWidth.<get-dotWidth>|<get-dotWidth>(){}[0]
+    final val rows // com.jantursky.kascii.core/BrailleCanvas.rows|{}rows[0]
+        final fun <get-rows>(): kotlin/Int // com.jantursky.kascii.core/BrailleCanvas.rows.<get-rows>|<get-rows>(){}[0]
+
+    final fun drawTo(com.jantursky.kascii.core/Grid, kotlin/Int, kotlin/Int, com.jantursky.kascii.core/Rgb? = ...) // com.jantursky.kascii.core/BrailleCanvas.drawTo|drawTo(com.jantursky.kascii.core.Grid;kotlin.Int;kotlin.Int;com.jantursky.kascii.core.Rgb?){}[0]
+    final fun line(kotlin/Int, kotlin/Int, kotlin/Int, kotlin/Int) // com.jantursky.kascii.core/BrailleCanvas.line|line(kotlin.Int;kotlin.Int;kotlin.Int;kotlin.Int){}[0]
+    final fun plot(kotlin/Int, kotlin/Int) // com.jantursky.kascii.core/BrailleCanvas.plot|plot(kotlin.Int;kotlin.Int){}[0]
+}
+
+final class com.jantursky.kascii.core/Grid { // com.jantursky.kascii.core/Grid|null[0]
+    constructor <init>(kotlin/Int, kotlin/Int) // com.jantursky.kascii.core/Grid.<init>|<init>(kotlin.Int;kotlin.Int){}[0]
+
+    final val colors // com.jantursky.kascii.core/Grid.colors|{}colors[0]
+        final fun <get-colors>(): kotlin/IntArray // com.jantursky.kascii.core/Grid.colors.<get-colors>|<get-colors>(){}[0]
+    final val cols // com.jantursky.kascii.core/Grid.cols|{}cols[0]
+        final fun <get-cols>(): kotlin/Int // com.jantursky.kascii.core/Grid.cols.<get-cols>|<get-cols>(){}[0]
+    final val glyphs // com.jantursky.kascii.core/Grid.glyphs|{}glyphs[0]
+        final fun <get-glyphs>(): kotlin/CharArray // com.jantursky.kascii.core/Grid.glyphs.<get-glyphs>|<get-glyphs>(){}[0]
+    final val rows // com.jantursky.kascii.core/Grid.rows|{}rows[0]
+        final fun <get-rows>(): kotlin/Int // com.jantursky.kascii.core/Grid.rows.<get-rows>|<get-rows>(){}[0]
+
+    final fun blit(com.jantursky.kascii.core/Grid, kotlin/Int, kotlin/Int) // com.jantursky.kascii.core/Grid.blit|blit(com.jantursky.kascii.core.Grid;kotlin.Int;kotlin.Int){}[0]
+    final fun clear() // com.jantursky.kascii.core/Grid.clear|clear(){}[0]
+    final fun colorAt(kotlin/Int, kotlin/Int): com.jantursky.kascii.core/Rgb? // com.jantursky.kascii.core/Grid.colorAt|colorAt(kotlin.Int;kotlin.Int){}[0]
+    final fun contains(kotlin/Int, kotlin/Int): kotlin/Boolean // com.jantursky.kascii.core/Grid.contains|contains(kotlin.Int;kotlin.Int){}[0]
+    final fun fill(kotlin/Int, kotlin/Int, kotlin/Int, kotlin/Int, kotlin/Char = ..., com.jantursky.kascii.core/Rgb? = ...) // com.jantursky.kascii.core/Grid.fill|fill(kotlin.Int;kotlin.Int;kotlin.Int;kotlin.Int;kotlin.Char;com.jantursky.kascii.core.Rgb?){}[0]
+    final fun glyphAt(kotlin/Int, kotlin/Int): kotlin/Char // com.jantursky.kascii.core/Grid.glyphAt|glyphAt(kotlin.Int;kotlin.Int){}[0]
+    final fun put(kotlin/Int, kotlin/Int, kotlin/Char, com.jantursky.kascii.core/Rgb? = ...) // com.jantursky.kascii.core/Grid.put|put(kotlin.Int;kotlin.Int;kotlin.Char;com.jantursky.kascii.core.Rgb?){}[0]
+    final fun toText(): kotlin/String // com.jantursky.kascii.core/Grid.toText|toText(){}[0]
+    final fun write(kotlin/Int, kotlin/Int, kotlin/String, com.jantursky.kascii.core/Rgb? = ...) // com.jantursky.kascii.core/Grid.write|write(kotlin.Int;kotlin.Int;kotlin.String;com.jantursky.kascii.core.Rgb?){}[0]
+}
+
+final class com.jantursky.kascii.core/KasciiTheme { // com.jantursky.kascii.core/KasciiTheme|null[0]
+    constructor <init>(com.jantursky.kascii.core/Rgb, com.jantursky.kascii.core/Rgb, com.jantursky.kascii.core/Rgb = ..., kotlin.collections/List<com.jantursky.kascii.core/Rgb> = ...) // com.jantursky.kascii.core/KasciiTheme.<init>|<init>(com.jantursky.kascii.core.Rgb;com.jantursky.kascii.core.Rgb;com.jantursky.kascii.core.Rgb;kotlin.collections.List<com.jantursky.kascii.core.Rgb>){}[0]
+
+    final val accent // com.jantursky.kascii.core/KasciiTheme.accent|{}accent[0]
+        final fun <get-accent>(): com.jantursky.kascii.core/Rgb // com.jantursky.kascii.core/KasciiTheme.accent.<get-accent>|<get-accent>(){}[0]
+    final val ink // com.jantursky.kascii.core/KasciiTheme.ink|{}ink[0]
+        final fun <get-ink>(): com.jantursky.kascii.core/Rgb // com.jantursky.kascii.core/KasciiTheme.ink.<get-ink>|<get-ink>(){}[0]
+    final val palette // com.jantursky.kascii.core/KasciiTheme.palette|{}palette[0]
+        final fun <get-palette>(): kotlin.collections/List<com.jantursky.kascii.core/Rgb> // com.jantursky.kascii.core/KasciiTheme.palette.<get-palette>|<get-palette>(){}[0]
+    final val paper // com.jantursky.kascii.core/KasciiTheme.paper|{}paper[0]
+        final fun <get-paper>(): com.jantursky.kascii.core/Rgb // com.jantursky.kascii.core/KasciiTheme.paper.<get-paper>|<get-paper>(){}[0]
+
+    final fun contrastRatio(): kotlin/Float // com.jantursky.kascii.core/KasciiTheme.contrastRatio|contrastRatio(){}[0]
+
+    final object Companion { // com.jantursky.kascii.core/KasciiTheme.Companion|null[0]
+        final val Amber // com.jantursky.kascii.core/KasciiTheme.Companion.Amber|{}Amber[0]
+            final fun <get-Amber>(): com.jantursky.kascii.core/KasciiTheme // com.jantursky.kascii.core/KasciiTheme.Companion.Amber.<get-Amber>|<get-Amber>(){}[0]
+        final val Dark // com.jantursky.kascii.core/KasciiTheme.Companion.Dark|{}Dark[0]
+            final fun <get-Dark>(): com.jantursky.kascii.core/KasciiTheme // com.jantursky.kascii.core/KasciiTheme.Companion.Dark.<get-Dark>|<get-Dark>(){}[0]
+        final val Light // com.jantursky.kascii.core/KasciiTheme.Companion.Light|{}Light[0]
+            final fun <get-Light>(): com.jantursky.kascii.core/KasciiTheme // com.jantursky.kascii.core/KasciiTheme.Companion.Light.<get-Light>|<get-Light>(){}[0]
+        final val Phosphor // com.jantursky.kascii.core/KasciiTheme.Companion.Phosphor|{}Phosphor[0]
+            final fun <get-Phosphor>(): com.jantursky.kascii.core/KasciiTheme // com.jantursky.kascii.core/KasciiTheme.Companion.Phosphor.<get-Phosphor>|<get-Phosphor>(){}[0]
+    }
+}
+
+final class com.jantursky.kascii.core/PieceMeta { // com.jantursky.kascii.core/PieceMeta|null[0]
+    constructor <init>(kotlin/String, kotlin/String, kotlin/Int, kotlin/Int, kotlin/Int = ..., kotlin/Float = ..., kotlin/Float = ..., kotlin/String = ...) // com.jantursky.kascii.core/PieceMeta.<init>|<init>(kotlin.String;kotlin.String;kotlin.Int;kotlin.Int;kotlin.Int;kotlin.Float;kotlin.Float;kotlin.String){}[0]
+
+    final val category // com.jantursky.kascii.core/PieceMeta.category|{}category[0]
+        final fun <get-category>(): kotlin/String // com.jantursky.kascii.core/PieceMeta.category.<get-category>|<get-category>(){}[0]
+    final val cols // com.jantursky.kascii.core/PieceMeta.cols|{}cols[0]
+        final fun <get-cols>(): kotlin/Int // com.jantursky.kascii.core/PieceMeta.cols.<get-cols>|<get-cols>(){}[0]
+    final val fps // com.jantursky.kascii.core/PieceMeta.fps|{}fps[0]
+        final fun <get-fps>(): kotlin/Int // com.jantursky.kascii.core/PieceMeta.fps.<get-fps>|<get-fps>(){}[0]
+    final val loop // com.jantursky.kascii.core/PieceMeta.loop|{}loop[0]
+        final fun <get-loop>(): kotlin/Float // com.jantursky.kascii.core/PieceMeta.loop.<get-loop>|<get-loop>(){}[0]
+    final val name // com.jantursky.kascii.core/PieceMeta.name|{}name[0]
+        final fun <get-name>(): kotlin/String // com.jantursky.kascii.core/PieceMeta.name.<get-name>|<get-name>(){}[0]
+    final val note // com.jantursky.kascii.core/PieceMeta.note|{}note[0]
+        final fun <get-note>(): kotlin/String // com.jantursky.kascii.core/PieceMeta.note.<get-note>|<get-note>(){}[0]
+    final val rows // com.jantursky.kascii.core/PieceMeta.rows|{}rows[0]
+        final fun <get-rows>(): kotlin/Int // com.jantursky.kascii.core/PieceMeta.rows.<get-rows>|<get-rows>(){}[0]
+    final val still // com.jantursky.kascii.core/PieceMeta.still|{}still[0]
+        final fun <get-still>(): kotlin/Float // com.jantursky.kascii.core/PieceMeta.still.<get-still>|<get-still>(){}[0]
+}
+
+final class com.jantursky.kascii.core/Rng { // com.jantursky.kascii.core/Rng|null[0]
+    constructor <init>(kotlin/Long = ...) // com.jantursky.kascii.core/Rng.<init>|<init>(kotlin.Long){}[0]
+
+    final fun chance(kotlin/Float): kotlin/Boolean // com.jantursky.kascii.core/Rng.chance|chance(kotlin.Float){}[0]
+    final fun float(): kotlin/Float // com.jantursky.kascii.core/Rng.float|float(){}[0]
+    final fun float(kotlin/Float, kotlin/Float): kotlin/Float // com.jantursky.kascii.core/Rng.float|float(kotlin.Float;kotlin.Float){}[0]
+    final fun int(kotlin/Int): kotlin/Int // com.jantursky.kascii.core/Rng.int|int(kotlin.Int){}[0]
+}
+
+final value class com.jantursky.kascii.core/Rgb { // com.jantursky.kascii.core/Rgb|null[0]
+    constructor <init>(kotlin/Int) // com.jantursky.kascii.core/Rgb.<init>|<init>(kotlin.Int){}[0]
+
+    final val alpha // com.jantursky.kascii.core/Rgb.alpha|{}alpha[0]
+        final fun <get-alpha>(): kotlin/Int // com.jantursky.kascii.core/Rgb.alpha.<get-alpha>|<get-alpha>(){}[0]
+    final val argb // com.jantursky.kascii.core/Rgb.argb|{}argb[0]
+        final fun <get-argb>(): kotlin/Int // com.jantursky.kascii.core/Rgb.argb.<get-argb>|<get-argb>(){}[0]
+    final val blue // com.jantursky.kascii.core/Rgb.blue|{}blue[0]
+        final fun <get-blue>(): kotlin/Int // com.jantursky.kascii.core/Rgb.blue.<get-blue>|<get-blue>(){}[0]
+    final val green // com.jantursky.kascii.core/Rgb.green|{}green[0]
+        final fun <get-green>(): kotlin/Int // com.jantursky.kascii.core/Rgb.green.<get-green>|<get-green>(){}[0]
+    final val red // com.jantursky.kascii.core/Rgb.red|{}red[0]
+        final fun <get-red>(): kotlin/Int // com.jantursky.kascii.core/Rgb.red.<get-red>|<get-red>(){}[0]
+
+    final fun equals(kotlin/Any?): kotlin/Boolean // com.jantursky.kascii.core/Rgb.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // com.jantursky.kascii.core/Rgb.hashCode|hashCode(){}[0]
+    final fun lerp(com.jantursky.kascii.core/Rgb, kotlin/Float): com.jantursky.kascii.core/Rgb // com.jantursky.kascii.core/Rgb.lerp|lerp(com.jantursky.kascii.core.Rgb;kotlin.Float){}[0]
+    final fun toHex(): kotlin/String // com.jantursky.kascii.core/Rgb.toHex|toHex(){}[0]
+    final fun toString(): kotlin/String // com.jantursky.kascii.core/Rgb.toString|toString(){}[0]
+
+    final object Companion { // com.jantursky.kascii.core/Rgb.Companion|null[0]
+        final val Black // com.jantursky.kascii.core/Rgb.Companion.Black|{}Black[0]
+            final fun <get-Black>(): com.jantursky.kascii.core/Rgb // com.jantursky.kascii.core/Rgb.Companion.Black.<get-Black>|<get-Black>(){}[0]
+        final val White // com.jantursky.kascii.core/Rgb.Companion.White|{}White[0]
+            final fun <get-White>(): com.jantursky.kascii.core/Rgb // com.jantursky.kascii.core/Rgb.Companion.White.<get-White>|<get-White>(){}[0]
+
+        final fun fromHex(kotlin/String): com.jantursky.kascii.core/Rgb // com.jantursky.kascii.core/Rgb.Companion.fromHex|fromHex(kotlin.String){}[0]
+        final fun invoke(kotlin/Int, kotlin/Int, kotlin/Int): com.jantursky.kascii.core/Rgb // com.jantursky.kascii.core/Rgb.Companion.invoke|invoke(kotlin.Int;kotlin.Int;kotlin.Int){}[0]
+        final fun invoke(kotlin/Int, kotlin/Int, kotlin/Int, kotlin/Int): com.jantursky.kascii.core/Rgb // com.jantursky.kascii.core/Rgb.Companion.invoke|invoke(kotlin.Int;kotlin.Int;kotlin.Int;kotlin.Int){}[0]
+    }
+}
+
+sealed class com.jantursky.kascii.core/Charset { // com.jantursky.kascii.core/Charset|null[0]
+    final val name // com.jantursky.kascii.core/Charset.name|{}name[0]
+        final fun <get-name>(): kotlin/String // com.jantursky.kascii.core/Charset.name.<get-name>|<get-name>(){}[0]
+    final val subX // com.jantursky.kascii.core/Charset.subX|{}subX[0]
+        final fun <get-subX>(): kotlin/Int // com.jantursky.kascii.core/Charset.subX.<get-subX>|<get-subX>(){}[0]
+    final val subY // com.jantursky.kascii.core/Charset.subY|{}subY[0]
+        final fun <get-subY>(): kotlin/Int // com.jantursky.kascii.core/Charset.subY.<get-subY>|<get-subY>(){}[0]
+
+    final class Edge : com.jantursky.kascii.core/Charset { // com.jantursky.kascii.core/Charset.Edge|null[0]
+        constructor <init>(com.jantursky.kascii.core/Charset.Ramp, kotlin/Float = ...) // com.jantursky.kascii.core/Charset.Edge.<init>|<init>(com.jantursky.kascii.core.Charset.Ramp;kotlin.Float){}[0]
+
+        final val base // com.jantursky.kascii.core/Charset.Edge.base|{}base[0]
+            final fun <get-base>(): com.jantursky.kascii.core/Charset.Ramp // com.jantursky.kascii.core/Charset.Edge.base.<get-base>|<get-base>(){}[0]
+        final val threshold // com.jantursky.kascii.core/Charset.Edge.threshold|{}threshold[0]
+            final fun <get-threshold>(): kotlin/Float // com.jantursky.kascii.core/Charset.Edge.threshold.<get-threshold>|<get-threshold>(){}[0]
+    }
+
+    final class Mask : com.jantursky.kascii.core/Charset { // com.jantursky.kascii.core/Charset.Mask|null[0]
+        final val threshold // com.jantursky.kascii.core/Charset.Mask.threshold|{}threshold[0]
+            final fun <get-threshold>(): kotlin/Float // com.jantursky.kascii.core/Charset.Mask.threshold.<get-threshold>|<get-threshold>(){}[0]
+
+        final fun glyphFor(kotlin/FloatArray): kotlin/Char // com.jantursky.kascii.core/Charset.Mask.glyphFor|glyphFor(kotlin.FloatArray){}[0]
+        final fun withThreshold(kotlin/Float): com.jantursky.kascii.core/Charset.Mask // com.jantursky.kascii.core/Charset.Mask.withThreshold|withThreshold(kotlin.Float){}[0]
+    }
+
+    final class Ramp : com.jantursky.kascii.core/Charset { // com.jantursky.kascii.core/Charset.Ramp|null[0]
+        constructor <init>(kotlin/String, kotlin/String) // com.jantursky.kascii.core/Charset.Ramp.<init>|<init>(kotlin.String;kotlin.String){}[0]
+
+        final val glyphs // com.jantursky.kascii.core/Charset.Ramp.glyphs|{}glyphs[0]
+            final fun <get-glyphs>(): kotlin/String // com.jantursky.kascii.core/Charset.Ramp.glyphs.<get-glyphs>|<get-glyphs>(){}[0]
+
+        final fun glyphFor(kotlin/Float): kotlin/Char // com.jantursky.kascii.core/Charset.Ramp.glyphFor|glyphFor(kotlin.Float){}[0]
+
+        final object Companion { // com.jantursky.kascii.core/Charset.Ramp.Companion|null[0]
+            final fun byCoverage(kotlin/String, kotlin/String, kotlin/Function1<kotlin/Char, kotlin/Float>): com.jantursky.kascii.core/Charset.Ramp // com.jantursky.kascii.core/Charset.Ramp.Companion.byCoverage|byCoverage(kotlin.String;kotlin.String;kotlin.Function1<kotlin.Char,kotlin.Float>){}[0]
+        }
+    }
+}
+
+final object com.jantursky.kascii.core/Charsets { // com.jantursky.kascii.core/Charsets|null[0]
+    final val All // com.jantursky.kascii.core/Charsets.All|{}All[0]
+        final fun <get-All>(): kotlin.collections/List<com.jantursky.kascii.core/Charset> // com.jantursky.kascii.core/Charsets.All.<get-All>|<get-All>(){}[0]
+    final val Binary // com.jantursky.kascii.core/Charsets.Binary|{}Binary[0]
+        final fun <get-Binary>(): com.jantursky.kascii.core/Charset.Ramp // com.jantursky.kascii.core/Charsets.Binary.<get-Binary>|<get-Binary>(){}[0]
+    final val Blocks // com.jantursky.kascii.core/Charsets.Blocks|{}Blocks[0]
+        final fun <get-Blocks>(): com.jantursky.kascii.core/Charset.Ramp // com.jantursky.kascii.core/Charsets.Blocks.<get-Blocks>|<get-Blocks>(){}[0]
+    final val BoxDrawing // com.jantursky.kascii.core/Charsets.BoxDrawing|{}BoxDrawing[0]
+        final fun <get-BoxDrawing>(): com.jantursky.kascii.core/Charset.Ramp // com.jantursky.kascii.core/Charsets.BoxDrawing.<get-BoxDrawing>|<get-BoxDrawing>(){}[0]
+    final val Braille // com.jantursky.kascii.core/Charsets.Braille|{}Braille[0]
+        final fun <get-Braille>(): com.jantursky.kascii.core/Charset.Mask // com.jantursky.kascii.core/Charsets.Braille.<get-Braille>|<get-Braille>(){}[0]
+    final val Cp437 // com.jantursky.kascii.core/Charsets.Cp437|{}Cp437[0]
+        final fun <get-Cp437>(): com.jantursky.kascii.core/Charset.Ramp // com.jantursky.kascii.core/Charsets.Cp437.<get-Cp437>|<get-Cp437>(){}[0]
+    final val Dense // com.jantursky.kascii.core/Charsets.Dense|{}Dense[0]
+        final fun <get-Dense>(): com.jantursky.kascii.core/Charset.Ramp // com.jantursky.kascii.core/Charsets.Dense.<get-Dense>|<get-Dense>(){}[0]
+    final val Digits // com.jantursky.kascii.core/Charsets.Digits|{}Digits[0]
+        final fun <get-Digits>(): com.jantursky.kascii.core/Charset.Ramp // com.jantursky.kascii.core/Charsets.Digits.<get-Digits>|<get-Digits>(){}[0]
+    final val Dots // com.jantursky.kascii.core/Charsets.Dots|{}Dots[0]
+        final fun <get-Dots>(): com.jantursky.kascii.core/Charset.Ramp // com.jantursky.kascii.core/Charsets.Dots.<get-Dots>|<get-Dots>(){}[0]
+    final val Edge // com.jantursky.kascii.core/Charsets.Edge|{}Edge[0]
+        final fun <get-Edge>(): com.jantursky.kascii.core/Charset.Edge // com.jantursky.kascii.core/Charsets.Edge.<get-Edge>|<get-Edge>(){}[0]
+    final val Katakana // com.jantursky.kascii.core/Charsets.Katakana|{}Katakana[0]
+        final fun <get-Katakana>(): com.jantursky.kascii.core/Charset.Ramp // com.jantursky.kascii.core/Charsets.Katakana.<get-Katakana>|<get-Katakana>(){}[0]
+    final val Petscii // com.jantursky.kascii.core/Charsets.Petscii|{}Petscii[0]
+        final fun <get-Petscii>(): com.jantursky.kascii.core/Charset.Ramp // com.jantursky.kascii.core/Charsets.Petscii.<get-Petscii>|<get-Petscii>(){}[0]
+    final val Quadrants // com.jantursky.kascii.core/Charsets.Quadrants|{}Quadrants[0]
+        final fun <get-Quadrants>(): com.jantursky.kascii.core/Charset.Mask // com.jantursky.kascii.core/Charsets.Quadrants.<get-Quadrants>|<get-Quadrants>(){}[0]
+    final val Short // com.jantursky.kascii.core/Charsets.Short|{}Short[0]
+        final fun <get-Short>(): com.jantursky.kascii.core/Charset.Ramp // com.jantursky.kascii.core/Charsets.Short.<get-Short>|<get-Short>(){}[0]
+    final val Standard // com.jantursky.kascii.core/Charsets.Standard|{}Standard[0]
+        final fun <get-Standard>(): com.jantursky.kascii.core/Charset.Ramp // com.jantursky.kascii.core/Charsets.Standard.<get-Standard>|<get-Standard>(){}[0]
+
+    final fun custom(kotlin/String): com.jantursky.kascii.core/Charset.Ramp // com.jantursky.kascii.core/Charsets.custom|custom(kotlin.String){}[0]
+}
+
+final object com.jantursky.kascii.core/Export { // com.jantursky.kascii.core/Export|null[0]
+    final fun toAnsi(com.jantursky.kascii.core/Grid, kotlin/Boolean = ...): kotlin/String // com.jantursky.kascii.core/Export.toAnsi|toAnsi(com.jantursky.kascii.core.Grid;kotlin.Boolean){}[0]
+    final fun toSvg(com.jantursky.kascii.core/Grid, com.jantursky.kascii.core/KasciiTheme = ..., kotlin/Float = ..., kotlin/Float = ..., kotlin/String = ...): kotlin/String // com.jantursky.kascii.core/Export.toSvg|toSvg(com.jantursky.kascii.core.Grid;com.jantursky.kascii.core.KasciiTheme;kotlin.Float;kotlin.Float;kotlin.String){}[0]
+    final fun toText(com.jantursky.kascii.core/Grid, kotlin/Boolean = ...): kotlin/String // com.jantursky.kascii.core/Export.toText|toText(com.jantursky.kascii.core.Grid;kotlin.Boolean){}[0]
+}
+
+final object com.jantursky.kascii.core/Fields { // com.jantursky.kascii.core/Fields|null[0]
+    final fun fromTones(kotlin/FloatArray, kotlin/Int, kotlin/Int): com.jantursky.kascii.core/Field // com.jantursky.kascii.core/Fields.fromTones|fromTones(kotlin.FloatArray;kotlin.Int;kotlin.Int){}[0]
+    final fun gradient(kotlin/Float = ...): com.jantursky.kascii.core/Field // com.jantursky.kascii.core/Fields.gradient|gradient(kotlin.Float){}[0]
+    final fun noise(kotlin/Float = ..., kotlin/Float = ..., kotlin/Int = ..., kotlin/Int = ...): com.jantursky.kascii.core/Field // com.jantursky.kascii.core/Fields.noise|noise(kotlin.Float;kotlin.Float;kotlin.Int;kotlin.Int){}[0]
+    final fun plasma(kotlin/Float = ..., kotlin/Float = ...): com.jantursky.kascii.core/Field // com.jantursky.kascii.core/Fields.plasma|plasma(kotlin.Float;kotlin.Float){}[0]
+    final fun radial(kotlin/Float = ..., kotlin/Float = ..., kotlin/Float = ...): com.jantursky.kascii.core/Field // com.jantursky.kascii.core/Fields.radial|radial(kotlin.Float;kotlin.Float;kotlin.Float){}[0]
+    final fun ripples(kotlin/Float = ..., kotlin/Float = ..., kotlin/Float = ..., kotlin/Float = ...): com.jantursky.kascii.core/Field // com.jantursky.kascii.core/Fields.ripples|ripples(kotlin.Float;kotlin.Float;kotlin.Float;kotlin.Float){}[0]
+    final fun solid(kotlin/Float): com.jantursky.kascii.core/Field // com.jantursky.kascii.core/Fields.solid|solid(kotlin.Float){}[0]
+    final fun waves(kotlin/Int = ..., kotlin/Float = ..., kotlin/Float = ...): com.jantursky.kascii.core/Field // com.jantursky.kascii.core/Fields.waves|waves(kotlin.Int;kotlin.Float;kotlin.Float){}[0]
+}
+
+final object com.jantursky.kascii.core/Noise { // com.jantursky.kascii.core/Noise|null[0]
+    final fun fbm(kotlin/Float, kotlin/Float, kotlin/Float = ..., kotlin/Int = ..., kotlin/Int = ...): kotlin/Float // com.jantursky.kascii.core/Noise.fbm|fbm(kotlin.Float;kotlin.Float;kotlin.Float;kotlin.Int;kotlin.Int){}[0]
+    final fun hash(kotlin/Int, kotlin/Int, kotlin/Int, kotlin/Int): kotlin/Float // com.jantursky.kascii.core/Noise.hash|hash(kotlin.Int;kotlin.Int;kotlin.Int;kotlin.Int){}[0]
+    final fun value(kotlin/Float, kotlin/Float, kotlin/Float = ..., kotlin/Int = ...): kotlin/Float // com.jantursky.kascii.core/Noise.value|value(kotlin.Float;kotlin.Float;kotlin.Float;kotlin.Int){}[0]
+}
+
+final object com.jantursky.kascii.core/PieceClock { // com.jantursky.kascii.core/PieceClock|null[0]
+    final fun isReduced(com.jantursky.kascii.core/Motion, kotlin/Boolean): kotlin/Boolean // com.jantursky.kascii.core/PieceClock.isReduced|isReduced(com.jantursky.kascii.core.Motion;kotlin.Boolean){}[0]
+    final fun next(kotlin/Float, kotlin/Float, kotlin/Float, kotlin/Boolean, kotlin/Float, kotlin/Float = ...): kotlin/Float // com.jantursky.kascii.core/PieceClock.next|next(kotlin.Float;kotlin.Float;kotlin.Float;kotlin.Boolean;kotlin.Float;kotlin.Float){}[0]
+}
+
+final object com.jantursky.kascii.core/Rasterizer { // com.jantursky.kascii.core/Rasterizer|null[0]
+    final fun fromTones(kotlin/FloatArray, com.jantursky.kascii.core/Charset, kotlin/Int, kotlin/Int, kotlin/Float = ..., com.jantursky.kascii.core/ColorMode = ..., com.jantursky.kascii.core/KasciiTheme = ..., com.jantursky.kascii.core/Grid = ...): com.jantursky.kascii.core/Grid // com.jantursky.kascii.core/Rasterizer.fromTones|fromTones(kotlin.FloatArray;com.jantursky.kascii.core.Charset;kotlin.Int;kotlin.Int;kotlin.Float;com.jantursky.kascii.core.ColorMode;com.jantursky.kascii.core.KasciiTheme;com.jantursky.kascii.core.Grid){}[0]
+    final fun rasterize(com.jantursky.kascii.core/Field, com.jantursky.kascii.core/Charset, kotlin/Int, kotlin/Int, kotlin/Float = ..., kotlin/Float = ..., com.jantursky.kascii.core/ColorMode = ..., com.jantursky.kascii.core/KasciiTheme = ..., com.jantursky.kascii.core/Grid = ...): com.jantursky.kascii.core/Grid // com.jantursky.kascii.core/Rasterizer.rasterize|rasterize(com.jantursky.kascii.core.Field;com.jantursky.kascii.core.Charset;kotlin.Int;kotlin.Int;kotlin.Float;kotlin.Float;com.jantursky.kascii.core.ColorMode;com.jantursky.kascii.core.KasciiTheme;com.jantursky.kascii.core.Grid){}[0]
+}
+
+final fun (com.jantursky.kascii.core/Grid).com.jantursky.kascii.core/disc(kotlin/Float, kotlin/Float, kotlin/Float, kotlin/Char = ..., com.jantursky.kascii.core/Rgb? = ..., kotlin/Float = ...) // com.jantursky.kascii.core/disc|disc@com.jantursky.kascii.core.Grid(kotlin.Float;kotlin.Float;kotlin.Float;kotlin.Char;com.jantursky.kascii.core.Rgb?;kotlin.Float){}[0]
+final fun (com.jantursky.kascii.core/Grid).com.jantursky.kascii.core/label(kotlin/Int, kotlin/Int, kotlin/String, com.jantursky.kascii.core/Rgb? = ...) // com.jantursky.kascii.core/label|label@com.jantursky.kascii.core.Grid(kotlin.Int;kotlin.Int;kotlin.String;com.jantursky.kascii.core.Rgb?){}[0]
+final fun (com.jantursky.kascii.core/Grid).com.jantursky.kascii.core/line(kotlin/Int, kotlin/Int, kotlin/Int, kotlin/Int, kotlin/Char = ..., com.jantursky.kascii.core/Rgb? = ...) // com.jantursky.kascii.core/line|line@com.jantursky.kascii.core.Grid(kotlin.Int;kotlin.Int;kotlin.Int;kotlin.Int;kotlin.Char;com.jantursky.kascii.core.Rgb?){}[0]
+final fun (com.jantursky.kascii.core/Grid).com.jantursky.kascii.core/rect(kotlin/Int, kotlin/Int, kotlin/Int, kotlin/Int, com.jantursky.kascii.core/BoxStyle? = ..., kotlin/Char? = ..., com.jantursky.kascii.core/Rgb? = ...) // com.jantursky.kascii.core/rect|rect@com.jantursky.kascii.core.Grid(kotlin.Int;kotlin.Int;kotlin.Int;kotlin.Int;com.jantursky.kascii.core.BoxStyle?;kotlin.Char?;com.jantursky.kascii.core.Rgb?){}[0]
+final fun com.jantursky.kascii.core/asciiPiece(kotlin/String, kotlin/String, kotlin/Int, kotlin/Int, kotlin/Int = ..., kotlin/Float = ..., kotlin/Float = ..., kotlin/String = ..., kotlin/Function2<kotlin/Float, com.jantursky.kascii.core/Grid, kotlin/Unit>): com.jantursky.kascii.core/AsciiPiece // com.jantursky.kascii.core/asciiPiece|asciiPiece(kotlin.String;kotlin.String;kotlin.Int;kotlin.Int;kotlin.Int;kotlin.Float;kotlin.Float;kotlin.String;kotlin.Function2<kotlin.Float,com.jantursky.kascii.core.Grid,kotlin.Unit>){}[0]

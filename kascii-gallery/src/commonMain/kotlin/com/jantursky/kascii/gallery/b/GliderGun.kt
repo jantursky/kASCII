@@ -26,20 +26,25 @@ private const val GUN_X = 2
 private const val GUN_Y = 2
 private val GLYPHS = charArrayOf(' ', '▀', '▄', '█')
 
-private val GUN = listOf(
-    "........................o",
-    "......................o.o",
-    "............oo......oo............oo",
-    "...........o...o....oo............oo",
-    "oo........o.....o...oo",
-    "oo........o...o.oo....o.o",
-    "..........o.....o.......o",
-    "...........o...o",
-    "............oo",
-)
+private val GUN =
+    listOf(
+        "........................o",
+        "......................o.o",
+        "............oo......oo............oo",
+        "...........o...o....oo............oo",
+        "oo........o.....o...oo",
+        "oo........o...o.oo....o.o",
+        "..........o.....o.......o",
+        "...........o...o",
+        "............oo",
+    )
 private val EATER = listOf("oo", "o", ".ooo", "...o")
 
-private fun ByteArray.place(shape: List<String>, x0: Int, y0: Int) {
+private fun ByteArray.place(
+    shape: List<String>,
+    x0: Int,
+    y0: Int,
+) {
     shape.forEachIndexed { y, row ->
         row.forEachIndexed { x, c -> if (c == 'o') this[(PAD + y0 + y) * WIDTH + PAD + x0 + x] = 1 }
     }
@@ -48,11 +53,14 @@ private fun ByteArray.place(shape: List<String>, x0: Int, y0: Int) {
 /** One Conway generation. The outer ring of the field is never written, so it stays dead. */
 internal fun ByteArray.nextGeneration(): ByteArray {
     val out = ByteArray(size)
-    for (y in 1 until HEIGHT - 1) for (x in 1 until WIDTH - 1) {
-        val i = y * WIDTH + x
-        val n = this[i - WIDTH - 1] + this[i - WIDTH] + this[i - WIDTH + 1] + this[i - 1] + this[i + 1] +
-            this[i + WIDTH - 1] + this[i + WIDTH] + this[i + WIDTH + 1]
-        out[i] = if (n == 3 || (n == 2 && this[i].toInt() == 1)) 1 else 0
+    for (y in 1 until HEIGHT - 1) {
+        for (x in 1 until WIDTH - 1) {
+            val i = y * WIDTH + x
+            val n =
+                this[i - WIDTH - 1] + this[i - WIDTH] + this[i - WIDTH + 1] + this[i - 1] + this[i + 1] +
+                    this[i + WIDTH - 1] + this[i + WIDTH] + this[i + WIDTH + 1]
+            out[i] = if (n == 3 || (n == 2 && this[i].toInt() == 1)) 1 else 0
+        }
     }
     return out
 }
@@ -88,10 +96,12 @@ public fun gliderGunPiece(color: Rgb = Palette.Green): AsciiPiece {
         note = "gosper's gun firing a glider every 30 generations",
     ) { t, grid ->
         val board = cycle[frameIndex(t, FPS) % PERIOD]
-        for (r in 0 until ROWS) for (c in 0 until COLS) {
-            val top = board[(PAD + 2 * r) * WIDTH + PAD + c].toInt()
-            val bottom = board[(PAD + 2 * r + 1) * WIDTH + PAD + c].toInt()
-            if (top + bottom > 0) grid.put(c, r, GLYPHS[top + 2 * bottom], color)
+        for (r in 0 until ROWS) {
+            for (c in 0 until COLS) {
+                val top = board[(PAD + 2 * r) * WIDTH + PAD + c].toInt()
+                val bottom = board[(PAD + 2 * r + 1) * WIDTH + PAD + c].toInt()
+                if (top + bottom > 0) grid.put(c, r, GLYPHS[top + 2 * bottom], color)
+            }
         }
     }
 }

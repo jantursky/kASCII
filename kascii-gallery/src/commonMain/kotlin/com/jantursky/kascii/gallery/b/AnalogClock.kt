@@ -37,11 +37,21 @@ private fun strokeGlyph(angle: Float): Char {
     }
 }
 
-private fun Grid.at(angle: Float, radius: Float, glyph: Char, color: Rgb? = null) {
+private fun Grid.at(
+    angle: Float,
+    radius: Float,
+    glyph: Char,
+    color: Rgb? = null,
+) {
     put((CX + radius * sin(angle)).roundToInt(), (CY - radius * cos(angle) / 2f).roundToInt(), glyph, color)
 }
 
-private fun Grid.hand(angle: Float, from: Float, to: Float, color: Rgb?) {
+private fun Grid.hand(
+    angle: Float,
+    from: Float,
+    to: Float,
+    color: Rgb?,
+) {
     val glyph = strokeGlyph(angle)
     var r = from
     while (r <= to) {
@@ -65,7 +75,11 @@ private fun Grid.face() {
     numeral(9, "9", -3)
 }
 
-private fun Grid.numeral(hour: Int, text: String, shift: Int) {
+private fun Grid.numeral(
+    hour: Int,
+    text: String,
+    shift: Int,
+) {
     val a = TAU * hour / 12f
     write((CX + (RADIUS - 5f) * sin(a)).roundToInt() + shift, (CY - (RADIUS - 5f) * cos(a) / 2f).roundToInt(), text)
 }
@@ -76,7 +90,10 @@ private fun Grid.numeral(hour: Int, text: String, shift: Int) {
  * everywhere. The default reads the system clock in UTC: common code has no time zone, so pass a local reading
  * to show local time. Original piece (drawn after ascii.rest `analog clock`, hands and bezel are new).
  */
-public fun analogClockPiece(now: () -> Double = ::utcSecondsOfDay, second: Rgb = Palette.Red): AsciiPiece {
+public fun analogClockPiece(
+    now: () -> Double = ::utcSecondsOfDay,
+    second: Rgb = Palette.Red,
+): AsciiPiece {
     val start = now()
     return asciiPiece(
         name = "analog clock",

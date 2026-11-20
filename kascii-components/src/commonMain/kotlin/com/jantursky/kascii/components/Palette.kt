@@ -36,20 +36,22 @@ internal fun KasciiTheme.pick(index: Int): Rgb = palette[index.mod(palette.size)
 /** Ink and paper swapped, used while a control is pressed. */
 internal fun KasciiTheme.inverse(): KasciiTheme = KasciiTheme(paper, ink, accent, palette)
 
-/** The color of [tone], or null for plain ink. */
-internal fun AsciiTone.color(theme: KasciiTheme): Rgb? = when (this) {
-    AsciiTone.Neutral -> null
-    AsciiTone.Info -> theme.accent
-    AsciiTone.Success -> theme.good()
-    AsciiTone.Warning -> theme.warn()
-    AsciiTone.Error -> theme.bad()
-}
+/** The color of this tone, or null for plain ink. */
+internal fun AsciiTone.color(theme: KasciiTheme): Rgb? =
+    when (this) {
+        AsciiTone.Neutral -> null
+        AsciiTone.Info -> theme.accent
+        AsciiTone.Success -> theme.good()
+        AsciiTone.Warning -> theme.warn()
+        AsciiTone.Error -> theme.bad()
+    }
 
 /** A one-glyph marker so a tone never relies on color alone. */
-internal fun AsciiTone.marker(): Char = when (this) {
-    AsciiTone.Neutral -> '*'
-    AsciiTone.Info -> 'i'
-    AsciiTone.Success -> '+'
-    AsciiTone.Warning -> '!'
-    AsciiTone.Error -> 'x'
-}
+internal fun AsciiTone.marker(): Char =
+    when (this) {
+        AsciiTone.Neutral -> '*'
+        AsciiTone.Info -> 'i'
+        AsciiTone.Success -> '+'
+        AsciiTone.Warning -> '!'
+        AsciiTone.Error -> 'x'
+    }

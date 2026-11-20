@@ -28,9 +28,19 @@ private const val STROKES = 4
 private const val SQUEEZE_SHARE = 0.28f
 private const val BELL_GLYPHS = " .:=+*#%@"
 
-private class Rim(val x: Float, val y: Float, val half: Float, val squeeze: Float)
+private class Rim(
+    val x: Float,
+    val y: Float,
+    val half: Float,
+    val squeeze: Float,
+)
 
-private class Speck(val x: Float, val y: Float, val lanes: Int, val wobble: Float)
+private class Speck(
+    val x: Float,
+    val y: Float,
+    val lanes: Int,
+    val wobble: Float,
+)
 
 /** Where the bell's rim sits at [t]: it squeezes four times per loop and lurches up with each stroke. */
 private fun rimAt(t: Float): Rim {
@@ -46,7 +56,10 @@ private fun rimAt(t: Float): Rim {
     )
 }
 
-private fun Grid.bell(rim: Rim, color: Rgb) {
+private fun Grid.bell(
+    rim: Rim,
+    color: Rgb,
+) {
     val height = 6.5f + rim.squeeze
     val rimRow = rim.y.toInt()
     for (r in 0 until rimRow) {
@@ -57,11 +70,12 @@ private fun Grid.bell(rim: Rim, color: Rgb) {
             val u = (x + 0.5f - rim.x) / width
             if (abs(u) >= 1f) continue
             val depth = sqrt(1f - u * u) * sqrt(1f - s * s)
-            val glyph = when {
-                depth >= 0.2f -> BELL_GLYPHS[(1 + (0.15f + 0.65f * (1f - depth) * (1f - depth)) * 7f).toInt()]
-                abs(u) > 0.8f -> if (u < 0f) '(' else ')'
-                else -> '-'
-            }
+            val glyph =
+                when {
+                    depth >= 0.2f -> BELL_GLYPHS[(1 + (0.15f + 0.65f * (1f - depth) * (1f - depth)) * 7f).toInt()]
+                    abs(u) > 0.8f -> if (u < 0f) '(' else ')'
+                    else -> '-'
+                }
             put(x, r, glyph, color)
         }
     }
@@ -72,7 +86,14 @@ private fun Grid.bell(rim: Rim, color: Rgb) {
 }
 
 /** One tentacle: every row below the rim hangs from where the rim was a moment earlier, so it trails late. */
-private fun Grid.strand(t: Float, rim: Rim, u: Float, length: Float, index: Int, color: Rgb) {
+private fun Grid.strand(
+    t: Float,
+    rim: Rim,
+    u: Float,
+    length: Float,
+    index: Int,
+    color: Rgb,
+) {
     val top = rim.y.toInt() + 1
     var previous = Float.NaN
     for (r in top until ROWS) {
@@ -82,12 +103,13 @@ private fun Grid.strand(t: Float, rim: Rim, u: Float, length: Float, index: Int,
         val sway = (0.05f + d * 0.013f) * d * sin(0.5f * d - TAU * 4f * t / LOOP + index * 1.9f)
         val x = was.x + u * was.half * (1f - 0.01f * d) + sway
         val lean = if (previous.isNaN()) 0f else x - previous
-        val glyph = when {
-            d > length * 0.85f -> '.'
-            lean > 0.6f -> '\\'
-            lean < -0.6f -> '/'
-            else -> '|'
-        }
+        val glyph =
+            when {
+                d > length * 0.85f -> '.'
+                lean > 0.6f -> '\\'
+                lean < -0.6f -> '/'
+                else -> '|'
+            }
         put(x.roundToInt(), r, glyph, color)
         previous = x
     }
@@ -100,7 +122,11 @@ private fun Grid.strand(t: Float, rim: Rim, u: Float, length: Float, index: Int,
  * Ported from ascii.rest `jellyfish` (MIT, Copyright (c) 2026 bas3line): same pulse, lagging tentacles and
  * shaded dome, re-implemented with a per-cell color.
  */
-public fun jellyfishPiece(seed: Int = 0, color: Rgb = Palette.Violet, specks: Int = 30): AsciiPiece {
+public fun jellyfishPiece(
+    seed: Int = 0,
+    color: Rgb = Palette.Violet,
+    specks: Int = 30,
+): AsciiPiece {
     val rng = rngFor(seed, 1)
     val plankton = List(specks) { Speck(rng.float() * COLS, rng.float() * ROWS, 1 + rng.int(2), rng.float() * TAU) }
     return asciiPiece(

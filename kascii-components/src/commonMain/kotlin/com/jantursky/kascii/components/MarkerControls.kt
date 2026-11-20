@@ -53,9 +53,10 @@ public fun AsciiRadio(
     ControlGrid(
         grid = renderMarkerRow(RADIO_MARKERS, selected, label, state, LocalKasciiTheme.current),
         state = state,
-        modifier = modifier
-            .semantics { contentDescription = label }
-            .selectable(selected, source, null, enabled, Role.RadioButton, onClick),
+        modifier =
+            modifier
+                .semantics { contentDescription = label }
+                .selectable(selected, source, null, enabled, Role.RadioButton, onClick),
     )
 }
 
@@ -90,13 +91,17 @@ private fun ToggleControl(
     ControlGrid(
         grid = renderMarkerRow(markers, checked, label, state, LocalKasciiTheme.current),
         state = state,
-        modifier = modifier
-            .semantics { contentDescription = label }
-            .toggleable(checked, source, null, enabled, role, onCheckedChange),
+        modifier =
+            modifier
+                .semantics { contentDescription = label }
+                .toggleable(checked, source, null, enabled, role, onCheckedChange),
     )
 }
 
-internal class Markers(val on: String, val off: String)
+internal class Markers(
+    val on: String,
+    val off: String,
+)
 
 internal val CHECKBOX_MARKERS = Markers("[x]", "[ ]")
 internal val RADIO_MARKERS = Markers("(*)", "( )")
@@ -112,12 +117,13 @@ internal fun renderMarkerRow(
 ): Grid {
     val marker = if (on) markers.on else markers.off
     val grid = Grid(1 + marker.length + if (label.isEmpty()) 0 else label.length + 1, 1)
-    val markerColor = when {
-        !state.enabled -> theme.dim()
-        state.pressed -> null
-        on -> theme.good()
-        else -> null
-    }
+    val markerColor =
+        when {
+            !state.enabled -> theme.dim()
+            state.pressed -> null
+            on -> theme.good()
+            else -> null
+        }
     grid.write(1, 0, marker, markerColor)
     if (label.isNotEmpty()) grid.write(marker.length + 2, 0, label, if (state.enabled) null else theme.dim())
     if (state.focused) grid.put(0, 0, '>', if (state.pressed) null else theme.accent)

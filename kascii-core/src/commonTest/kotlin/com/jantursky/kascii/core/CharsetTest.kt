@@ -69,6 +69,12 @@ class CharsetTest {
 
     @Test
     fun everyBuiltInHasAUniqueName() {
-        assertEquals(Charsets.All.size, Charsets.All.map { it.name }.toSet().size)
+        assertEquals(
+            Charsets.All.size,
+            Charsets.All
+                .map { it.name }
+                .toSet()
+                .size,
+        )
     }
 }

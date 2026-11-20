@@ -17,15 +17,20 @@ public fun AsciiCpuMeters(
     GridSurface(renderCpuMeters(loads, cols, LocalKasciiTheme.current), modifier, description)
 }
 
-internal fun renderCpuMeters(loads: List<Float>, cols: Int, theme: KasciiTheme): Grid {
+internal fun renderCpuMeters(
+    loads: List<Float>,
+    cols: Int,
+    theme: KasciiTheme,
+): Grid {
     val grid = Grid(cols, loads.size)
     val inner = (cols - METER_CHROME).coerceAtLeast(1)
     loads.forEachIndexed { y, load ->
-        val color = when {
-            load < MEDIUM_LOAD -> theme.good()
-            load < HIGH_LOAD -> theme.warn()
-            else -> theme.bad()
-        }
+        val color =
+            when {
+                load < MEDIUM_LOAD -> theme.good()
+                load < HIGH_LOAD -> theme.warn()
+                else -> theme.bad()
+            }
         grid.write(0, y, y.toString().padStart(2) + " [", theme.dim())
         grid.fill(4, y, (load.coerceIn(0f, 1f) * inner).toInt(), 1, '|', color)
         grid.write(4 + inner, y, "] " + "${percentOf(load)}%".padStart(4))

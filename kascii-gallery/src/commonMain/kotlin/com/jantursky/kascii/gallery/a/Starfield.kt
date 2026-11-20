@@ -20,7 +20,11 @@ private const val NEAR = 0.05f
  * A flight through a field of stars. Every star sits at a fixed spot in space and approaches the camera once or
  * twice per loop, growing from a dot to a bright blob and leaving a short streak as it speeds up.
  */
-public fun starfieldPiece(seed: Int = 0, density: Int = 140, tint: Rgb = AKit.Blue): AsciiPiece {
+public fun starfieldPiece(
+    seed: Int = 0,
+    density: Int = 140,
+    tint: Rgb = AKit.Blue,
+): AsciiPiece {
     require(density > 0) { "density must be positive" }
     return asciiPiece(
         name = "starfield",
@@ -38,18 +42,26 @@ public fun starfieldPiece(seed: Int = 0, density: Int = 140, tint: Rgb = AKit.Bl
             val phase = rng.float()
             val progress = AKit.frac(phase + (1 + i % 2) * t / LOOP)
             val glyph = AKit.glyph(".+*@", progress)
-            val color = when (i % 5) {
-                0 -> tint
-                1 -> AKit.Amber
-                else -> null
-            }
+            val color =
+                when (i % 5) {
+                    0 -> tint
+                    1 -> AKit.Amber
+                    else -> null
+                }
             if (progress > 0.5f) plot(grid, x, y, 1f - (progress - 0.04f) * (1f - NEAR), '.', color)
             plot(grid, x, y, 1f - progress * (1f - NEAR), glyph, color)
         }
     }
 }
 
-private fun plot(grid: Grid, x: Float, y: Float, z: Float, glyph: Char, color: Rgb?) {
+private fun plot(
+    grid: Grid,
+    x: Float,
+    y: Float,
+    z: Float,
+    glyph: Char,
+    color: Rgb?,
+) {
     grid.put((COLS / 2f + x * 0.5f * COLS / z).toInt(), (ROWS / 2f + y * 0.5f * ROWS / z).toInt(), glyph, color)
 }
 

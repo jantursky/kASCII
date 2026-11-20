@@ -16,7 +16,11 @@ public fun AsciiBadge(
     GridSurface(renderBadge(text, tone, LocalKasciiTheme.current), modifier, text)
 }
 
-internal fun renderBadge(text: String, tone: AsciiTone, theme: KasciiTheme): Grid {
+internal fun renderBadge(
+    text: String,
+    tone: AsciiTone,
+    theme: KasciiTheme,
+): Grid {
     val grid = Grid(text.length + 2, 1)
     grid.write(0, 0, "($text)", tone.color(theme))
     return grid

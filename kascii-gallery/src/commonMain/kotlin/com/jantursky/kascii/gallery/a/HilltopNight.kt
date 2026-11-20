@@ -21,19 +21,24 @@ private const val GROUND = 22
 private const val LOOP = 12f
 private const val CHIMNEY_ROW = 18 // smoke starts above the roof peak
 
-private val HOUSE = listOf(
-    "   ^   ",
-    "  / \\  ",
-    " /___\\ ",
-    " | # | ",
-    " |___| ",
-)
+private val HOUSE =
+    listOf(
+        "   ^   ",
+        "  / \\  ",
+        " /___\\ ",
+        " | # | ",
+        " |___| ",
+    )
 
 /**
  * A quiet village at night: twinkling stars, a crescent moon, rolling hills, cottages with flickering windows and a
  * thread of chimney smoke. Houses and pines stand where the seed puts them.
  */
-public fun hilltopNightPiece(seed: Int = 0, window: Rgb = AKit.Amber, moon: Rgb = AKit.Amber): AsciiPiece {
+public fun hilltopNightPiece(
+    seed: Int = 0,
+    window: Rgb = AKit.Amber,
+    moon: Rgb = AKit.Amber,
+): AsciiPiece {
     val rng = AKit.rng(seed, 2)
     val houses = List(4) { 4 + it * 17 + rng.int(6) }
     val pines = List(6) { 2 + it * 12 + rng.int(8) }
@@ -61,25 +66,46 @@ public fun hilltopNightPiece(seed: Int = 0, window: Rgb = AKit.Amber, moon: Rgb 
     }
 }
 
-private fun paintStars(grid: Grid, seed: Int, t: Float) {
-    for (y in 0 until 13) for (x in 0 until COLS) {
-        val h = Noise.hash(x, y, 0, seed)
-        if (h < 0.972f) continue
-        val glint = sin(AKit.TAU * (3f * t / LOOP + h * 40f))
-        val glyph = if (glint > 0.8f) '+' else if (glint > -0.5f) '*' else '.'
-        grid.put(x, y, glyph, if (h > 0.99f) AKit.Blue else null)
+private fun paintStars(
+    grid: Grid,
+    seed: Int,
+    t: Float,
+) {
+    for (y in 0 until 13) {
+        for (x in 0 until COLS) {
+            val h = Noise.hash(x, y, 0, seed)
+            if (h < 0.972f) continue
+            val glint = sin(AKit.TAU * (3f * t / LOOP + h * 40f))
+            val glyph =
+                if (glint > 0.8f) {
+                    '+'
+                } else if (glint > -0.5f) {
+                    '*'
+                } else {
+                    '.'
+                }
+            grid.put(x, y, glyph, if (h > 0.99f) AKit.Blue else null)
+        }
     }
 }
 
-private fun paintMoon(grid: Grid, color: Rgb) {
-    for (y in 1..9) for (x in 50..64) {
-        val inside = sqrt((x - 57f) * (x - 57f) * 0.25f + (y - 5f) * (y - 5f)) <= 3.6f
-        val bite = sqrt((x - 60.5f) * (x - 60.5f) * 0.25f + (y - 4.6f) * (y - 4.6f)) <= 3.4f
-        if (inside && !bite) grid.put(x, y, '@', color)
+private fun paintMoon(
+    grid: Grid,
+    color: Rgb,
+) {
+    for (y in 1..9) {
+        for (x in 50..64) {
+            val inside = sqrt((x - 57f) * (x - 57f) * 0.25f + (y - 5f) * (y - 5f)) <= 3.6f
+            val bite = sqrt((x - 60.5f) * (x - 60.5f) * 0.25f + (y - 4.6f) * (y - 4.6f)) <= 3.4f
+            if (inside && !bite) grid.put(x, y, '@', color)
+        }
     }
 }
 
-private fun paintHills(grid: Grid, seed: Int) {
+private fun paintHills(
+    grid: Grid,
+    seed: Int,
+) {
     for (x in 0 until COLS) {
         val far = 15 - (Noise.fbm(x * 0.05f, 1f, 0f, 3, seed) * 6f).toInt()
         val near = 19 - (Noise.fbm(x * 0.08f, 9f, 0f, 3, seed + 1) * 4f).toInt()
@@ -88,12 +114,21 @@ private fun paintHills(grid: Grid, seed: Int) {
     }
 }
 
-private fun paintPine(grid: Grid, x: Int) {
+private fun paintPine(
+    grid: Grid,
+    x: Int,
+) {
     for (k in 0..3) for (dx in -k..k) grid.put(x + dx, GROUND - 5 + k, '^', AKit.Green)
     grid.put(x, GROUND - 1, '|')
 }
 
-private fun paintHouse(grid: Grid, x: Int, index: Int, t: Float, window: Rgb) {
+private fun paintHouse(
+    grid: Grid,
+    x: Int,
+    index: Int,
+    t: Float,
+    window: Rgb,
+) {
     val lit = Noise.hash(index, floor(t * 2f).toInt(), 3, 0) > 0.15f
     HOUSE.forEachIndexed { row, line ->
         line.forEachIndexed { col, ch ->
@@ -106,10 +141,24 @@ private fun paintHouse(grid: Grid, x: Int, index: Int, t: Float, window: Rgb) {
     }
 }
 
-private fun paintSmoke(grid: Grid, x: Int, t: Float) {
+private fun paintSmoke(
+    grid: Grid,
+    x: Int,
+    t: Float,
+) {
     for (k in 0..5) {
         val sway = sin(AKit.TAU * (2f * t / LOOP) + k * 0.9f) * 1.5f
-        grid.put(x + (sway + k * 0.3f).toInt(), CHIMNEY_ROW - 2 - k, if (k < 2) 'o' else if (k < 4) ':' else '.')
+        grid.put(
+            x + (sway + k * 0.3f).toInt(),
+            CHIMNEY_ROW - 2 - k,
+            if (k < 2) {
+                'o'
+            } else if (k < 4) {
+                ':'
+            } else {
+                '.'
+            },
+        )
     }
 }
 

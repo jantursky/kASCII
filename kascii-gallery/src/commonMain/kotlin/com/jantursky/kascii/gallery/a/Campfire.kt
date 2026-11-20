@@ -7,9 +7,9 @@ import com.jantursky.kascii.compose.AsciiPieceView
 import com.jantursky.kascii.compose.AsciiRenderer
 import com.jantursky.kascii.core.AsciiPiece
 import com.jantursky.kascii.core.Motion
+import com.jantursky.kascii.core.Noise
 import com.jantursky.kascii.core.Rgb
 import com.jantursky.kascii.core.asciiPiece
-import com.jantursky.kascii.core.Noise
 import com.jantursky.kascii.core.label
 import kotlin.math.abs
 import kotlin.math.sin
@@ -46,16 +46,20 @@ public fun campfirePiece(
         still = 2f,
         note = "flickering flames over crossed logs with rising sparks",
     ) { t, grid ->
-        for (x in 0 until COLS) for (y in 0 until 4) {
-            if (Noise.hash(x, y, 7, seed) > 0.96f) grid.put(x, y, '.')
+        for (x in 0 until COLS) {
+            for (y in 0 until 4) {
+                if (Noise.hash(x, y, 7, seed) > 0.96f) grid.put(x, y, '.')
+            }
         }
-        for (y in 0..BASE) for (x in 0 until COLS) {
-            val hy = (BASE - y) / rows
-            if (hy > 1f) continue
-            val n = Noise.fbm(x * 0.22f, y * 0.28f + t * 2.4f, t * 0.6f, 3, seed)
-            val shape = 1f - abs(x - CENTER) / (9f * (1f - hy * 0.85f))
-            val tone = (shape * 1.1f - hy * 0.9f + (n - 0.5f) * 0.9f + 0.25f).coerceIn(0f, 1f)
-            if (tone > 0.12f) grid.put(x, y, AKit.glyph(RAMP, tone), ember.lerp(flame, tone))
+        for (y in 0..BASE) {
+            for (x in 0 until COLS) {
+                val hy = (BASE - y) / rows
+                if (hy > 1f) continue
+                val n = Noise.fbm(x * 0.22f, y * 0.28f + t * 2.4f, t * 0.6f, 3, seed)
+                val shape = 1f - abs(x - CENTER) / (9f * (1f - hy * 0.85f))
+                val tone = (shape * 1.1f - hy * 0.9f + (n - 0.5f) * 0.9f + 0.25f).coerceIn(0f, 1f)
+                if (tone > 0.12f) grid.put(x, y, AKit.glyph(RAMP, tone), ember.lerp(flame, tone))
+            }
         }
         grid.label(CENTER, BASE + 1, "\\==#####==/")
         grid.label(CENTER, BASE + 2, "/===#####===\\")

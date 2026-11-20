@@ -41,31 +41,34 @@ public fun tunnelPiece(
     seed: Int = 0,
     charset: Charset.Ramp = Charsets.Standard,
     colors: List<Rgb> = listOf(Palette.Violet, Palette.Blue, Palette.Red),
-): AsciiPiece = asciiPiece(
-    name = "tunnel",
-    category = "effects",
-    cols = COLS,
-    rows = ROWS,
-    fps = 24,
-    still = 1f,
-    loop = LOOP,
-    note = "a flight down a twisting tiled tunnel",
-) { t, grid ->
-    val progress = t / LOOP
-    for (y in 0 until ROWS) for (x in 0 until COLS) {
-        val px = (x + 0.5f) / COLS * 2f - 1f
-        val py = ((y + 0.5f) / ROWS * 2f - 1f) * ROWS * 2f / COLS
-        val radius = sqrt(px * px + py * py)
-        val angle = atan2(py, px) / PI.toFloat()
-        val u = floor(angle * SECTORS / 2f + 2f * progress * TILES / 2f).toInt()
-        val v = floor(0.6f / radius * 4f + TILES * progress).toInt()
-        val tile = Noise.hash(wrap(u), wrap(v), 0, seed)
-        val checker = if ((u + v) % 2 == 0) 1f else 0f
-        val tone = (0.3f * checker + 0.7f * tile) * ease((radius - 0.04f) / 0.5f)
-        val glyph = charset.glyphFor(tone)
-        if (glyph != ' ') grid.put(x, y, glyph, colors[(tile * colors.size).toInt() % colors.size])
+): AsciiPiece =
+    asciiPiece(
+        name = "tunnel",
+        category = "effects",
+        cols = COLS,
+        rows = ROWS,
+        fps = 24,
+        still = 1f,
+        loop = LOOP,
+        note = "a flight down a twisting tiled tunnel",
+    ) { t, grid ->
+        val progress = t / LOOP
+        for (y in 0 until ROWS) {
+            for (x in 0 until COLS) {
+                val px = (x + 0.5f) / COLS * 2f - 1f
+                val py = ((y + 0.5f) / ROWS * 2f - 1f) * ROWS * 2f / COLS
+                val radius = sqrt(px * px + py * py)
+                val angle = atan2(py, px) / PI.toFloat()
+                val u = floor(angle * SECTORS / 2f + 2f * progress * TILES / 2f).toInt()
+                val v = floor(0.6f / radius * 4f + TILES * progress).toInt()
+                val tile = Noise.hash(wrap(u), wrap(v), 0, seed)
+                val checker = if ((u + v) % 2 == 0) 1f else 0f
+                val tone = (0.3f * checker + 0.7f * tile) * ease((radius - 0.04f) / 0.5f)
+                val glyph = charset.glyphFor(tone)
+                if (glyph != ' ') grid.put(x, y, glyph, colors[(tile * colors.size).toInt() % colors.size])
+            }
+        }
     }
-}
 
 /**
  * A twisting tunnel of colored tiles seen head on. [seed] lays the tiles, [charset] shades them and [colors] are

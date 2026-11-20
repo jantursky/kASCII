@@ -14,7 +14,11 @@ import com.jantursky.kascii.core.KasciiTheme
 import kotlin.math.abs
 
 /** How the filled part of a progress bar is drawn. */
-public enum class AsciiBarStyle(internal val full: Char, internal val empty: Char, internal val partials: String) {
+public enum class AsciiBarStyle(
+    internal val full: Char,
+    internal val empty: Char,
+    internal val partials: String,
+) {
     /** Solid blocks on a shaded track. */
     Blocks('█', '░', ""),
 
@@ -42,12 +46,13 @@ public fun AsciiProgressBar(
     val time = if (value == null) rememberClock(BAR_FPS, rememberReducedMotion()).floatValue else 0f
     GridSurface(
         grid = renderProgressBar(cols, value, style, showPercent, time, theme),
-        modifier = modifier.semantics(mergeDescendants = true) {
-            contentDescription = label
-            progressBarRangeInfo = value?.let { ProgressBarRangeInfo(it.coerceIn(0f, 1f), 0f..1f) }
-                ?: ProgressBarRangeInfo.Indeterminate
-            value?.let { stateDescription = "${percentOf(it)}%" }
-        },
+        modifier =
+            modifier.semantics(mergeDescendants = true) {
+                contentDescription = label
+                progressBarRangeInfo = value?.let { ProgressBarRangeInfo(it.coerceIn(0f, 1f), 0f..1f) }
+                    ?: ProgressBarRangeInfo.Indeterminate
+                value?.let { stateDescription = "${percentOf(it)}%" }
+            },
     )
 }
 

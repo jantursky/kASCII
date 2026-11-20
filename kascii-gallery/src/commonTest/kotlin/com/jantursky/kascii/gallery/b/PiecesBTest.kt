@@ -19,7 +19,14 @@ class PiecesBTest {
     @Test
     fun theStillFrameIsNotBlank() {
         for (case in pieceCases) {
-            assertTrue(case.create(3).render().toText().any { !it.isWhitespace() }, case.name)
+            assertTrue(
+                case
+                    .create(3)
+                    .render()
+                    .toText()
+                    .any { !it.isWhitespace() },
+                case.name,
+            )
         }
     }
 

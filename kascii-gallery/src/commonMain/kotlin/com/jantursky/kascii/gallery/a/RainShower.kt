@@ -7,9 +7,9 @@ import com.jantursky.kascii.compose.AsciiPieceView
 import com.jantursky.kascii.compose.AsciiRenderer
 import com.jantursky.kascii.core.AsciiPiece
 import com.jantursky.kascii.core.Motion
+import com.jantursky.kascii.core.Noise
 import com.jantursky.kascii.core.Rgb
 import com.jantursky.kascii.core.asciiPiece
-import com.jantursky.kascii.core.Noise
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -23,12 +23,18 @@ private const val SPLASH_ROWS = 3
  * Rain falling from a drifting cloud and splashing on the ground. Drops fall at three speeds, slanted by [wind],
  * and wrap around the sides. Each drop lands a whole number of times per loop.
  */
-public fun rainPiece(seed: Int = 0, density: Float = 1f, wind: Float = 0.25f, color: Rgb = AKit.Blue): AsciiPiece {
+public fun rainPiece(
+    seed: Int = 0,
+    density: Float = 1f,
+    wind: Float = 0.25f,
+    color: Rgb = AKit.Blue,
+): AsciiPiece {
     require(density > 0f) { "density must be positive" }
     val rng = AKit.rng(seed, 6)
-    val drops = List((COLS * density * 2f).toInt().coerceAtLeast(1)) {
-        floatArrayOf(rng.float(0f, COLS.toFloat()), (2 + rng.int(3)).toFloat(), rng.float())
-    }
+    val drops =
+        List((COLS * density * 2f).toInt().coerceAtLeast(1)) {
+            floatArrayOf(rng.float(0f, COLS.toFloat()), (2 + rng.int(3)).toFloat(), rng.float())
+        }
     val slant = if (wind < 0.1f) '|' else '/'
     return asciiPiece(
         name = "rain",
@@ -40,10 +46,12 @@ public fun rainPiece(seed: Int = 0, density: Float = 1f, wind: Float = 0.25f, co
         note = "slanted rain under a drifting cloud, splashing on the ground",
     ) { t, grid ->
         val angle = AKit.TAU * t / LOOP
-        for (y in 0 until CLOUD_ROWS) for (x in 0 until COLS) {
-            val n = Noise.fbm(x * 0.09f + 3f * cos(angle), y * 0.4f + 3f * sin(angle), 0f, 3, seed) - y * 0.16f
-            val glyph = AKit.glyph(" .:=%", n * 1.4f - 0.3f)
-            if (glyph != ' ') grid.put(x, y, glyph)
+        for (y in 0 until CLOUD_ROWS) {
+            for (x in 0 until COLS) {
+                val n = Noise.fbm(x * 0.09f + 3f * cos(angle), y * 0.4f + 3f * sin(angle), 0f, 3, seed) - y * 0.16f
+                val glyph = AKit.glyph(" .:=%", n * 1.4f - 0.3f)
+                if (glyph != ' ') grid.put(x, y, glyph)
+            }
         }
         for (x in 0 until COLS) grid.put(x, ROWS - 1, '-')
         for (d in drops) {
@@ -51,8 +59,13 @@ public fun rainPiece(seed: Int = 0, density: Float = 1f, wind: Float = 0.25f, co
             val x = (((d[0] - y * wind).toInt() % COLS) + COLS) % COLS
             val fall = y.toInt()
             when {
-                fall < CLOUD_ROWS -> Unit
-                fall < ROWS - 1 -> grid.put(x, fall, if (d[1] == 2f) '.' else slant, color)
+                // Drops inside the cloud are not drawn.
+                fall < CLOUD_ROWS -> {}
+
+                fall < ROWS - 1 -> {
+                    grid.put(x, fall, if (d[1] == 2f) '.' else slant, color)
+                }
+
                 else -> {
                     grid.put(x, ROWS - 1, 'o', color)
                     if (fall > ROWS - 1) {

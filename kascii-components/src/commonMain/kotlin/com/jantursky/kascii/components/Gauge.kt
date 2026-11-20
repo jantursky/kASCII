@@ -27,15 +27,21 @@ public fun AsciiGauge(
     val text = listOfNotNull(label, "${percentOf(value)}%").joinToString(" ")
     GridSurface(
         grid = renderGauge(value, cols, label, LocalKasciiTheme.current),
-        modifier = modifier.semantics(mergeDescendants = true) {
-            progressBarRangeInfo = ProgressBarRangeInfo(value.coerceIn(0f, 1f), 0f..1f)
-            stateDescription = text
-        },
+        modifier =
+            modifier.semantics(mergeDescendants = true) {
+                progressBarRangeInfo = ProgressBarRangeInfo(value.coerceIn(0f, 1f), 0f..1f)
+                stateDescription = text
+            },
         description = text,
     )
 }
 
-internal fun renderGauge(value: Float, cols: Int, label: String?, theme: KasciiTheme): Grid {
+internal fun renderGauge(
+    value: Float,
+    cols: Int,
+    label: String?,
+    theme: KasciiTheme,
+): Grid {
     val radius = cols - 1
     val arcRows = (radius + 4) / 4
     val grid = Grid(cols, arcRows + if (label == null) 0 else 1)

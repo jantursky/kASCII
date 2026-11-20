@@ -24,20 +24,32 @@ public fun AsciiRadar(
     cols: Int = 40,
     rows: Int = 14,
 ) {
-    val description = "Radar chart: " + values.indices.joinToString(", ") {
-        "${labels.getOrElse(it) { "" }} ${percentOf(values[it])}%"
-    }
+    val description =
+        "Radar chart: " +
+            values.indices.joinToString(", ") {
+                "${labels.getOrElse(it) { "" }} ${percentOf(values[it])}%"
+            }
     GridSurface(renderRadar(values, labels, cols, rows, LocalKasciiTheme.current), modifier, description)
 }
 
-internal fun renderRadar(values: List<Float>, labels: List<String>, cols: Int, rows: Int, theme: KasciiTheme): Grid {
+internal fun renderRadar(
+    values: List<Float>,
+    labels: List<String>,
+    cols: Int,
+    rows: Int,
+    theme: KasciiTheme,
+): Grid {
     require(values.size >= 3) { "A radar chart needs at least three spokes" }
     val grid = Grid(cols, rows)
     val margin = (labels.maxOfOrNull { it.length } ?: 0) * 2 + 2
     val radius = minOf(cols * 2 / 2 - margin, rows * 4 / 2 - 4)
     val centerX = cols.toFloat()
     val centerY = rows * 2f
-    fun point(i: Int, length: Float): Pair<Int, Int> {
+
+    fun point(
+        i: Int,
+        length: Float,
+    ): Pair<Int, Int> {
         val angle = 2 * PI * i / values.size - PI / 2
         return (centerX + length * cos(angle)).roundToInt() to (centerY + length * sin(angle)).roundToInt()
     }

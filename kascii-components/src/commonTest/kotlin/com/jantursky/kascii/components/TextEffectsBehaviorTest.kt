@@ -40,7 +40,10 @@ class TextEffectsBehaviorTest {
 
     @Test
     fun scrambleFramesDependOnTheSeedAndTheFrame() {
-        fun frame(seed: Long, t: Float) = renderScramble("abcdefghijkl", t, 100f, seed, false, theme).toText()
+        fun frame(
+            seed: Long,
+            t: Float,
+        ) = renderScramble("abcdefghijkl", t, 100f, seed, false, theme).toText()
         assertEquals(frame(1L, 0.5f), frame(1L, 0.5f))
         assertNotEquals(frame(1L, 0.5f), frame(2L, 0.5f))
         assertNotEquals(frame(1L, 0.5f), frame(1L, 0.6f))

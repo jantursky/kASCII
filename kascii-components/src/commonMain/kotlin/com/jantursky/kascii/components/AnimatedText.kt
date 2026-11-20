@@ -26,7 +26,13 @@ internal fun AnimatedText(
 }
 
 /** A random source that depends only on the seed, the character index and the frame, so frames can be replayed. */
-internal fun frameRng(seed: Long, index: Int, frame: Int): Rng =
-    Rng(seed * 1_000_003L + index * 7_919L + frame * 104_729L)
+internal fun frameRng(
+    seed: Long,
+    index: Int,
+    frame: Int,
+): Rng = Rng(seed * 1_000_003L + index * 7_919L + frame * 104_729L)
 
-internal fun Grid.writeText(text: String, color: Rgb? = null) = write(0, 0, text, color)
+internal fun Grid.writeText(
+    text: String,
+    color: Rgb? = null,
+) = write(0, 0, text, color)

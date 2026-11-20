@@ -7,7 +7,9 @@ import com.jantursky.kascii.core.Grid
 import com.jantursky.kascii.core.KasciiTheme
 
 /** The line a divider is drawn with. */
-public enum class AsciiDividerStyle(internal val glyph: Char) {
+public enum class AsciiDividerStyle(
+    internal val glyph: Char,
+) {
     /** A thin line. */
     Line('─'),
 
@@ -35,7 +37,12 @@ public fun AsciiDivider(
     GridSurface(renderDivider(cols, style, label, LocalKasciiTheme.current), modifier, label)
 }
 
-internal fun renderDivider(cols: Int, style: AsciiDividerStyle, label: String?, theme: KasciiTheme): Grid {
+internal fun renderDivider(
+    cols: Int,
+    style: AsciiDividerStyle,
+    label: String?,
+    theme: KasciiTheme,
+): Grid {
     val grid = Grid(cols, 1)
     grid.fill(0, 0, cols, 1, style.glyph, theme.dim())
     if (!label.isNullOrEmpty()) grid.write(DIVIDER_LABEL_X, 0, " ${label.take(cols - 2 * DIVIDER_LABEL_X)} ")

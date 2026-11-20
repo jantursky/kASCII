@@ -10,11 +10,17 @@ import com.jantursky.kascii.core.rect
 
 /** An avatar showing the initials of [name] in a rounded box. Its color is picked from the theme by name. */
 @Composable
-public fun AsciiAvatar(name: String, modifier: Modifier = Modifier) {
+public fun AsciiAvatar(
+    name: String,
+    modifier: Modifier = Modifier,
+) {
     GridSurface(renderAvatar(name, LocalKasciiTheme.current), modifier, name)
 }
 
-internal fun renderAvatar(name: String, theme: KasciiTheme): Grid {
+internal fun renderAvatar(
+    name: String,
+    theme: KasciiTheme,
+): Grid {
     val color = theme.pick(name.sumOf { it.code })
     val grid = Grid(AVATAR_COLS, 3)
     grid.rect(0, 0, AVATAR_COLS, 3, BoxStyle.Rounded, color = color)

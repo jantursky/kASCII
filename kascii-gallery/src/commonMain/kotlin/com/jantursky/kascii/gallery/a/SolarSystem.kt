@@ -19,7 +19,13 @@ private const val LOOP = 60f
 private const val TILT = 0.35f
 private const val DOTS = 72
 
-private class SolarPlanet(val radius: Float, val laps: Int, val glyph: Char, val color: Rgb?, val ring: Boolean = false)
+private class SolarPlanet(
+    val radius: Float,
+    val laps: Int,
+    val glyph: Char,
+    val color: Rgb?,
+    val ring: Boolean = false,
+)
 
 private const val MOON_LAPS = 60
 
@@ -28,15 +34,19 @@ private const val MOON_LAPS = 60
  * Each planet makes a whole number of laps per loop, so the loop is seamless. The seed sets where each planet
  * starts on its orbit.
  */
-public fun solarSystemPiece(seed: Int = 0, sun: Rgb = AKit.Amber): AsciiPiece {
-    val planets = listOf(
-        SolarPlanet(8f, 12, 'o', AKit.Red),
-        SolarPlanet(13f, 8, 'O', AKit.Blue),
-        SolarPlanet(19f, 5, '@', AKit.Green),
-        SolarPlanet(25f, 3, 'O', AKit.Amber, ring = true),
-        SolarPlanet(30f, 2, '0', AKit.Violet),
-        SolarPlanet(34f, 1, 'o', null),
-    )
+public fun solarSystemPiece(
+    seed: Int = 0,
+    sun: Rgb = AKit.Amber,
+): AsciiPiece {
+    val planets =
+        listOf(
+            SolarPlanet(8f, 12, 'o', AKit.Red),
+            SolarPlanet(13f, 8, 'O', AKit.Blue),
+            SolarPlanet(19f, 5, '@', AKit.Green),
+            SolarPlanet(25f, 3, 'O', AKit.Amber, ring = true),
+            SolarPlanet(30f, 2, '0', AKit.Violet),
+            SolarPlanet(34f, 1, 'o', null),
+        )
     val rng = AKit.rng(seed, 3)
     val starts = planets.map { rng.float() * AKit.TAU }
     return asciiPiece(

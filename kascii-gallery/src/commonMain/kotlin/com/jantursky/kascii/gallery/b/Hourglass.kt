@@ -52,7 +52,13 @@ private fun chamber(top: Boolean): List<Pair<Int, Int>> {
 }
 
 /** Piles [amount] cells of sand into [rows], neck outward or, with [fromBottom], from the far end back. */
-private fun Grid.sand(rows: List<Pair<Int, Int>>, amount: Float, fromBottom: Boolean, seed: Int, color: Rgb) {
+private fun Grid.sand(
+    rows: List<Pair<Int, Int>>,
+    amount: Float,
+    fromBottom: Boolean,
+    seed: Int,
+    color: Rgb,
+) {
     var left = amount
     for ((row, width) in if (fromBottom) rows.reversed() else rows) {
         val take = left.coerceAtMost(width.toFloat())
@@ -65,7 +71,12 @@ private fun Grid.sand(rows: List<Pair<Int, Int>>, amount: Float, fromBottom: Boo
     }
 }
 
-private fun Grid.stream(fromRow: Int, toRow: Int, frame: Int, color: Rgb) {
+private fun Grid.stream(
+    fromRow: Int,
+    toRow: Int,
+    frame: Int,
+    color: Rgb,
+) {
     for (r in fromRow..toRow) put(CX, r, if ((r + frame) % 2 == 0) '|' else ':', color)
 }
 
@@ -75,7 +86,10 @@ private fun Grid.stream(fromRow: Int, toRow: Int, frame: Int, color: Rgb) {
  * Ported from ascii.rest `hourglass` (MIT, Copyright (c) 2026 bas3line): the same drain and flip idea with a new
  * glass and a falling stream.
  */
-public fun hourglassPiece(seed: Int = 0, sand: Rgb = Palette.Amber): AsciiPiece {
+public fun hourglassPiece(
+    seed: Int = 0,
+    sand: Rgb = Palette.Amber,
+): AsciiPiece {
     val upper = chamber(top = true)
     val lower = chamber(top = false)
     val total = upper.sumOf { it.second }.toFloat()
@@ -102,11 +116,13 @@ public fun hourglassPiece(seed: Int = 0, sand: Rgb = Palette.Amber): AsciiPiece 
 }
 
 private fun Grid.mirrorRows() {
-    for (y in 0 until ROWS / 2) for (x in 0 until COLS) {
-        val a = glyphAt(x, y)
-        val ac = colorAt(x, y)
-        put(x, y, glyphAt(x, ROWS - 1 - y), colorAt(x, ROWS - 1 - y))
-        put(x, ROWS - 1 - y, a, ac)
+    for (y in 0 until ROWS / 2) {
+        for (x in 0 until COLS) {
+            val a = glyphAt(x, y)
+            val ac = colorAt(x, y)
+            put(x, y, glyphAt(x, ROWS - 1 - y), colorAt(x, ROWS - 1 - y))
+            put(x, ROWS - 1 - y, a, ac)
+        }
     }
 }
 

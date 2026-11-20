@@ -19,13 +19,21 @@ private const val LOOP = 9f
 private const val MAX_RADIUS = 30f
 private const val RAMP = " .:-~=*"
 
-private class RippleDrop(val x: Float, val y: Float, val phase: Float)
+private class RippleDrop(
+    val x: Float,
+    val y: Float,
+    val phase: Float,
+)
 
 /**
  * Raindrops landing on a still pond. Each drop sends out a ring that spreads, fades and interferes with its
  * neighbours; the summed height of the water is drawn as a glyph ramp. Every drop lands once per loop.
  */
-public fun pondRipplesPiece(seed: Int = 0, drops: Int = 5, color: Rgb = AKit.Blue): AsciiPiece {
+public fun pondRipplesPiece(
+    seed: Int = 0,
+    drops: Int = 5,
+    color: Rgb = AKit.Blue,
+): AsciiPiece {
     require(drops > 0) { "drops must be positive" }
     val rng = AKit.rng(seed, 4)
     val list = List(drops) { RippleDrop(rng.float(8f, 56f), rng.float(4f, 20f), (it + rng.float(0f, 0.6f)) / drops) }
@@ -39,17 +47,19 @@ public fun pondRipplesPiece(seed: Int = 0, drops: Int = 5, color: Rgb = AKit.Blu
         loop = LOOP,
         note = "raindrop rings interfering on a pond",
     ) { t, grid ->
-        for (row in 0 until ROWS) for (col in 0 until COLS) {
-            var height = 0f
-            for (d in list) {
-                val age = AKit.frac(t / LOOP + d.phase)
-                val dx = col + 0.5f - d.x
-                val dy = (row + 0.5f - d.y) * 2f
-                val off = sqrt(dx * dx + dy * dy) - age * MAX_RADIUS
-                height += (1f - age) * (1f - age) * exp(-off * off / 5f) * (0.5f + 0.5f * cos(off * 1.6f))
+        for (row in 0 until ROWS) {
+            for (col in 0 until COLS) {
+                var height = 0f
+                for (d in list) {
+                    val age = AKit.frac(t / LOOP + d.phase)
+                    val dx = col + 0.5f - d.x
+                    val dy = (row + 0.5f - d.y) * 2f
+                    val off = sqrt(dx * dx + dy * dy) - age * MAX_RADIUS
+                    height += (1f - age) * (1f - age) * exp(-off * off / 5f) * (0.5f + 0.5f * cos(off * 1.6f))
+                }
+                val glyph = AKit.glyph(RAMP, height)
+                if (glyph != ' ') grid.put(col, row, glyph, color)
             }
-            val glyph = AKit.glyph(RAMP, height)
-            if (glyph != ' ') grid.put(col, row, glyph, color)
         }
     }
 }

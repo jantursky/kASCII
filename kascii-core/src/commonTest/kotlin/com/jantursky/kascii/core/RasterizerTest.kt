@@ -86,10 +86,14 @@ class RasterizerTest {
         val red = Rgb.fromHex("#ff0000")
         val mono = Rasterizer.rasterize(Fields.solid(1f), Charsets.Standard, 2, 1, colorMode = ColorMode.Mono(red))
         assertEquals(red, mono.colorAt(1, 0))
-        val duo = Rasterizer.rasterize(
-            Fields.gradient(), Charsets.Standard, 3, 1,
-            colorMode = ColorMode.Duotone(Rgb.Black, Rgb.White),
-        )
+        val duo =
+            Rasterizer.rasterize(
+                Fields.gradient(),
+                Charsets.Standard,
+                3,
+                1,
+                colorMode = ColorMode.Duotone(Rgb.Black, Rgb.White),
+            )
         assertNotNull(duo.colorAt(0, 0))
         assertTrue(duo.colorAt(2, 0)!!.red > duo.colorAt(0, 0)!!.red)
     }

@@ -5,9 +5,13 @@ package com.jantursky.kascii.core
  * modes. The Compose module can build one from Material colors.
  */
 public class KasciiTheme(
+    /** The color of glyphs. */
     public val ink: Rgb,
+    /** The color behind glyphs. */
     public val paper: Rgb,
+    /** An accent color for highlights. */
     public val accent: Rgb = ink,
+    /** Colors for the palette color mode. Never empty. */
     public val palette: List<Rgb> = listOf(ink),
 ) {
     init {
@@ -23,22 +27,25 @@ public class KasciiTheme(
         return (hi + 0.05f) / (lo + 0.05f)
     }
 
+    /** The built-in values. */
     public companion object {
         /** Light page, near black ink. Derived from the Kascii design system. */
-        public val Light: KasciiTheme = KasciiTheme(
-            ink = Rgb.fromHex("#1d293d"),
-            paper = Rgb.fromHex("#f4f6fb"),
-            accent = Rgb.fromHex("#7f52ff"),
-            palette = listOf("#7f52ff", "#e44857", "#00785a", "#9a6a00").map { Rgb.fromHex(it) },
-        )
+        public val Light: KasciiTheme =
+            KasciiTheme(
+                ink = Rgb.fromHex("#1d293d"),
+                paper = Rgb.fromHex("#f4f6fb"),
+                accent = Rgb.fromHex("#7f52ff"),
+                palette = listOf("#7f52ff", "#e44857", "#00785a", "#9a6a00").map { Rgb.fromHex(it) },
+            )
 
         /** Deep-ocean dark page, the native look. */
-        public val Dark: KasciiTheme = KasciiTheme(
-            ink = Rgb.fromHex("#cad5e2"),
-            paper = Rgb.fromHex("#06051d"),
-            accent = Rgb.fromHex("#7f52ff"),
-            palette = listOf("#7f52ff", "#e44857", "#00bc7d", "#f0b100").map { Rgb.fromHex(it) },
-        )
+        public val Dark: KasciiTheme =
+            KasciiTheme(
+                ink = Rgb.fromHex("#cad5e2"),
+                paper = Rgb.fromHex("#06051d"),
+                accent = Rgb.fromHex("#7f52ff"),
+                palette = listOf("#7f52ff", "#e44857", "#00bc7d", "#f0b100").map { Rgb.fromHex(it) },
+            )
 
         /** Green phosphor on near black. */
         public val Phosphor: KasciiTheme = KasciiTheme(Rgb.fromHex("#33ff66"), Rgb.fromHex("#020a04"))

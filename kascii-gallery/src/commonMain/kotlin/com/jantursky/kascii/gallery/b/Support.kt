@@ -17,7 +17,10 @@ internal object Palette {
 }
 
 /** The frame a time falls in, so a stepped simulation advances by whole frames. */
-internal fun frameIndex(t: Float, fps: Int): Int = floor(t * fps + 1e-3f).toInt().coerceAtLeast(0)
+internal fun frameIndex(
+    t: Float,
+    fps: Int,
+): Int = floor(t * fps + 1e-3f).toInt().coerceAtLeast(0)
 
 /** The fractional part of [v], always in 0 until 1. */
 internal fun frac(v: Float): Float = v - floor(v)
@@ -29,10 +32,16 @@ internal fun ease(x: Float): Float {
 }
 
 /** A generator for one purpose ([salt]) of a piece, so adding a draw call never shifts another one. */
-internal fun rngFor(seed: Int, salt: Int): Rng = Rng(seed * 1_000_003L + salt)
+internal fun rngFor(
+    seed: Int,
+    salt: Int,
+): Rng = Rng(seed * 1_000_003L + salt)
 
 /** A color along [colors], spread evenly, for [pos] in 0..1. */
-internal fun gradient(colors: List<Rgb>, pos: Float): Rgb {
+internal fun gradient(
+    colors: List<Rgb>,
+    pos: Float,
+): Rgb {
     if (colors.size == 1) return colors[0]
     val scaled = pos.coerceIn(0f, 1f) * (colors.size - 1)
     val i = scaled.toInt().coerceAtMost(colors.size - 2)
@@ -44,7 +53,10 @@ internal fun gradient(colors: List<Rgb>, pos: Float): Rgb {
  * start when asked for an earlier frame, so a frame's content depends on the frame alone, never on call order.
  * Not thread safe: a piece is drawn from one thread at a time.
  */
-internal class Stepper<S>(private val create: () -> S, private val advance: (S) -> Unit) {
+internal class Stepper<S>(
+    private val create: () -> S,
+    private val advance: (S) -> Unit,
+) {
     private var state: S = create()
     private var frame = 0
 
@@ -66,4 +78,9 @@ internal class Stepper<S>(private val create: () -> S, private val advance: (S) 
 internal fun utcSecondsOfDay(): Double = (Clock.System.now().toEpochMilliseconds() % 86_400_000L) / 1000.0
 
 /** A twinkling star: it cycles [rate] times per loop, starting at [phase]. */
-internal class Star(val x: Int, val y: Int, val rate: Int, val phase: Float)
+internal class Star(
+    val x: Int,
+    val y: Int,
+    val rate: Int,
+    val phase: Float,
+)

@@ -30,18 +30,24 @@ public fun AsciiButton(
     ControlGrid(
         grid = renderButton(label, state, theme),
         state = state,
-        modifier = modifier
-            .semantics { this.contentDescription = contentDescription }
-            .clickable(source, null, enabled, role = Role.Button, onClick = onClick),
+        modifier =
+            modifier
+                .semantics { this.contentDescription = contentDescription }
+                .clickable(source, null, enabled, role = Role.Button, onClick = onClick),
     )
 }
 
-internal fun renderButton(label: String, state: ControlState, theme: KasciiTheme): Grid {
-    val color = when {
-        !state.enabled -> theme.dim()
-        state.pressed -> null
-        else -> theme.good()
-    }
+internal fun renderButton(
+    label: String,
+    state: ControlState,
+    theme: KasciiTheme,
+): Grid {
+    val color =
+        when {
+            !state.enabled -> theme.dim()
+            state.pressed -> null
+            else -> theme.good()
+        }
     val grid = Grid(label.length + 6, 1)
     grid.write(1, 0, "[ $label ]", color)
     if (state.focused) {

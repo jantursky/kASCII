@@ -28,19 +28,29 @@ public fun AsciiTabs(
 }
 
 @Composable
-private fun AsciiTab(label: String, selected: Boolean, onClick: () -> Unit) {
+private fun AsciiTab(
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+) {
     val source = remember { MutableInteractionSource() }
     val state = rememberControlState(source, enabled = true)
     ControlGrid(
         grid = renderTab(label, selected, state, LocalKasciiTheme.current),
         state = state,
-        modifier = Modifier
-            .semantics { contentDescription = label }
-            .selectable(selected, source, null, true, Role.Tab, onClick),
+        modifier =
+            Modifier
+                .semantics { contentDescription = label }
+                .selectable(selected, source, null, true, Role.Tab, onClick),
     )
 }
 
-internal fun renderTab(label: String, selected: Boolean, state: ControlState, theme: KasciiTheme): Grid {
+internal fun renderTab(
+    label: String,
+    selected: Boolean,
+    state: ControlState,
+    theme: KasciiTheme,
+): Grid {
     val grid = Grid(label.length + 4, 2)
     val color = if (selected) theme.accent else theme.dim()
     grid.write(2, 0, label, color)

@@ -52,7 +52,12 @@ public fun AsciiSplitFlap(
     AnimatedText(text, FLAP_FPS, modifier) { t, reduced, _ -> renderSplitFlap(text, t, seed, reduced) }
 }
 
-internal fun renderTypewriter(text: String, t: Float, charsPerSecond: Float, reduced: Boolean): Grid {
+internal fun renderTypewriter(
+    text: String,
+    t: Float,
+    charsPerSecond: Float,
+    reduced: Boolean,
+): Grid {
     val grid = Grid(text.length + 1, 1)
     if (reduced) return grid.also { it.writeText(text) }
     val typed = (t * charsPerSecond).toInt().coerceAtMost(text.length)
@@ -79,19 +84,37 @@ internal fun renderScramble(
     return grid
 }
 
-internal fun renderDissolve(text: String, t: Float, durationSeconds: Float, seed: Long, reduced: Boolean): Grid {
+internal fun renderDissolve(
+    text: String,
+    t: Float,
+    durationSeconds: Float,
+    seed: Long,
+    reduced: Boolean,
+): Grid {
     val grid = Grid(text.length, 1)
     val progress = if (reduced) 1f else (t / durationSeconds).coerceIn(0f, 1f)
     text.forEachIndexed { i, c ->
         val start = frameRng(seed, i, 0).float() * DISSOLVE_SPREAD
         val stage = ((progress - start) / (1f - DISSOLVE_SPREAD) * (SPECKS.length + 1)).toInt()
-        val glyph = if (c == ' ') ' ' else if (stage > SPECKS.lastIndex) c else SPECKS[stage.coerceAtLeast(0)]
+        val glyph =
+            if (c == ' ') {
+                ' '
+            } else if (stage > SPECKS.lastIndex) {
+                c
+            } else {
+                SPECKS[stage.coerceAtLeast(0)]
+            }
         grid.put(i, 0, glyph)
     }
     return grid
 }
 
-internal fun renderSplitFlap(text: String, t: Float, seed: Long, reduced: Boolean): Grid {
+internal fun renderSplitFlap(
+    text: String,
+    t: Float,
+    seed: Long,
+    reduced: Boolean,
+): Grid {
     val grid = Grid(text.length, 1)
     text.forEachIndexed { i, c ->
         val target = FLAPS.indexOf(c.uppercaseChar())
@@ -101,7 +124,12 @@ internal fun renderSplitFlap(text: String, t: Float, seed: Long, reduced: Boolea
 }
 
 /** The flap showing at [t]: it starts at a seeded letter, flips past a full turn, then rests on [target]. */
-private fun flapAt(index: Int, target: Int, t: Float, seed: Long): Char {
+private fun flapAt(
+    index: Int,
+    target: Int,
+    t: Float,
+    seed: Long,
+): Char {
     val start = frameRng(seed, index, 0).int(FLAPS.length)
     val flips = (target - start).mod(FLAPS.length) + FLAPS.length
     val done = ((t - index * FLAP_STAGGER) * FLIPS_PER_SECOND).toInt().coerceIn(0, flips)

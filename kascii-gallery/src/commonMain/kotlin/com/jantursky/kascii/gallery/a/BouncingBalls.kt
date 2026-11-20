@@ -30,7 +30,11 @@ private val DefaultColors = listOf(AKit.Red, AKit.Amber, AKit.Green, AKit.Blue, 
  * Ported from ascii.rest `bouncing-balls` (MIT, bas3line): same squash-on-landing look and floor shadow, but the
  * motion is a closed-form hop instead of a stepped physics simulation, so any frame can be drawn on its own.
  */
-public fun bouncingBallsPiece(seed: Int = 0, count: Int = 3, colors: List<Rgb> = DefaultColors): AsciiPiece {
+public fun bouncingBallsPiece(
+    seed: Int = 0,
+    count: Int = 3,
+    colors: List<Rgb> = DefaultColors,
+): AsciiPiece {
     require(count in 1..RADII.size) { "count must be 1..${RADII.size}" }
     require(colors.isNotEmpty()) { "colors must not be empty" }
     val rng = AKit.rng(seed, 5)
@@ -63,14 +67,23 @@ public fun bouncingBallsPiece(seed: Int = 0, count: Int = 3, colors: List<Rgb> =
     }
 }
 
-private fun shade(grid: Grid, cx: Float, cy: Float, rx: Float, ry: Float, color: Rgb) {
-    for (y in (cy - ry).toInt() - 1..(cy + ry).toInt() + 1) for (x in (cx - rx).toInt() - 1..(cx + rx).toInt() + 1) {
-        val nx = (x + 0.5f - cx) / rx
-        val ny = (y + 0.5f - cy) / ry
-        val flat = nx * nx + ny * ny
-        if (flat > 1f) continue
-        val lum = nx * -0.5f + ny * -0.6f + sqrt(1f - flat) * 0.62f
-        grid.put(x, y, AKit.glyph(RAMP, 0.15f + 0.85f * abs(lum.coerceIn(0f, 1f))), color)
+private fun shade(
+    grid: Grid,
+    cx: Float,
+    cy: Float,
+    rx: Float,
+    ry: Float,
+    color: Rgb,
+) {
+    for (y in (cy - ry).toInt() - 1..(cy + ry).toInt() + 1) {
+        for (x in (cx - rx).toInt() - 1..(cx + rx).toInt() + 1) {
+            val nx = (x + 0.5f - cx) / rx
+            val ny = (y + 0.5f - cy) / ry
+            val flat = nx * nx + ny * ny
+            if (flat > 1f) continue
+            val lum = nx * -0.5f + ny * -0.6f + sqrt(1f - flat) * 0.62f
+            grid.put(x, y, AKit.glyph(RAMP, 0.15f + 0.85f * abs(lum.coerceIn(0f, 1f))), color)
+        }
     }
 }
 

@@ -25,7 +25,11 @@ public fun AsciiHeartbeat(
 
 /** One beat of an ECG trace for [phase] in 0..1: P wave, QRS spike, T wave. Baseline is 0, the R peak 1. */
 internal fun ecgSample(phase: Float): Float {
-    fun bump(center: Float, width: Float, height: Float): Float {
+    fun bump(
+        center: Float,
+        width: Float,
+        height: Float,
+    ): Float {
         val d = (phase - center) / width
         return height * exp(-d * d)
     }
@@ -33,10 +37,17 @@ internal fun ecgSample(phase: Float): Float {
         bump(S_AT, 0.014f, -0.3f) + bump(T_AT, 0.06f, 0.25f)
 }
 
-internal fun renderHeartbeat(cols: Int, rows: Int, t: Float, bpm: Int, theme: KasciiTheme): Grid {
+internal fun renderHeartbeat(
+    cols: Int,
+    rows: Int,
+    t: Float,
+    bpm: Int,
+    theme: KasciiTheme,
+): Grid {
     val canvas = BrailleCanvas(cols, rows)
     val beatDots = 60f / bpm * DOTS_PER_SECOND
     val baseline = canvas.dotHeight * BASELINE_SHARE
+
     fun dotY(x: Int): Int {
         val beats = (x + t * DOTS_PER_SECOND) / beatDots
         return (baseline - ecgSample(beats - floor(beats)) * canvas.dotHeight * AMPLITUDE_SHARE).roundToInt()

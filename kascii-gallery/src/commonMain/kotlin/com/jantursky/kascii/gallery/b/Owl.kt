@@ -26,25 +26,33 @@ private const val GLANCE = 1.4f
 private const val OWL_X = 21
 private const val BODY_WIDTH = 19
 
-private fun row(left: String, inner: String, right: String): String {
+private fun row(
+    left: String,
+    inner: String,
+    right: String,
+): String {
     val room = BODY_WIDTH - left.length - right.length
     return left + inner.padStart((room + inner.length) / 2).padEnd(room) + right
 }
 
-private val BODY = listOf(
-    row("/\\", "_".repeat(BODY_WIDTH - 4), "/\\"),
-    row("/", "", "\\"),
-    "",
-    row("|", "v", "|"),
-    row("|", "/|||\\", "|"),
-    row("|", "/|||||\\", "|"),
-    row(" \\", "\\|||/", "/ "),
-    row("  \\", "_".repeat(BODY_WIDTH - 6), "/  "),
-    "\"\" \"\"",
-)
+private val BODY =
+    listOf(
+        row("/\\", "_".repeat(BODY_WIDTH - 4), "/\\"),
+        row("/", "", "\\"),
+        "",
+        row("|", "v", "|"),
+        row("|", "/|||\\", "|"),
+        row("|", "/|||||\\", "|"),
+        row(" \\", "\\|||/", "/ "),
+        row("  \\", "_".repeat(BODY_WIDTH - 6), "/  "),
+        "\"\" \"\"",
+    )
 
 /** Where the owl looks, in -1..1, and whether its eyes are shut, for a time inside the loop. */
-private class Gaze(val blinks: List<Float>, val glances: List<Float>) {
+private class Gaze(
+    val blinks: List<Float>,
+    val glances: List<Float>,
+) {
     fun closed(t: Float): Boolean = blinks.any { t >= it && t < it + BLINK }
 
     fun side(t: Float): Int {
@@ -53,14 +61,22 @@ private class Gaze(val blinks: List<Float>, val glances: List<Float>) {
     }
 }
 
-private fun eye(closed: Boolean, side: Int): String = when {
-    closed -> "---"
-    side < 0 -> "O  "
-    side > 0 -> "  O"
-    else -> " O "
-}
+private fun eye(
+    closed: Boolean,
+    side: Int,
+): String =
+    when {
+        closed -> "---"
+        side < 0 -> "O  "
+        side > 0 -> "  O"
+        else -> " O "
+    }
 
-private fun Grid.owl(gaze: Gaze, t: Float, eyes: Rgb) {
+private fun Grid.owl(
+    gaze: Gaze,
+    t: Float,
+    eyes: Rgb,
+) {
     val top = 8
     BODY.forEachIndexed { i, line -> label(OWL_X, top + i, line) }
     val pupils = eye(gaze.closed(t), gaze.side(t))
@@ -73,7 +89,10 @@ private fun Grid.owl(gaze: Gaze, t: Float, eyes: Rgb) {
     write(left + 15, row, ")  |")
 }
 
-private fun Grid.branch(t: Float, leaf: Rgb) {
+private fun Grid.branch(
+    t: Float,
+    leaf: Rgb,
+) {
     for (x in 0 until COLS) put(x, 17, if (x % 7 == 3) '=' else '_')
     for (x in 4 until COLS - 4) put(x, 18, if (x % 5 == 0) '~' else ' ')
     val sway = if (sin(TAU * t / LOOP * 3f) > 0f) 1 else 0
@@ -88,13 +107,17 @@ private fun Grid.branch(t: Float, leaf: Rgb) {
  * stars twinkle on their own beat; everything repeats every 12 seconds. The seed moves the stars and shifts the
  * blinks. Original piece.
  */
-public fun owlPiece(seed: Int = 0, eyes: Rgb = Palette.Amber): AsciiPiece {
+public fun owlPiece(
+    seed: Int = 0,
+    eyes: Rgb = Palette.Amber,
+): AsciiPiece {
     val rng = rngFor(seed, 2)
     val stars = List(16) { Star(rng.int(COLS), rng.int(9), 1 + rng.int(3), rng.float() * TAU) }
-    val gaze = Gaze(
-        blinks = List(3) { it * 4f + 0.5f + rng.float() * 3f },
-        glances = List(4) { it * 3f + 0.4f + rng.float() * 1.2f },
-    )
+    val gaze =
+        Gaze(
+            blinks = List(3) { it * 4f + 0.5f + rng.float() * 3f },
+            glances = List(4) { it * 3f + 0.4f + rng.float() * 1.2f },
+        )
     return asciiPiece(
         name = "owl",
         category = "creatures",
@@ -108,7 +131,17 @@ public fun owlPiece(seed: Int = 0, eyes: Rgb = Palette.Amber): AsciiPiece {
         val t = time % LOOP
         for (s in stars) {
             val v = sin(TAU * s.rate * t / LOOP + s.phase)
-            grid.put(s.x, s.y, if (v > 0.5f) '*' else if (v > -0.3f) '+' else '.')
+            grid.put(
+                s.x,
+                s.y,
+                if (v > 0.5f) {
+                    '*'
+                } else if (v > -0.3f) {
+                    '+'
+                } else {
+                    '.'
+                },
+            )
         }
         grid.disc(6f, 4f, 5f, 'o', eyes)
         grid.owl(gaze, t, eyes)

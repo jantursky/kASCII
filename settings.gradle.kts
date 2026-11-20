@@ -48,3 +48,4 @@ dependencyResolutionManagement {
 rootProject.name = "kascii"
 
 include(":kascii-core", ":kascii-compose", ":kascii-components", ":kascii-gallery")
+include(":samples:gallery", ":samples:web", ":samples:desktop", ":samples:app", ":samples:androidApp")

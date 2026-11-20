@@ -31,7 +31,11 @@ private const val ZOOM_OUT = 1.4
 private const val ZOOM_IN = 0.004
 
 /** The smooth escape time of the point `re + i im`, or -1 when it stays bounded within [maxIter] steps. */
-private fun escape(re: Double, im: Double, maxIter: Int): Double {
+private fun escape(
+    re: Double,
+    im: Double,
+    maxIter: Int,
+): Double {
     var zr = 0.0
     var zi = 0.0
     for (i in 0 until maxIter) {
@@ -56,31 +60,34 @@ public fun mandelbrotPiece(
     maxIter: Int = 96,
     charset: Charset.Ramp = Charsets.Standard,
     palette: List<Rgb> = listOf(Palette.Violet, Palette.Blue, Palette.Green, Palette.Amber),
-): AsciiPiece = asciiPiece(
-    name = "mandelbrot",
-    category = "generative",
-    cols = COLS,
-    rows = ROWS,
-    fps = 20,
-    still = 4f,
-    loop = LOOP.toFloat(),
-    note = "the mandelbrot set zooming into the seahorse valley and back",
-) { t, grid ->
-    val breath = 0.5 - 0.5 * cos(2.0 * PI * t / LOOP)
-    val width = ZOOM_OUT * exp(ln(ZOOM_IN / ZOOM_OUT) * breath)
-    // A cell is twice as tall as it is wide.
-    val height = width * ROWS * 2.0 / COLS
-    for (y in 0 until ROWS) for (x in 0 until COLS) {
-        val re = CENTER_RE + ((x + 0.5) / COLS - 0.5) * width
-        val im = CENTER_IM + ((y + 0.5) / ROWS - 0.5) * height
-        val steps = escape(re, im, maxIter)
-        if (steps >= 0.0) {
-            val tone = (steps / maxIter).pow(0.4).toFloat().coerceIn(0f, 1f)
-            val glyph = charset.glyphFor(tone)
-            if (glyph != ' ') grid.put(x, y, glyph, gradient(palette, tone))
+): AsciiPiece =
+    asciiPiece(
+        name = "mandelbrot",
+        category = "generative",
+        cols = COLS,
+        rows = ROWS,
+        fps = 20,
+        still = 4f,
+        loop = LOOP.toFloat(),
+        note = "the mandelbrot set zooming into the seahorse valley and back",
+    ) { t, grid ->
+        val breath = 0.5 - 0.5 * cos(2.0 * PI * t / LOOP)
+        val width = ZOOM_OUT * exp(ln(ZOOM_IN / ZOOM_OUT) * breath)
+        // A cell is twice as tall as it is wide.
+        val height = width * ROWS * 2.0 / COLS
+        for (y in 0 until ROWS) {
+            for (x in 0 until COLS) {
+                val re = CENTER_RE + ((x + 0.5) / COLS - 0.5) * width
+                val im = CENTER_IM + ((y + 0.5) / ROWS - 0.5) * height
+                val steps = escape(re, im, maxIter)
+                if (steps >= 0.0) {
+                    val tone = (steps / maxIter).pow(0.4).toFloat().coerceIn(0f, 1f)
+                    val glyph = charset.glyphFor(tone)
+                    if (glyph != ' ') grid.put(x, y, glyph, gradient(palette, tone))
+                }
+            }
         }
     }
-}
 
 /**
  * The Mandelbrot set zooming in and out of the seahorse valley. [maxIter] sets the detail, [charset] the glyphs

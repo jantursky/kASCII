@@ -35,7 +35,10 @@ internal data class ControlState(
 )
 
 @Composable
-internal fun rememberControlState(source: InteractionSource, enabled: Boolean): ControlState {
+internal fun rememberControlState(
+    source: InteractionSource,
+    enabled: Boolean,
+): ControlState {
     val focused by source.collectIsFocusedAsState()
     val pressed by source.collectIsPressedAsState()
     return ControlState(enabled, focused, pressed)
@@ -55,16 +58,21 @@ internal fun GridSurface(
 ) {
     AsciiGridView(
         grid = grid,
-        modifier = modifier
-            .size(CellWidth * grid.cols, CellHeight * grid.rows)
-            .clearAndSetSemantics { description?.let { contentDescription = it } },
+        modifier =
+            modifier
+                .size(CellWidth * grid.cols, CellHeight * grid.rows)
+                .clearAndSetSemantics { description?.let { contentDescription = it } },
         theme = theme,
     )
 }
 
 /** A [GridSurface] for a control: at least 48dp square to touch, inverted while pressed. */
 @Composable
-internal fun ControlGrid(grid: Grid, state: ControlState, modifier: Modifier = Modifier) {
+internal fun ControlGrid(
+    grid: Grid,
+    state: ControlState,
+    modifier: Modifier = Modifier,
+) {
     val theme = LocalKasciiTheme.current
     Box(modifier.minimumTouchTarget(), contentAlignment = Alignment.Center) {
         GridSurface(grid, theme = if (state.pressed) theme.inverse() else theme)
@@ -72,10 +80,11 @@ internal fun ControlGrid(grid: Grid, state: ControlState, modifier: Modifier = M
 }
 
 /** Expands the layout to [MinTouchTarget] on both axes, centering the content, like Material's equivalent. */
-internal fun Modifier.minimumTouchTarget(): Modifier = layout { measurable, constraints ->
-    val placeable = measurable.measure(constraints)
-    val min = MinTouchTarget.roundToPx()
-    val width = maxOf(placeable.width, min).coerceIn(constraints.minWidth, constraints.maxWidth)
-    val height = maxOf(placeable.height, min).coerceIn(constraints.minHeight, constraints.maxHeight)
-    layout(width, height) { placeable.place((width - placeable.width) / 2, (height - placeable.height) / 2) }
-}
+internal fun Modifier.minimumTouchTarget(): Modifier =
+    layout { measurable, constraints ->
+        val placeable = measurable.measure(constraints)
+        val min = MinTouchTarget.roundToPx()
+        val width = maxOf(placeable.width, min).coerceIn(constraints.minWidth, constraints.maxWidth)
+        val height = maxOf(placeable.height, min).coerceIn(constraints.minHeight, constraints.maxHeight)
+        layout(width, height) { placeable.place((width - placeable.width) / 2, (height - placeable.height) / 2) }
+    }

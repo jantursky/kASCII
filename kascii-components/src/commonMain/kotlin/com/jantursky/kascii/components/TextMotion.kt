@@ -89,7 +89,12 @@ internal fun renderGlitch(
     return grid
 }
 
-internal fun renderMarquee(text: String, cols: Int, t: Float, charsPerSecond: Float): Grid {
+internal fun renderMarquee(
+    text: String,
+    cols: Int,
+    t: Float,
+    charsPerSecond: Float,
+): Grid {
     val loop = text + " ".repeat(MARQUEE_GAP)
     val offset = (t * charsPerSecond).toInt() % loop.length
     val window = (loop.repeat(cols / loop.length + 2)).drop(offset).take(cols)
@@ -97,7 +102,11 @@ internal fun renderMarquee(text: String, cols: Int, t: Float, charsPerSecond: Fl
 }
 
 /** Rows hold the wave; [t] null draws the text flat in the middle row. */
-internal fun renderWave(text: String, t: Float?, amplitude: Int): Grid {
+internal fun renderWave(
+    text: String,
+    t: Float?,
+    amplitude: Int,
+): Grid {
     val grid = Grid(text.length, 2 * amplitude + 1)
     text.forEachIndexed { i, c ->
         val lift = if (t == null) 0f else sin(t * WAVE_SPEED + i * WAVE_STEP)
@@ -106,20 +115,32 @@ internal fun renderWave(text: String, t: Float?, amplitude: Int): Grid {
     return grid
 }
 
-internal fun renderRainbow(text: String, t: Float, theme: KasciiTheme): Grid {
+internal fun renderRainbow(
+    text: String,
+    t: Float,
+    theme: KasciiTheme,
+): Grid {
     val grid = Grid(text.length, 1)
     text.forEachIndexed { i, c -> grid.put(i, 0, c, paletteColor(theme.palette, i * RAINBOW_STEP + t * RAINBOW_SPEED)) }
     return grid
 }
 
 /** A color along the looping [palette], [position] in turns: 0 and 1 are both the first color. */
-internal fun paletteColor(palette: List<Rgb>, position: Float): Rgb {
+internal fun paletteColor(
+    palette: List<Rgb>,
+    position: Float,
+): Rgb {
     val scaled = (position - floor(position)) * palette.size
     val from = scaled.toInt() % palette.size
     return palette[from].lerp(palette[(from + 1) % palette.size], scaled - floor(scaled))
 }
 
-internal fun renderShimmer(text: String, t: Float, reduced: Boolean, theme: KasciiTheme): Grid {
+internal fun renderShimmer(
+    text: String,
+    t: Float,
+    reduced: Boolean,
+    theme: KasciiTheme,
+): Grid {
     val grid = Grid(text.length, 1)
     val center = (t * SHIMMER_SPEED) % (text.length + 2 * SHIMMER_WIDTH) - SHIMMER_WIDTH
     text.forEachIndexed { i, c ->

@@ -89,6 +89,14 @@ apiValidation {
 
 kover {
     reports {
+        filters {
+            excludes {
+                // Each wrapper is one call into AsciiPieceView. The pieces themselves are covered by the determinism
+                // and golden tests, and GalleryComposeTest composes every catalog entry through the real view.
+                annotatedBy("androidx.compose.runtime.Composable")
+                classes("*ComposableSingletons*")
+            }
+        }
         verify {
             rule {
                 bound { minValue = 90 }
@@ -111,7 +119,9 @@ mavenPublishing {
     coordinates(artifactId = "kascii-gallery")
     pom {
         name.set("Kascii Gallery")
-        description.set("A gallery of animated ASCII pieces for Compose Multiplatform: scenes, shapes, space, physics, nature and more.")
+        description.set(
+            "A gallery of animated ASCII pieces for Compose Multiplatform: scenes, shapes, space, physics, nature and more.",
+        )
         inceptionYear.set("2026")
         url.set("https://github.com/jantursky/kascii")
         licenses {

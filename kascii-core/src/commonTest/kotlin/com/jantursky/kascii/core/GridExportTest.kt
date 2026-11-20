@@ -5,11 +5,12 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class GridExportTest {
-    private fun sample(): Grid = Grid(4, 2).also {
-        it.write(0, 0, "ab")
-        it.put(2, 0, 'c', Rgb.fromHex("#ff0000"))
-        it.write(0, 1, "<&>")
-    }
+    private fun sample(): Grid =
+        Grid(4, 2).also {
+            it.write(0, 0, "ab")
+            it.put(2, 0, 'c', Rgb.fromHex("#ff0000"))
+            it.write(0, 1, "<&>")
+        }
 
     @Test
     fun writeAndPutClipAtTheEdge() {

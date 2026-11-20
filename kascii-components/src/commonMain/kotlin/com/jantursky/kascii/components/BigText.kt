@@ -19,7 +19,11 @@ public fun AsciiBigText(
 }
 
 /** Draws [text] glyph by glyph with one blank column between glyphs. */
-internal fun renderBigText(text: String, font: AsciiBigFont, color: Rgb? = null): Grid {
+internal fun renderBigText(
+    text: String,
+    font: AsciiBigFont,
+    color: Rgb? = null,
+): Grid {
     val table = font.glyphs()
     val glyphs = text.map { table[it.uppercaseChar()] ?: table.getValue('?') }
     val grid = Grid((glyphs.sumOf { it[0].length } + glyphs.size - 1).coerceAtLeast(0), font.rows)

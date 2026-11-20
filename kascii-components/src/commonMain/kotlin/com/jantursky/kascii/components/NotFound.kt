@@ -15,7 +15,10 @@ public fun AsciiNotFound(
     GridSurface(renderNotFound(message, LocalKasciiTheme.current), modifier, "404, $message")
 }
 
-internal fun renderNotFound(message: String, theme: KasciiTheme): Grid {
+internal fun renderNotFound(
+    message: String,
+    theme: KasciiTheme,
+): Grid {
     val digits = renderBigText("404", AsciiBigFont.Tall, theme.accent)
     val grid = Grid(maxOf(digits.cols, message.length), digits.rows + 2)
     grid.blit(digits, (grid.cols - digits.cols) / 2, 0)

@@ -5,14 +5,20 @@ import com.jantursky.kascii.core.Rgb
 import kotlin.math.roundToInt
 
 /** Builds a grid as wide as the longest of [lines]. */
-internal fun gridOfLines(lines: List<String>, color: Rgb? = null): Grid {
+internal fun gridOfLines(
+    lines: List<String>,
+    color: Rgb? = null,
+): Grid {
     val grid = Grid(lines.maxOfOrNull { it.length } ?: 0, lines.size)
     lines.forEachIndexed { y, line -> grid.write(0, y, line, color) }
     return grid
 }
 
 /** Greedy word wrap. Honors `\n`, and breaks words longer than [width] hard. */
-internal fun wrapText(text: String, width: Int): List<String> {
+internal fun wrapText(
+    text: String,
+    width: Int,
+): List<String> {
     require(width > 0) { "width must be positive" }
     val out = mutableListOf<String>()
     for (paragraph in text.split('\n')) {
@@ -27,14 +33,21 @@ internal fun wrapText(text: String, width: Int): List<String> {
                 out += rest.take(width)
                 rest = rest.drop(width)
             }
-            line = when {
-                line.isEmpty() -> rest
-                line.length + 1 + rest.length <= width -> "$line $rest"
-                else -> {
-                    out += line
-                    rest
+            line =
+                when {
+                    line.isEmpty() -> {
+                        rest
+                    }
+
+                    line.length + 1 + rest.length <= width -> {
+                        "$line $rest"
+                    }
+
+                    else -> {
+                        out += line
+                        rest
+                    }
                 }
-            }
         }
         out += line
     }

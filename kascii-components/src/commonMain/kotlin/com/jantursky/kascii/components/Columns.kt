@@ -11,7 +11,13 @@ internal const val EIGHTHS = "▁▂▃▄▅▆▇█"
  * Vertical bars from the bottom of a [rows] tall grid, one per entry of [levels] (0..1). Bars grow in eighths of
  * a cell, so they are [barWidth] cells wide with [gap] blank cells between them.
  */
-internal fun renderColumns(levels: List<Float>, rows: Int, barWidth: Int, gap: Int, color: Rgb?): Grid {
+internal fun renderColumns(
+    levels: List<Float>,
+    rows: Int,
+    barWidth: Int,
+    gap: Int,
+    color: Rgb?,
+): Grid {
     val grid = Grid((levels.size * (barWidth + gap) - gap).coerceAtLeast(0), rows)
     levels.forEachIndexed { i, level ->
         val eighths = (level.coerceIn(0f, 1f) * rows * 8).roundToInt()

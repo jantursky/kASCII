@@ -24,7 +24,12 @@ public fun AsciiSkeleton(
     )
 }
 
-internal fun renderSkeleton(cols: Int, rows: Int, t: Float, theme: KasciiTheme): Grid {
+internal fun renderSkeleton(
+    cols: Int,
+    rows: Int,
+    t: Float,
+    theme: KasciiTheme,
+): Grid {
     val grid = Grid(cols, rows)
     val sweep = (t * SWEEP_SPEED).toInt() % (cols + 2 * SWEEP_WIDTH) - SWEEP_WIDTH
     for (y in 0 until rows) {

@@ -26,16 +26,22 @@ private const val LOOP = 5f
 private const val CYCLES = 4
 private const val SUN_RADIUS = 15f
 
-private fun Grid.sun(t: Float, top: Rgb, bottom: Rgb) {
+private fun Grid.sun(
+    t: Float,
+    top: Rgb,
+    bottom: Rgb,
+) {
     val cx = COLS / 2f
-    for (y in 0 until HORIZON) for (x in 0 until COLS) {
-        val dx = (x + 0.5f - cx) / SUN_RADIUS
-        val dy = (y + 0.5f - (HORIZON - 1f)) * 2f / SUN_RADIUS
-        if (dx * dx + dy * dy > 1f) continue
-        val below = (y - (HORIZON - 6f)) / 6f
-        val stripe = frac((y - t * CYCLES / LOOP * 2f) / 2f)
-        if (below > 0f && stripe < below * 0.7f) continue
-        put(x, y, '@', top.lerp(bottom, y / (HORIZON - 1f)))
+    for (y in 0 until HORIZON) {
+        for (x in 0 until COLS) {
+            val dx = (x + 0.5f - cx) / SUN_RADIUS
+            val dy = (y + 0.5f - (HORIZON - 1f)) * 2f / SUN_RADIUS
+            if (dx * dx + dy * dy > 1f) continue
+            val below = (y - (HORIZON - 6f)) / 6f
+            val stripe = frac((y - t * CYCLES / LOOP * 2f) / 2f)
+            if (below > 0f && stripe < below * 0.7f) continue
+            put(x, y, '@', top.lerp(bottom, y / (HORIZON - 1f)))
+        }
     }
 }
 
@@ -43,22 +49,45 @@ private fun Grid.ridge(color: Rgb) {
     var previous = HORIZON - 3
     for (x in 0 until COLS) {
         val h = HORIZON - 2 - (2.2f + 1.6f * sin(x * 0.31f) + 1.1f * sin(x * 0.83f + 1f)).roundToInt()
-        val glyph = if (h < previous) '/' else if (h > previous) '\\' else '_'
+        val glyph =
+            if (h < previous) {
+                '/'
+            } else if (h > previous) {
+                '\\'
+            } else {
+                '_'
+            }
         if (abs(x - COLS / 2) > SUN_RADIUS + 1f) put(x, h, glyph, color)
         previous = h
     }
 }
 
-private fun Grid.road(t: Float, color: Rgb) {
+private fun Grid.road(
+    t: Float,
+    color: Rgb,
+) {
     val depthShift = frac(t * CYCLES / LOOP)
     for (k in 0 until 9) {
         val d = 1f + k + depthShift
         val row = HORIZON + ((ROWS - HORIZON - 0.5f) / d * 1.9f).toInt()
         if (row in HORIZON + 1 until ROWS) for (x in 0 until COLS) put(x, row, '-', color)
     }
-    for (j in -9..9) for (row in HORIZON + 1 until ROWS) {
-        val x = (COLS / 2f + j * (row - HORIZON) * 2.6f).roundToInt()
-        put(x, row, if (j == 0) '|' else if (j < 0) '/' else '\\', color)
+    for (j in -9..9) {
+        for (row in HORIZON + 1 until ROWS) {
+            val x = (COLS / 2f + j * (row - HORIZON) * 2.6f).roundToInt()
+            put(
+                x,
+                row,
+                if (j == 0) {
+                    '|'
+                } else if (j < 0) {
+                    '/'
+                } else {
+                    '\\'
+                },
+                color,
+            )
+        }
     }
 }
 
@@ -90,7 +119,17 @@ public fun synthwavePiece(
     ) { t, canvas ->
         for (s in stars) {
             val v = sin(TAU * s.rate * t / LOOP + s.phase)
-            canvas.put(s.x, s.y, if (v > 0.4f) '*' else if (v > -0.4f) '+' else '.')
+            canvas.put(
+                s.x,
+                s.y,
+                if (v > 0.4f) {
+                    '*'
+                } else if (v > -0.4f) {
+                    '+'
+                } else {
+                    '.'
+                },
+            )
         }
         canvas.sun(t, sunTop, sunBottom)
         canvas.ridge(grid)

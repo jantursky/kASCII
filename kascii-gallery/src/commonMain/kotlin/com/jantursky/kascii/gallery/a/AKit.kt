@@ -17,9 +17,14 @@ internal object AKit {
     fun frac(v: Float): Float = v - floor(v)
 
     /** A generator for one purpose ([salt]) of a piece, so adding a draw call never shifts another one. */
-    fun rng(seed: Int, salt: Int): Rng = Rng(seed * 1_000_003L + salt)
+    fun rng(
+        seed: Int,
+        salt: Int,
+    ): Rng = Rng(seed * 1_000_003L + salt)
 
     /** The glyph of [ramp] (light to dark) for a tone in 0..1. */
-    fun glyph(ramp: String, tone: Float): Char =
-        ramp[(tone.coerceIn(0f, 1f) * ramp.length).toInt().coerceAtMost(ramp.length - 1)]
+    fun glyph(
+        ramp: String,
+        tone: Float,
+    ): Char = ramp[(tone.coerceIn(0f, 1f) * ramp.length).toInt().coerceAtMost(ramp.length - 1)]
 }

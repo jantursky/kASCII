@@ -12,7 +12,10 @@ import com.jantursky.kascii.core.Grid
 import com.jantursky.kascii.core.KasciiTheme
 
 /** Classic spinner frame sets. Every frame of a set has the same width. */
-public enum class AsciiSpinnerStyle(internal val frames: List<String>, internal val fps: Int) {
+public enum class AsciiSpinnerStyle(
+    internal val frames: List<String>,
+    internal val fps: Int,
+) {
     /** Braille dots running around a cell. */
     BrailleDots("⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏".toFrames(), 12),
 
@@ -66,14 +69,20 @@ public fun AsciiSpinner(
     val time = rememberClock(style.fps, rememberReducedMotion()).floatValue
     GridSurface(
         grid = renderSpinner(style, time, label, theme),
-        modifier = modifier.semantics(mergeDescendants = true) {
-            contentDescription = label ?: "Loading"
-            progressBarRangeInfo = ProgressBarRangeInfo.Indeterminate
-        },
+        modifier =
+            modifier.semantics(mergeDescendants = true) {
+                contentDescription = label ?: "Loading"
+                progressBarRangeInfo = ProgressBarRangeInfo.Indeterminate
+            },
     )
 }
 
-internal fun renderSpinner(style: AsciiSpinnerStyle, t: Float, label: String?, theme: KasciiTheme): Grid {
+internal fun renderSpinner(
+    style: AsciiSpinnerStyle,
+    t: Float,
+    label: String?,
+    theme: KasciiTheme,
+): Grid {
     val frame = style.frames[(t * style.fps).toInt() % style.frames.size]
     val grid = Grid(frame.length + (label?.let { it.length + 1 } ?: 0), 1)
     grid.write(0, 0, frame, theme.accent)

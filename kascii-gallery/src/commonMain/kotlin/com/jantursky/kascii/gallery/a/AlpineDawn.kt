@@ -37,12 +37,17 @@ private class DawnRidge(
  * Re-imagined from ascii.rest `alpine-dawn` (MIT, bas3line): the same scene, drawn here from layered noise
  * ridges instead of a ray-marched heightfield.
  */
-public fun alpineDawnPiece(seed: Int = 0, sun: Rgb = AKit.Amber, snowLine: Float = 0.62f): AsciiPiece {
-    val ridges = listOf(
-        DawnRidge(5f, 9f, 0.09f, '.', AKit.Violet, AKit.Blue),
-        DawnRidge(3f, 7f, 0.13f, ':', AKit.Violet, sun),
-        DawnRidge(1f, 5f, 0.21f, '%', null, null),
-    )
+public fun alpineDawnPiece(
+    seed: Int = 0,
+    sun: Rgb = AKit.Amber,
+    snowLine: Float = 0.62f,
+): AsciiPiece {
+    val ridges =
+        listOf(
+            DawnRidge(5f, 9f, 0.09f, '.', AKit.Violet, AKit.Blue),
+            DawnRidge(3f, 7f, 0.13f, ':', AKit.Violet, sun),
+            DawnRidge(1f, 5f, 0.21f, '%', null, null),
+        )
     return asciiPiece(
         name = "alpine dawn",
         category = "scenes",
@@ -64,25 +69,42 @@ public fun alpineDawnPiece(seed: Int = 0, sun: Rgb = AKit.Amber, snowLine: Float
     }
 }
 
-private fun paintSky(grid: Grid, seed: Int, rise: Float, sun: Rgb) {
+private fun paintSky(
+    grid: Grid,
+    seed: Int,
+    rise: Float,
+    sun: Rgb,
+) {
     val sunY = HORIZON + 3f - rise * 12f
-    for (y in 0 until HORIZON) for (x in 0 until COLS) {
-        val dx = (x - SUN_X) * 0.5f
-        val dy = y - sunY
-        val d = sqrt(dx * dx + dy * dy)
-        val glow = (0.35f + 0.65f * rise) / (1f + d * d * 0.08f)
-        when {
-            d < 3.2f -> grid.put(x, y, '@', sun)
-            glow > 0.1f -> grid.put(x, y, AKit.glyph(" .:-=", glow * 2f), AKit.Blue.lerp(sun, glow * 1.6f))
-            glow < 0.06f && Noise.hash(x, y, 0, seed) > 0.985f -> grid.put(x, y, '.')
+    for (y in 0 until HORIZON) {
+        for (x in 0 until COLS) {
+            val dx = (x - SUN_X) * 0.5f
+            val dy = y - sunY
+            val d = sqrt(dx * dx + dy * dy)
+            val glow = (0.35f + 0.65f * rise) / (1f + d * d * 0.08f)
+            when {
+                d < 3.2f -> grid.put(x, y, '@', sun)
+                glow > 0.1f -> grid.put(x, y, AKit.glyph(" .:-=", glow * 2f), AKit.Blue.lerp(sun, glow * 1.6f))
+                glow < 0.06f && Noise.hash(x, y, 0, seed) > 0.985f -> grid.put(x, y, '.')
+            }
         }
     }
 }
 
-private fun ridgeHeight(ridge: DawnRidge, x: Int, layer: Int, seed: Int): Int =
-    (ridge.base + ridge.amp * Noise.fbm(x * ridge.scale + layer * 37f, layer * 5f, 0f, 4, seed)).toInt()
+private fun ridgeHeight(
+    ridge: DawnRidge,
+    x: Int,
+    layer: Int,
+    seed: Int,
+): Int = (ridge.base + ridge.amp * Noise.fbm(x * ridge.scale + layer * 37f, layer * 5f, 0f, 4, seed)).toInt()
 
-private fun paintRidge(grid: Grid, ridge: DawnRidge, seed: Int, layer: Int, snowLine: Float) {
+private fun paintRidge(
+    grid: Grid,
+    ridge: DawnRidge,
+    seed: Int,
+    layer: Int,
+    snowLine: Float,
+) {
     val peak = ridge.base + ridge.amp
     for (x in 0 until COLS) {
         val h = ridgeHeight(ridge, x, layer, seed)
@@ -93,26 +115,35 @@ private fun paintRidge(grid: Grid, ridge: DawnRidge, seed: Int, layer: Int, snow
         val snowy = h > snowLine * peak
         for (y in top until HORIZON) {
             val edge = y == top
-            val glyph = when {
-                edge && next > h -> '/'
-                edge && next < h -> '\\'
-                edge -> '_'
-                snowy && y - top < 2 -> '*'
-                else -> ridge.body
-            }
+            val glyph =
+                when {
+                    edge && next > h -> '/'
+                    edge && next < h -> '\\'
+                    edge -> '_'
+                    snowy && y - top < 2 -> '*'
+                    else -> ridge.body
+                }
             grid.put(x, y, glyph, if (snowy && y - top < 2) null else color)
         }
     }
 }
 
-private fun paintMist(grid: Grid, seed: Int, angle: Float) {
+private fun paintMist(
+    grid: Grid,
+    seed: Int,
+    angle: Float,
+) {
     for (x in 0 until COLS) {
         val n = Noise.value(x * 0.15f + 2f * cos(angle), 5f + 2f * sin(angle), 0f, seed)
         if (n > 0.55f) grid.put(x, HORIZON - 1, if (n > 0.75f) '~' else '-', AKit.Blue)
     }
 }
 
-private fun paintLake(grid: Grid, seed: Int, angle: Float) {
+private fun paintLake(
+    grid: Grid,
+    seed: Int,
+    angle: Float,
+) {
     for (y in HORIZON until ROWS) {
         val mirror = 2 * HORIZON - 1 - y
         val shift = (sin(y * 1.7f + 3f * angle) * 1.2f).toInt()
@@ -123,7 +154,18 @@ private fun paintLake(grid: Grid, seed: Int, angle: Float) {
                 continue
             }
             val tint = grid.colorAt(x + shift, mirror)?.lerp(AKit.Blue, 0.4f) ?: AKit.Blue
-            grid.put(x, y, if (glyph == '@') '=' else if (glyph == '.') '.' else '-', tint)
+            grid.put(
+                x,
+                y,
+                if (glyph == '@') {
+                    '='
+                } else if (glyph == '.') {
+                    '.'
+                } else {
+                    '-'
+                },
+                tint,
+            )
         }
     }
 }

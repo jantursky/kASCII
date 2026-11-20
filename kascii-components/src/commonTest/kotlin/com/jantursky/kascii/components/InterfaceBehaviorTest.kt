@@ -72,7 +72,14 @@ class InterfaceBehaviorTest {
         assertTrue(AsciiSpinnerStyle.entries.size >= 10)
         for (style in AsciiSpinnerStyle.entries) {
             assertTrue(style.frames.size > 1, style.name)
-            assertEquals(1, style.frames.map { it.length }.toSet().size, style.name)
+            assertEquals(
+                1,
+                style.frames
+                    .map { it.length }
+                    .toSet()
+                    .size,
+                style.name,
+            )
             assertTrue(style.fps > 0)
         }
     }
@@ -131,13 +138,14 @@ class InterfaceBehaviorTest {
 
     @Test
     fun treeDrawsNestedBranches() {
-        val tree = AsciiTreeNode(
-            "proj",
-            listOf(
-                AsciiTreeNode("src", listOf(AsciiTreeNode("a.kt"), AsciiTreeNode("b.kt"))),
-                AsciiTreeNode("README"),
-            ),
-        )
+        val tree =
+            AsciiTreeNode(
+                "proj",
+                listOf(
+                    AsciiTreeNode("src", listOf(AsciiTreeNode("a.kt"), AsciiTreeNode("b.kt"))),
+                    AsciiTreeNode("README"),
+                ),
+            )
         assertEquals(
             listOf("proj/", "├── src/", "│   ├── a.kt", "│   └── b.kt", "└── README"),
             renderTree(tree),
@@ -236,7 +244,14 @@ class InterfaceBehaviorTest {
     @Test
     fun terminalWrapsLongLinesAndEmptyLines() {
         val grid = renderTerminal(listOf("abcdefgh", ""), 5, 6, "$ ", "", true, theme)
-        assertEquals(listOf("abcde", "fgh", "", "$ █"), grid.toText().lines().map { it.trimEnd() }.take(4))
+        assertEquals(
+            listOf("abcde", "fgh", "", "$ █"),
+            grid
+                .toText()
+                .lines()
+                .map { it.trimEnd() }
+                .take(4),
+        )
     }
 
     @Test

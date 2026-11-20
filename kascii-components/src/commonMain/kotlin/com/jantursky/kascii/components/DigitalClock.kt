@@ -19,7 +19,11 @@ public fun AsciiClock(
     GridSurface(renderBigText(text, font), modifier, text)
 }
 
-internal fun clockText(hour: Int, minute: Int, second: Int?): String {
+internal fun clockText(
+    hour: Int,
+    minute: Int,
+    second: Int?,
+): String {
     require(hour in 0..23 && minute in 0..59 && (second ?: 0) in 0..59) { "Not a time of day" }
     val parts = listOfNotNull(hour, minute, second).map { it.toString().padStart(2, '0') }
     return parts.joinToString(":")

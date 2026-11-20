@@ -58,49 +58,53 @@ public fun AsciiSlider(
     val inner = sliderTrack(cols)
 
     fun commit(next: Float) = currentOnChange(valueAt(snapFraction(next, steps), valueRange))
+
     fun commitAt(xPx: Float) = commit(fractionAtCell((xPx - (boxWidth - cols * cellPx) / 2) / cellPx, inner))
 
     ControlGrid(
         grid = renderSlider(cols, fraction, state, LocalKasciiTheme.current),
         state = state,
-        modifier = modifier
-            .onSizeChanged { boxWidth = it.width }
-            .semantics(mergeDescendants = true) {
-                contentDescription = label
-                progressBarRangeInfo = ProgressBarRangeInfo(value.coerceIn(valueRange), valueRange, steps)
-                stateDescription = "${percentOf(fraction)}%"
-                if (!enabled) disabled()
-                setProgress { target -> commit(fractionOf(target, valueRange)).let { true } }
-            }
-            .onKeyEvent { event ->
-                val down = enabled && event.type == KeyEventType.KeyDown
-                val target = if (down) keyTarget(event.key, fraction, steps) else null
-                target?.let(::commit) != null
-            }
-            .focusRequester(focus)
-            .focusable(enabled, source)
-            .pointerInput(enabled) {
-                if (enabled) {
-                    detectTapGestures(
-                        onPress = {
-                            focus.requestFocus()
-                            commitAt(it.x)
-                        },
-                    )
-                }
-            }
-            .pointerInput(enabled) {
-                if (enabled) {
-                    detectDragGestures { change, _ ->
-                        change.consume()
-                        commitAt(change.position.x)
+        modifier =
+            modifier
+                .onSizeChanged { boxWidth = it.width }
+                .semantics(mergeDescendants = true) {
+                    contentDescription = label
+                    progressBarRangeInfo = ProgressBarRangeInfo(value.coerceIn(valueRange), valueRange, steps)
+                    stateDescription = "${percentOf(fraction)}%"
+                    if (!enabled) disabled()
+                    setProgress { target -> commit(fractionOf(target, valueRange)).let { true } }
+                }.onKeyEvent { event ->
+                    val down = enabled && event.type == KeyEventType.KeyDown
+                    val target = if (down) keyTarget(event.key, fraction, steps) else null
+                    target?.let(::commit) != null
+                }.focusRequester(focus)
+                .focusable(enabled, source)
+                .pointerInput(enabled) {
+                    if (enabled) {
+                        detectTapGestures(
+                            onPress = {
+                                focus.requestFocus()
+                                commitAt(it.x)
+                            },
+                        )
                     }
-                }
-            },
+                }.pointerInput(enabled) {
+                    if (enabled) {
+                        detectDragGestures { change, _ ->
+                            change.consume()
+                            commitAt(change.position.x)
+                        }
+                    }
+                },
     )
 }
 
-internal fun renderSlider(cols: Int, fraction: Float, state: ControlState, theme: KasciiTheme): Grid {
+internal fun renderSlider(
+    cols: Int,
+    fraction: Float,
+    state: ControlState,
+    theme: KasciiTheme,
+): Grid {
     val inner = sliderTrack(cols)
     val grid = Grid(cols, 1)
     val color = if (state.enabled) null else theme.dim()
@@ -108,11 +112,12 @@ internal fun renderSlider(cols: Int, fraction: Float, state: ControlState, theme
     grid.put(1, 0, '[', color)
     grid.put(inner + 2, 0, ']', color)
     for (i in 0 until inner) {
-        val glyph = when {
-            i == thumb -> 'O'
-            i < thumb -> '='
-            else -> '-'
-        }
+        val glyph =
+            when {
+                i == thumb -> 'O'
+                i < thumb -> '='
+                else -> '-'
+            }
         grid.put(2 + i, 0, glyph, if (i <= thumb && state.enabled) theme.good() else color)
     }
     if (state.focused) grid.put(0, 0, '>', theme.accent)
@@ -123,23 +128,38 @@ internal fun renderSlider(cols: Int, fraction: Float, state: ControlState, theme
 internal fun sliderTrack(cols: Int): Int = (cols - 3).coerceAtLeast(2)
 
 /** The fraction for a pointer at [x] cells from the grid's left edge. The thumb centers on its cell. */
-internal fun fractionAtCell(x: Float, inner: Int): Float = ((x - 2f - 0.5f) / (inner - 1)).coerceIn(0f, 1f)
+internal fun fractionAtCell(
+    x: Float,
+    inner: Int,
+): Float = ((x - 2f - 0.5f) / (inner - 1)).coerceIn(0f, 1f)
 
-internal fun fractionOf(value: Float, range: ClosedFloatingPointRange<Float>): Float {
+internal fun fractionOf(
+    value: Float,
+    range: ClosedFloatingPointRange<Float>,
+): Float {
     val span = range.endInclusive - range.start
     return if (span <= 0f) 0f else ((value - range.start) / span).coerceIn(0f, 1f)
 }
 
-internal fun valueAt(fraction: Float, range: ClosedFloatingPointRange<Float>): Float =
-    range.start + (range.endInclusive - range.start) * fraction.coerceIn(0f, 1f)
+internal fun valueAt(
+    fraction: Float,
+    range: ClosedFloatingPointRange<Float>,
+): Float = range.start + (range.endInclusive - range.start) * fraction.coerceIn(0f, 1f)
 
-internal fun snapFraction(fraction: Float, steps: Int): Float {
+internal fun snapFraction(
+    fraction: Float,
+    steps: Int,
+): Float {
     val clamped = fraction.coerceIn(0f, 1f)
     return if (steps <= 0) clamped else (clamped * (steps + 1)).roundToInt() / (steps + 1f)
 }
 
 /** Where a key sends the thumb from [fraction], or null when the key is not a slider key. */
-internal fun keyTarget(key: Key, fraction: Float, steps: Int): Float? {
+internal fun keyTarget(
+    key: Key,
+    fraction: Float,
+    steps: Int,
+): Float? {
     val step = if (steps > 0) 1f / (steps + 1) else KEY_STEP
     return when (key) {
         Key.DirectionRight, Key.DirectionUp -> fraction + step

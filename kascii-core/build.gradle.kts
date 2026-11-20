@@ -85,7 +85,9 @@ mavenPublishing {
     coordinates(artifactId = "kascii-core")
     pom {
         name.set("Kascii Core")
-        description.set("Glyph engine for text-mode art: fields, charsets, grids, themes, a frame clock and text, ANSI and SVG export.")
+        description.set(
+            "Glyph engine for text-mode art: fields, charsets, grids, themes, a frame clock and text, ANSI and SVG export.",
+        )
         inceptionYear.set("2026")
         url.set("https://github.com/jantursky/kascii")
         licenses {
@@ -110,4 +112,3 @@ mavenPublishing {
         }
     }
 }
-

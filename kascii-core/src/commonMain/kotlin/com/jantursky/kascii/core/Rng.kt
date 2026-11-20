@@ -1,7 +1,9 @@
 package com.jantursky.kascii.core
 
 /** A small seeded random generator (SplitMix64) so a piece with the same seed draws the same frames everywhere. */
-public class Rng(seed: Long = 0L) {
+public class Rng(
+    seed: Long = 0L,
+) {
     private var state: Long = seed
 
     private fun next(): Long {
@@ -16,7 +18,10 @@ public class Rng(seed: Long = 0L) {
     public fun float(): Float = ((next() ushr 40).toInt()) / 16777216f
 
     /** A float in [from]..[until]. */
-    public fun float(from: Float, until: Float): Float = from + (until - from) * float()
+    public fun float(
+        from: Float,
+        until: Float,
+    ): Float = from + (until - from) * float()
 
     /** An int in 0 until [bound]. */
     public fun int(bound: Int): Int {

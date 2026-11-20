@@ -26,7 +26,11 @@ public fun AsciiEqualizer(
 }
 
 /** Band levels (0..1) at time [t]: two sines per band whose speeds and phases come from [seed]. */
-internal fun equalizerLevels(bands: Int, t: Float, seed: Long): List<Float> {
+internal fun equalizerLevels(
+    bands: Int,
+    t: Float,
+    seed: Long,
+): List<Float> {
     val rng = Rng(seed)
     return List(bands) {
         val slow = rng.float(2f, 6f)
@@ -37,7 +41,12 @@ internal fun equalizerLevels(bands: Int, t: Float, seed: Long): List<Float> {
     }
 }
 
-internal fun renderEqualizer(bands: Int, rows: Int, t: Float, seed: Long, theme: KasciiTheme): Grid =
-    renderColumns(equalizerLevels(bands, t, seed), rows, barWidth = 2, gap = 1, color = theme.accent)
+internal fun renderEqualizer(
+    bands: Int,
+    rows: Int,
+    t: Float,
+    seed: Long,
+    theme: KasciiTheme,
+): Grid = renderColumns(equalizerLevels(bands, t, seed), rows, barWidth = 2, gap = 1, color = theme.accent)
 
 private const val EQUALIZER_FPS = 15

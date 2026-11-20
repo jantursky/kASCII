@@ -13,7 +13,11 @@ import androidx.compose.runtime.withFrameNanos
  * [stillTime].
  */
 @Composable
-internal fun rememberClock(fps: Int, reduced: Boolean, stillTime: Float = 0f): FloatState {
+internal fun rememberClock(
+    fps: Int,
+    reduced: Boolean,
+    stillTime: Float = 0f,
+): FloatState {
     val time = remember(reduced, stillTime) { mutableFloatStateOf(if (reduced) stillTime else 0f) }
     LaunchedEffect(fps, reduced) {
         if (reduced) return@LaunchedEffect
@@ -26,7 +30,9 @@ internal fun rememberClock(fps: Int, reduced: Boolean, stillTime: Float = 0f): F
     return time
 }
 
-internal fun quantizedSeconds(elapsedNanos: Long, fps: Int): Float =
-    (elapsedNanos * fps / NANOS_PER_SECOND) / fps.toFloat()
+internal fun quantizedSeconds(
+    elapsedNanos: Long,
+    fps: Int,
+): Float = (elapsedNanos * fps / NANOS_PER_SECOND) / fps.toFloat()
 
 private const val NANOS_PER_SECOND = 1_000_000_000L

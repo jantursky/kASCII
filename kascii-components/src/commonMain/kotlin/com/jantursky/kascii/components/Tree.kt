@@ -9,17 +9,26 @@ import androidx.compose.ui.Modifier
  * @property label Name of the file or folder.
  * @property children Entries inside a folder, empty for a file.
  */
-public class AsciiTreeNode(public val label: String, public val children: List<AsciiTreeNode> = emptyList())
+public class AsciiTreeNode(
+    public val label: String,
+    public val children: List<AsciiTreeNode> = emptyList(),
+)
 
 /** A file tree drawn with `├──` and `└──` branches. A screen reader gets the nesting as text. */
 @Composable
-public fun AsciiTree(root: AsciiTreeNode, modifier: Modifier = Modifier) {
+public fun AsciiTree(
+    root: AsciiTreeNode,
+    modifier: Modifier = Modifier,
+) {
     GridSurface(gridOfLines(renderTree(root)), modifier, describeTree(root))
 }
 
 internal fun renderTree(root: AsciiTreeNode): List<String> = listOf(root.name()) + branches(root, "")
 
-private fun branches(node: AsciiTreeNode, prefix: String): List<String> =
+private fun branches(
+    node: AsciiTreeNode,
+    prefix: String,
+): List<String> =
     node.children.flatMapIndexed { i, child ->
         val last = i == node.children.lastIndex
         listOf(prefix + (if (last) "└── " else "├── ") + child.name()) +
