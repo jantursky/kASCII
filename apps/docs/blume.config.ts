@@ -7,7 +7,7 @@ const version = /^VERSION_NAME=(.+)$/m.exec(properties)?.[1]?.trim()
 if (!version) throw new Error('VERSION_NAME is missing from gradle.properties')
 
 export default defineConfig({
-  title: 'Kascii',
+  title: 'kASCII',
   description: 'ASCII and text-mode art for Compose Multiplatform: a glyph engine, modifiers, components and an animated gallery.',
   logo: '/logo.svg',
   github: {

@@ -1,4 +1,4 @@
-/* Kascii design tokens. Source of truth: design/DESIGN.md. Dark is native, light is derived. */
+/* kASCII design tokens. Source of truth: design/DESIGN.md. Dark is native, light is derived. */
 :root,
 :root[data-theme='dark'] {
   --kascii-void: #06051d;

@@ -52,7 +52,7 @@ fun Overview(state: GalleryState) {
                 verticalArrangement = Arrangement.spacedBy(24.dp),
             ) {
                 BasicText(
-                    "Kascii",
+                    "kASCII",
                     Modifier.semantics { heading() },
                     style = Gallery.type.hero.copy(color = colors.strong, textAlign = TextAlign.Center),
                 )

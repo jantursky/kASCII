@@ -11,7 +11,7 @@ fun main(args: Array<String>) =
     application {
         Window(
             onCloseRequest = ::exitApplication,
-            title = "Kascii gallery",
+            title = "kASCII gallery",
             state = rememberWindowState(size = DpSize(1280.dp, 840.dp)),
         ) {
             GalleryApp(initialPage = args.firstOrNull())

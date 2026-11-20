@@ -25,7 +25,7 @@ targets:
     info:
       path: GalleryApp/Info.plist
       properties:
-        CFBundleDisplayName: Kascii gallery
+        CFBundleDisplayName: kASCII gallery
         UILaunchScreen:
           UIColorName: LaunchBackground
         CADisableMinimumFrameDurationOnPhone: true

@@ -30,7 +30,7 @@ jobs:
       - name: Name the version on the front page
         run: |
           version=$(sed -n 's/^VERSION_NAME=//p' gradle.properties)
-          printf '<!doctype html><meta charset="utf-8"><title>Kascii %s API reference</title><meta http-equiv="refresh" content="0; url=html/index.html"><p>Kascii %s API reference. <a href="html/index.html">Open it</a>.</p>' "$version" "$version" > build/dokka/index.html
+          printf '<!doctype html><meta charset="utf-8"><title>kASCII %s API reference</title><meta http-equiv="refresh" content="0; url=html/index.html"><p>kASCII %s API reference. <a href="html/index.html">Open it</a>.</p>' "$version" "$version" > build/dokka/index.html
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:

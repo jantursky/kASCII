@@ -1,4 +1,4 @@
-"""Builds Kascii Mono: JetBrains Mono Regular plus a Unifont subset, every glyph one 600-unit cell wide.
+"""Builds kASCII Mono: JetBrains Mono Regular plus a Unifont subset, every glyph one 600-unit cell wide.
 
 usage: merge_fonts.py <jbm-subset.ttf> <unifont-subset.otf> <out.ttf>
 """
@@ -58,7 +58,7 @@ if base["post"].formatType == 2:
     base["post"].extraNames = []
     base["post"].mapping = {}
 
-family = "Kascii Mono"
+family = "kASCII Mono"
 names = base["name"]
 for record in list(names.names):
     if record.nameID in (1, 3, 4, 6, 7, 8, 11, 12, 16, 17, 21, 22):
@@ -71,12 +71,12 @@ copyright_text = (
 names.setName(copyright_text, 0, 3, 1, 0x409)
 names.setName(family, 1, 3, 1, 0x409)
 names.setName("Regular", 2, 3, 1, 0x409)
-names.setName("KasciiMono-Regular;%.3f" % base["head"].fontRevision, 3, 3, 1, 0x409)
+names.setName("kASCIIMono-Regular;%.3f" % base["head"].fontRevision, 3, 3, 1, 0x409)
 names.setName(family + " Regular", 4, 3, 1, 0x409)
-names.setName("KasciiMono-Regular", 6, 3, 1, 0x409)
-names.setName("Kascii", 8, 3, 1, 0x409)
-names.setName("https://github.com/jantursky/kascii", 11, 3, 1, 0x409)
-names.setName("https://github.com/jantursky/kascii", 12, 3, 1, 0x409)
+names.setName("kASCIIMono-Regular", 6, 3, 1, 0x409)
+names.setName("kASCII", 8, 3, 1, 0x409)
+names.setName("https://github.com/jantursky/kASCII", 11, 3, 1, 0x409)
+names.setName("https://github.com/jantursky/kASCII", 12, 3, 1, 0x409)
 names.setName(
     "Modified version of JetBrains Mono 2.304 merged with a subset of GNU Unifont 18.0.01. "
     "Programming ligatures removed. Wide glyphs scaled to one cell.",

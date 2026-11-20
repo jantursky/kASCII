@@ -140,12 +140,12 @@ mavenPublishing {
     if (providers.gradleProperty("signingInMemoryKey").isPresent) signAllPublications()
     coordinates(artifactId = "kascii-compose")
     pom {
-        name.set("Kascii Compose")
+        name.set("kASCII Compose")
         description.set(
-            "Compose Multiplatform renderers for Kascii: AsciiCanvas, Modifier.ascii, GPU, CPU and text rendering.",
+            "Compose Multiplatform renderers for kASCII: AsciiCanvas, Modifier.ascii, GPU, CPU and text rendering.",
         )
         inceptionYear.set("2026")
-        url.set("https://github.com/jantursky/kascii")
+        url.set("https://github.com/jantursky/kASCII")
         licenses {
             license {
                 name.set("MIT License")
@@ -162,9 +162,9 @@ mavenPublishing {
             }
         }
         scm {
-            url.set("https://github.com/jantursky/kascii")
-            connection.set("scm:git:https://github.com/jantursky/kascii.git")
-            developerConnection.set("scm:git:ssh://git@github.com/jantursky/kascii.git")
+            url.set("https://github.com/jantursky/kASCII")
+            connection.set("scm:git:https://github.com/jantursky/kASCII.git")
+            developerConnection.set("scm:git:ssh://git@github.com/jantursky/kASCII.git")
         }
     }
 }

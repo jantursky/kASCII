@@ -192,7 +192,7 @@ private fun Footer() {
 
 /** What the gallery states about platform support. Anything not run says so. */
 private const val SUPPORT_NOTE =
-    "Kascii $GALLERY_VERSION. Checked: desktop JVM (screenshot tests) and the web build (browser tests in Chromium, " +
+    "kASCII $GALLERY_VERSION. Checked: desktop JVM (screenshot tests) and the web build (browser tests in Chromium, " +
         "Firefox and WebKit). UNVERIFIED: the Android and iOS apps run on a device or emulator, and the Gpu " +
         "renderer on those. PNG: copied on desktop and iOS (iOS UNVERIFIED), saved as a file in the browser, not " +
         "offered on Android."

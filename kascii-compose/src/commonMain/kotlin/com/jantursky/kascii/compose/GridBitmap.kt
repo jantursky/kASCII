@@ -21,9 +21,9 @@ import kotlin.math.roundToInt
 /**
  * Rasterises this grid to a bitmap with the bundled font, for PNG export or sharing.
  *
- * The bundled font is available once any Kascii composable or [kasciiFontFamily] has loaded it; before that the
+ * The bundled font is available once any kASCII composable or [kasciiFontFamily] has loaded it; before that the
  * platform monospace font draws. Android can only draw text with a context, so there this throws
- * [IllegalStateException] until a Kascii composable has been shown.
+ * [IllegalStateException] until a kASCII composable has been shown.
  */
 public fun Grid.toImageBitmap(
     theme: KasciiTheme = KasciiTheme.Dark,
@@ -33,7 +33,7 @@ public fun Grid.toImageBitmap(
     require(cellHeightPx > 0) { "Cell height must be positive" }
     val resolver =
         FontRegistry.resolver ?: standaloneFontResolver()
-            ?: error("Show a Kascii composable before drawing grids to bitmaps on this platform")
+            ?: error("Show a kASCII composable before drawing grids to bitmaps on this platform")
     val font = FontRegistry.family ?: FontFamily.Monospace
     val renderer = GlyphRenderer()
     val fontSize = cellHeightPx / LINE_HEIGHT_EM

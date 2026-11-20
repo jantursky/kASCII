@@ -118,12 +118,12 @@ mavenPublishing {
     if (providers.gradleProperty("signingInMemoryKey").isPresent) signAllPublications()
     coordinates(artifactId = "kascii-gallery")
     pom {
-        name.set("Kascii Gallery")
+        name.set("kASCII Gallery")
         description.set(
             "A gallery of animated ASCII pieces for Compose Multiplatform: scenes, shapes, space, physics, nature and more.",
         )
         inceptionYear.set("2026")
-        url.set("https://github.com/jantursky/kascii")
+        url.set("https://github.com/jantursky/kASCII")
         licenses {
             license {
                 name.set("MIT License")
@@ -140,9 +140,9 @@ mavenPublishing {
             }
         }
         scm {
-            url.set("https://github.com/jantursky/kascii")
-            connection.set("scm:git:https://github.com/jantursky/kascii.git")
-            developerConnection.set("scm:git:ssh://git@github.com/jantursky/kascii.git")
+            url.set("https://github.com/jantursky/kASCII")
+            connection.set("scm:git:https://github.com/jantursky/kASCII.git")
+            developerConnection.set("scm:git:ssh://git@github.com/jantursky/kASCII.git")
         }
     }
 }

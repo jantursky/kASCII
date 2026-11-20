@@ -10,7 +10,7 @@ import com.jantursky.kascii.core.KasciiTheme
 import com.jantursky.kascii.core.Rgb
 
 /**
- * The theme every Kascii composable reads. Defaults to [KasciiTheme.Dark], the native look; provide
+ * The theme every kASCII composable reads. Defaults to [KasciiTheme.Dark], the native look; provide
  * [systemKasciiTheme] through [ProvideKasciiTheme] to follow the system's dark or light setting.
  */
 public val LocalKasciiTheme: ProvidableCompositionLocal<KasciiTheme> = compositionLocalOf { KasciiTheme.Dark }

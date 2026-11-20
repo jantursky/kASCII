@@ -35,7 +35,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: Kascii version
+      label: kASCII version
       placeholder: 1.0.0
     validations:
       required: true

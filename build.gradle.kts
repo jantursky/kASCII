@@ -24,7 +24,7 @@ dependencies {
 }
 
 dokka {
-    moduleName.set("Kascii")
+    moduleName.set("kASCII")
     dokkaPublications.configureEach { failOnWarning.set(true) }
 }
 

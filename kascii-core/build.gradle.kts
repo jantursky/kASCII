@@ -84,12 +84,12 @@ mavenPublishing {
     if (providers.gradleProperty("signingInMemoryKey").isPresent) signAllPublications()
     coordinates(artifactId = "kascii-core")
     pom {
-        name.set("Kascii Core")
+        name.set("kASCII Core")
         description.set(
             "Glyph engine for text-mode art: fields, charsets, grids, themes, a frame clock and text, ANSI and SVG export.",
         )
         inceptionYear.set("2026")
-        url.set("https://github.com/jantursky/kascii")
+        url.set("https://github.com/jantursky/kASCII")
         licenses {
             license {
                 name.set("MIT License")
@@ -106,9 +106,9 @@ mavenPublishing {
             }
         }
         scm {
-            url.set("https://github.com/jantursky/kascii")
-            connection.set("scm:git:https://github.com/jantursky/kascii.git")
-            developerConnection.set("scm:git:ssh://git@github.com/jantursky/kascii.git")
+            url.set("https://github.com/jantursky/kASCII")
+            connection.set("scm:git:https://github.com/jantursky/kASCII.git")
+            developerConnection.set("scm:git:ssh://git@github.com/jantursky/kASCII.git")
         }
     }
 }

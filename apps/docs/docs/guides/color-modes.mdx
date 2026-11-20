@@ -25,6 +25,6 @@ AsciiCanvas(
 
 ## Themes
 
-`KasciiTheme` has `ink`, `paper`, `accent` and a `palette`. `Light` and `Dark` follow the Kascii design system, `Phosphor` and `Amber` are CRT looks. Build one from Compose colors with `kasciiThemeOf(ink, paper, accent, palette)`, so it can read Material 3 colors, and provide it with `ProvideKasciiTheme`. `systemKasciiTheme()` picks the built-in light or dark theme from the system setting.
+`KasciiTheme` has `ink`, `paper`, `accent` and a `palette`. `Light` and `Dark` follow the kASCII design system, `Phosphor` and `Amber` are CRT looks. Build one from Compose colors with `kasciiThemeOf(ink, paper, accent, palette)`, so it can read Material 3 colors, and provide it with `ProvideKasciiTheme`. `systemKasciiTheme()` picks the built-in light or dark theme from the system setting.
 
 Large colored fills should stay readable on both themes. Aim for a contrast ratio of at least 4.5 between ink and paper; `contrastRatio()` tells you.

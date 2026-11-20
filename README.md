@@ -1,11 +1,11 @@
 <p align="center">
-  <img src=".github/assets/banner.svg" alt="Kascii: ascii ui for compose multiplatform" width="420">
+  <img src=".github/assets/banner.svg" alt="kASCII: ascii ui for compose multiplatform" width="420">
 </p>
 
 <p align="center">
   <a href="https://central.sonatype.com/artifact/io.github.jantursky/kascii-compose"><img alt="Maven Central" src="https://img.shields.io/maven-central/v/io.github.jantursky/kascii-compose"></a>
-  <a href="https://github.com/jantursky/kascii/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/jantursky/kascii/actions/workflows/ci.yml/badge.svg"></a>
-  <a href="https://codecov.io/gh/jantursky/kascii"><img alt="Coverage" src="https://codecov.io/gh/jantursky/kascii/graph/badge.svg"></a>
+  <a href="https://github.com/jantursky/kASCII/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/jantursky/kASCII/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://codecov.io/gh/jantursky/kASCII"><img alt="Coverage" src="https://codecov.io/gh/jantursky/kASCII/graph/badge.svg"></a>
   <img alt="Kotlin Multiplatform" src="https://img.shields.io/badge/Kotlin-Multiplatform-7f52ff">
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-blue"></a>
 </p>
@@ -17,7 +17,7 @@
   <a href="CHANGELOG.md">Changelog</a>
 </p>
 
-Kascii draws text-mode art in Compose Multiplatform. A tone, a number from 0 to 1, becomes a glyph: a dot, a hash, a block, a Braille pattern. A small engine does the mapping, and anything in Compose can use it: a background, a photo, a button, a chart, a line of big text or a whole animated scene.
+kASCII draws text-mode art in Compose Multiplatform. A tone, a number from 0 to 1, becomes a glyph: a dot, a hash, a block, a Braille pattern. A small engine does the mapping, and anything in Compose can use it: a background, a photo, a button, a chart, a line of big text or a whole animated scene.
 
 It runs on Android, iOS, JVM desktop and wasmJs from one `commonMain` source set. The engine has no UI dependency and the Compose layer has no Material dependency.
 
@@ -112,9 +112,9 @@ More in the [docs](https://kascii-docs.vercel.app) and the [live demo](https://k
 
 ## Prior art
 
-Kascii stands on two projects that proved the idea on the web. [asciicn](https://asciicn.dev) is a React ASCII engine with ten charsets, color modes, a WebGL glyph shader and export. [ascii.rest](https://github.com/bas3line/ascii) is a catalogue of about 240 animated ASCII pieces with a kit for building more. Both are MIT licensed. Where a gallery piece is a port of a specific ascii.rest piece, its KDoc says so and the original license is in [`THIRD_PARTY_NOTICES`](THIRD_PARTY_NOTICES). The ascii.rest logo, company and distro groups are not ported, since they are third-party trademarks.
+kASCII stands on two projects that proved the idea on the web. [asciicn](https://asciicn.dev) is a React ASCII engine with ten charsets, color modes, a WebGL glyph shader and export. [ascii.rest](https://github.com/bas3line/ascii) is a catalogue of about 240 animated ASCII pieces with a kit for building more. Both are MIT licensed. Where a gallery piece is a port of a specific ascii.rest piece, its KDoc says so and the original license is in [`THIRD_PARTY_NOTICES`](THIRD_PARTY_NOTICES). The ascii.rest logo, company and distro groups are not ported, since they are third-party trademarks.
 
-[Stipple](https://github.com/jantursky/stipple) is the same author's dithered-UI library for Compose Multiplatform. It turns tone into ink and paper dots where Kascii turns it into glyphs, they share an architecture, and the docs show how to [use them together](https://kascii-docs.vercel.app/guides/using-with-stipple).
+[Stipple](https://github.com/jantursky/stipple) is the same author's dithered-UI library for Compose Multiplatform. It turns tone into ink and paper dots where kASCII turns it into glyphs, they share an architecture, and the docs show how to [use them together](https://kascii-docs.vercel.app/guides/using-with-stipple).
 
 A search of klibs.io, GitHub and Maven Central found no library for ASCII or text-mode effects on Compose Multiplatform. The nearest are [ShaderX](https://github.com/Debanshu777/ShaderX) (its sample app has an ASCII camera built from one dither shader), [Kasciffy](https://github.com/gmitch215/kasciffy) (image and video to ASCII without Compose rendering) and [HypnoticCanvas](https://github.com/mikepenz/HypnoticCanvas) (shader plumbing).
 
@@ -135,7 +135,7 @@ Background pausing relies on the host frame clock stopping and is documented, no
 
 - Camera, video and microphone sources (`AsciiCamera`, `AsciiVideo`).
 - Animated export to GIF and WebM. Text, ANSI, SVG and PNG are covered.
-- FIGlet fonts. Big text uses two block fonts drawn for Kascii, because the standard FIGlet fonts have no clear license.
+- FIGlet fonts. Big text uses two block fonts drawn for kASCII, because the standard FIGlet fonts have no clear license.
 - Most of the planned gallery: 26 pieces ship in the first release. Later phases add the rest of the ascii.rest catalogue re-implemented in Kotlin, city skylines, simulations, interactive pieces and seasonal pieces.
 - Interactive expand and collapse in `AsciiTree`, tap to select in `AsciiCalendar` and image support in `AsciiAvatar`.
 - Frame-time budgets per piece on devices.
@@ -153,7 +153,7 @@ bun run build:docs                      # the docs site
 bun run screenshots                     # re-record the README GIFs
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). Agent instructions for building with Kascii are in [`skills/kascii/SKILL.md`](skills/kascii/SKILL.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md). Agent instructions for building with kASCII are in [`skills/kascii/SKILL.md`](skills/kascii/SKILL.md).
 
 <!-- PROJECTS:START -->
 ## Other Projects & Products

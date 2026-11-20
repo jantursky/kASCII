@@ -40,7 +40,7 @@ fun ModifierExample(
                 .background(Brush.linearGradient(listOf(Color(0xFF7F52FF), Color(0xFFE44857), Color(0xFFF0B100)))),
             contentAlignment = Alignment.Center,
         ) {
-            BasicText("Kascii", style = TextStyle(fontSize = 72.sp, color = Color.White))
+            BasicText("kASCII", style = TextStyle(fontSize = 72.sp, color = Color.White))
         }
     }
 }

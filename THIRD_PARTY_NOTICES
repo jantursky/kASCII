@@ -1,6 +1,6 @@
 Third-party notices
 
-Kascii is released under the MIT license (see LICENSE). The following third-party material is bundled in,
+kASCII is released under the MIT license (see LICENSE). The following third-party material is bundled in,
 or is the basis of, parts of the project. Each entry carries the license text as published by its authors.
 
 ================================================================================
@@ -271,5 +271,5 @@ Compose Multiplatform and kotlinx
 ================================================================================
 
 Compose Multiplatform and the kotlinx libraries (such as kotlinx.coroutines) are dependencies of the modules.
-They are not bundled in Kascii's artifacts. They are licensed under the Apache License 2.0, text at
+They are not bundled in kASCII's artifacts. They are licensed under the Apache License 2.0, text at
 https://www.apache.org/licenses/LICENSE-2.0

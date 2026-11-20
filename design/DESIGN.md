@@ -1,4 +1,4 @@
-# Kascii design system
+# kASCII design system
 
 Mood: a deep-ocean terminal. Pressurized darkness where text-mode art generates itself,
 and controls look like faintly glowing specimens. Monospace is the identity.

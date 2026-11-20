@@ -1,12 +1,12 @@
 ---
 name: kascii
-description: Build ASCII and text-mode art in Compose Multiplatform with Kascii. Use when the user wants glyph-based visuals in a Kotlin Multiplatform app (Android, iOS, desktop, web): a procedural background, an image or any composable turned into ASCII, a terminal-style UI, an animated scene, a text effect, a chart in text, or a new animated piece built with the kit. Covers adding the dependency, choosing a charset and color mode, writing a field or a piece, reduced motion, accessibility, export, and tests.
+description: Build ASCII and text-mode art in Compose Multiplatform with kASCII. Use when the user wants glyph-based visuals in a Kotlin Multiplatform app (Android, iOS, desktop, web): a procedural background, an image or any composable turned into ASCII, a terminal-style UI, an animated scene, a text effect, a chart in text, or a new animated piece built with the kit. Covers adding the dependency, choosing a charset and color mode, writing a field or a piece, reduced motion, accessibility, export, and tests.
 license: MIT
 ---
 
-# Kascii
+# kASCII
 
-Kascii draws text-mode art in Compose Multiplatform. A **field** gives a tone from 0 to 1 for every position and
+kASCII draws text-mode art in Compose Multiplatform. A **field** gives a tone from 0 to 1 for every position and
 moment, a **charset** turns tones into glyphs, a **color mode** colors them, and a **renderer** draws the grid.
 Everything is deterministic for a given seed, pauses offscreen (canvas, modifier and gallery views) and holds a still frame under reduced motion.
 

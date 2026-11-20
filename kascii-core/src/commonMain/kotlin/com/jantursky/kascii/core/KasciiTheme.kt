@@ -29,7 +29,7 @@ public class KasciiTheme(
 
     /** The built-in values. */
     public companion object {
-        /** Light page, near black ink. Derived from the Kascii design system. */
+        /** Light page, near black ink. Derived from the kASCII design system. */
         public val Light: KasciiTheme =
             KasciiTheme(
                 ink = Rgb.fromHex("#1d293d"),

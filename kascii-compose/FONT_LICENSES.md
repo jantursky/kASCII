@@ -1,6 +1,6 @@
 # Font licenses
 
-Kascii Compose bundles one font, `src/commonMain/composeResources/font/kascii_mono.ttf`, named Kascii Mono.
+kASCII Compose bundles one font, `src/commonMain/composeResources/font/kascii_mono.ttf`, named kASCII Mono.
 It is a Modified Version, in the sense of the SIL Open Font License 1.1, of two fonts that are both
 licensed under that license:
 
@@ -9,7 +9,7 @@ licensed under that license:
 | [JetBrains Mono](https://github.com/JetBrains/JetBrainsMono) Regular | 2.304 | 2020 The JetBrains Mono Project Authors | `files/licenses/OFL-JetBrainsMono.txt` |
 | [GNU Unifont](https://unifoundry.com/unifont/), OFL 1.1 option | 18.0.01 | 1998-2026 Roman Czyborra, Paul Hardy et al. | `files/licenses/OFL-Unifont.txt` |
 
-Both license texts ship inside the library under `composeResources/files/licenses/`. Kascii Mono is
+Both license texts ship inside the library under `composeResources/files/licenses/`. kASCII Mono is
 distributed under the SIL Open Font License 1.1 as well. Neither source declares a Reserved Font Name;
 the merged font still uses a name of its own.
 
@@ -38,4 +38,4 @@ pyftsubset unifont-18.0.01.otf \
 
 Then `python3 fonts/merge_fonts.py jbm.ttf unifont_subset.otf kascii_mono.ttf` copies each Unifont
 glyph that JetBrains Mono lacks into the TrueType outlines, scaling it as described above, maps it in
-`cmap`, and renames the family to Kascii Mono.
+`cmap`, and renames the family to kASCII Mono.

@@ -66,7 +66,7 @@ test('the catalog has pages to test', () => {
 test('the gallery loads without console errors', async ({ page }) => {
   const errors = collectErrors(page)
   await page.goto('/')
-  await expect(page).toHaveTitle('Kascii gallery')
+  await expect(page).toHaveTitle('kASCII gallery')
   await ready(page)
   expect(errors).toEqual([])
 })
