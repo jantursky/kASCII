@@ -87,6 +87,7 @@ kotlin {
             dependencies {
                 api(project(":kascii-core"))
                 api(project(":kascii-compose"))
+                api(project(":kascii-components"))
                 api(project(":kascii-gallery"))
                 api(libs.compose.runtime)
                 api(libs.compose.foundation)

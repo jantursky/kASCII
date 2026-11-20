@@ -187,9 +187,9 @@ class InterfaceRenderTest {
     fun bigTextCompactAtoM() {
         assertGrid(
             renderBigText("ABCDEFGHIJKLM", AsciiBigFont.Compact),
-            "|┌─┐ ┬─┐ ┌─┐ ┬─╮ ┌─╴ ┌─╴ ┌─┐ ╷ ╷ ─┬─  ─┐ ╷ ╱ ╷   ┌┬┐|",
+            "|┌─┐ ┬─┐ ┌─┐ ┬─╮ ┌─╴ ┌─╴ ┌─┐ ╷ ╷ ─┬─  ─┐ │ ╱ ╷   ┌┬┐|",
             "|├─┤ ├─┤ │   │ │ ├─  ├─  │ ┬ ├─┤  │    │ ├<  │   │││|",
-            "|╵ ╵ ┴─┘ └─┘ ┴─╯ └─╴ ╵   └─┘ ╵ ╵ ─┴─ └─┘ ╵ ╲ └─╴ ╵ ╵|",
+            "|╵ ╵ ┴─┘ └─┘ ┴─╯ └─╴ ╵   └─┘ ╵ ╵ ─┴─ └─┘ │ ╲ └─╴ ╵ ╵|",
         )
     }
 

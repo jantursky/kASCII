@@ -105,7 +105,6 @@ private fun NavBar(
     val wide = LocalWide.current
     val navigate = LocalNavigate.current
     var menuOpen by remember { mutableStateOf(false) }
-    val links = Catalog.filter { it.group != Group.Pieces }
     Column(Modifier.fillMaxWidth().background(Gallery.colors.surface2)) {
         FlowRow(
             Modifier.fillMaxWidth().padding(horizontal = if (wide) 48.dp else 16.dp, vertical = 8.dp),
@@ -119,7 +118,7 @@ private fun NavBar(
                 style = Gallery.type.title.copy(color = Gallery.colors.strong),
             )
             if (wide) {
-                links.forEach { NavLink(it.title, it.isCurrent(page)) { navigate(it.id) } }
+                NavLinks.forEach { NavButton(it.title, it.isCurrent(page)) { navigate(it.id) } }
             } else {
                 Pill(if (menuOpen) "Close" else "Menu", { menuOpen = !menuOpen }, tint = Tint.Amber)
             }
@@ -127,8 +126,8 @@ private fun NavBar(
         }
         if (!wide && menuOpen) {
             Column(Modifier.padding(horizontal = 8.dp, vertical = 8.dp)) {
-                links.forEach {
-                    NavLink(it.title, it.isCurrent(page)) {
+                NavLinks.forEach {
+                    NavButton(it.title, it.isCurrent(page)) {
                         menuOpen = false
                         navigate(it.id)
                     }
@@ -138,11 +137,8 @@ private fun NavBar(
     }
 }
 
-/** A piece's page counts as the pieces page, which it opens from. */
-private fun Page.isCurrent(page: Page): Boolean = id == page.id || (id == "pieces" && page.group == Group.Pieces)
-
 @Composable
-private fun NavLink(
+private fun NavButton(
     title: String,
     current: Boolean,
     onClick: () -> Unit,

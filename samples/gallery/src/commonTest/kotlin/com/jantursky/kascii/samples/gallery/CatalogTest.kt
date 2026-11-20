@@ -22,6 +22,16 @@ class CatalogTest {
     }
 
     @Test
+    fun theComponentPagesAreRegisteredAndReachableFromTheNav() {
+        assertEquals(8, ComponentPages.size)
+        ComponentPages.forEach { assertEquals(Group.Components, pageFor(it.id).group) }
+        val link = NavLinks.single { it.title == "Components" }
+        assertTrue(ComponentPages.all { link.isCurrent(it) })
+        assertTrue(NavLinks.single { it.title == "Pieces" }.isCurrent(pageFor("donut")))
+        assertEquals("terminal-app", pageFor("terminal-app").id)
+    }
+
+    @Test
     fun anUnknownIdOpensTheOverview() {
         assertEquals("overview", pageFor("no-such-page").id)
         assertEquals("overview", pageFor(null).id)

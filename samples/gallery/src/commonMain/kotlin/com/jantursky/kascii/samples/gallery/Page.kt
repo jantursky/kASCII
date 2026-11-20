@@ -20,8 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.jantursky.kascii.compose.ProvideKasciiTheme
 
-/** What a page belongs to: the nav lists every group but [Pieces], whose pages open from the grid. */
-enum class Group { Start, Showcase, Pieces }
+/** What a page belongs to: the nav lists [Start] and [Showcase] pages; the others open from a link or the grid. */
+enum class Group { Start, Showcase, Components, Pieces }
 
 /**
  * One page of the gallery.

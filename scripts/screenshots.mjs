@@ -32,7 +32,7 @@ const GIFS = [
   { name: 'creatures', pages: ['jellyfish', 'owl'] },
   { name: 'objects', pages: ['analog-clock', 'hourglass', 'lava-lamp'] },
   { name: 'generative', pages: ['mandelbrot', 'glider-gun', 'langtons-ant'] },
-  { name: 'effects', pages: ['doom-fire', 'matrix-rain', 'synthwave', 'tunnel'] },
+  { name: 'effects', pages: ['flames', 'matrix-rain', 'synthwave', 'tunnel'] },
 ].map((gif) => ({ ...gif, pages: gif.pages.map((id) => ({ id, height: 400 })) }))
 
 const build = () => {
