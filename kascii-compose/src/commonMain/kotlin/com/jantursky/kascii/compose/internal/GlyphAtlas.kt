@@ -100,6 +100,7 @@ internal fun buildAtlas(
             }
         }
     }
+    image.freezePixels()
     return GlyphAtlas(glyphs, metrics, font, image)
 }
 
