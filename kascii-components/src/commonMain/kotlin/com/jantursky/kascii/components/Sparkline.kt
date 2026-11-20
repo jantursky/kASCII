@@ -13,14 +13,16 @@ public fun AsciiSparkline(
     values: List<Float>,
     modifier: Modifier = Modifier,
 ) {
-    val description = describeSeries("Sparkline", "values", values)
-    GridSurface(renderSparkline(values, LocalKasciiTheme.current), modifier, description)
+    val clean = values.finite()
+    val description = describeSeries("Sparkline", "values", clean)
+    GridSurface(renderSparkline(clean, LocalKasciiTheme.current), modifier, description)
 }
 
 internal fun renderSparkline(
     values: List<Float>,
     theme: KasciiTheme,
 ): Grid {
+    val values = values.finite()
     val grid = Grid(values.size, 1)
     val low = values.minOrNull() ?: return grid
     val span = values.max() - low

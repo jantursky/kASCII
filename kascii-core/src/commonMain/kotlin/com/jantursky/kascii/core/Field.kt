@@ -104,6 +104,7 @@ public object Fields {
         width: Int,
         height: Int,
     ): Field {
+        require(width > 0 && height > 0) { "Size must be positive" }
         require(tones.size == width * height) { "Expected ${width * height} tones, got ${tones.size}" }
         return Field { x, y, _, _ ->
             val ix = (x * width).toInt().coerceIn(0, width - 1)

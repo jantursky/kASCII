@@ -37,7 +37,7 @@ A `ColorMode` colors the glyphs, see [color modes](/guides/color-modes). A `Kasc
 
 ## Clock and motion
 
-Time is bookkeeping in `PieceClock`: it advances by the frame delta times `speed`, wraps at `loop`, and stays at `still` when motion is reduced. `Motion` is `System`, `Full` or `Reduced`; `System` follows the platform setting. The Compose layer drives the clock with the frame clock, reads time only while drawing so frames never recompose, and stops it when the element is offscreen or the app is in the background.
+Time is bookkeeping in `PieceClock`: it advances by the frame delta times `speed`, wraps at `loop`, and stays at `still` when motion is reduced. `Motion` is `System`, `Full` or `Reduced`; `System` follows the platform setting. The Compose layer drives the clock with the frame clock, reads time only while drawing so frames do not recompose (the Text renderer and text-effect components do recompose), and stops it when the element is offscreen or the app is in the background.
 
 ## Determinism
 

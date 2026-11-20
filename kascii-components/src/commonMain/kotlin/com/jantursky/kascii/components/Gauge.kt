@@ -47,7 +47,7 @@ internal fun renderGauge(
     val grid = Grid(cols, arcRows + if (label == null) 0 else 1)
     val rest = BrailleCanvas(cols, arcRows)
     val filled = BrailleCanvas(cols, arcRows)
-    val steps = (PI * radius * 2).toInt()
+    val steps = (PI * radius * 2).toInt().coerceAtLeast(1)
     val centerX = radius
     val centerY = arcRows * 4 - 1
     for (i in 0..steps) {

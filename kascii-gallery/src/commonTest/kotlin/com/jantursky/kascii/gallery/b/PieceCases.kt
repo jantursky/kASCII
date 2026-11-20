@@ -3,7 +3,7 @@ package com.jantursky.kascii.gallery.b
 import com.jantursky.kascii.core.AsciiPiece
 import com.jantursky.kascii.gallery.analogClockPiece
 import com.jantursky.kascii.gallery.crtFilterPiece
-import com.jantursky.kascii.gallery.doomFirePiece
+import com.jantursky.kascii.gallery.flamesPiece
 import com.jantursky.kascii.gallery.gliderGunPiece
 import com.jantursky.kascii.gallery.hourglassPiece
 import com.jantursky.kascii.gallery.jellyfishPiece
@@ -34,7 +34,7 @@ internal val pieceCases: List<PieceCase> =
         PieceCase("mandelbrot", false) { mandelbrotPiece() },
         PieceCase("glider-gun", false) { gliderGunPiece() },
         PieceCase("langtons-ant", true) { langtonsAntPiece(it) },
-        PieceCase("doom-fire", true) { doomFirePiece(it) },
+        PieceCase("flames", true) { flamesPiece(it) },
         PieceCase("matrix-rain", true) { matrixRainPiece(it) },
         PieceCase("synthwave", true) { synthwavePiece(it) },
         PieceCase("tunnel", true) { tunnelPiece(it) },

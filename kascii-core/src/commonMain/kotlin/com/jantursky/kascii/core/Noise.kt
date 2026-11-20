@@ -57,6 +57,7 @@ public object Noise {
         octaves: Int = 4,
         seed: Int = 0,
     ): Float {
+        require(octaves > 0) { "octaves must be positive" }
         var sum = 0f
         var amp = 0.5f
         var freq = 1f

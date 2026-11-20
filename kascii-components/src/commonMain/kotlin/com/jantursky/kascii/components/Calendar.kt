@@ -19,6 +19,7 @@ public fun AsciiCalendar(
     selectedDay: Int? = null,
     today: Int? = null,
 ) {
+    require(month in 1..12) { "month must be 1..12, got $month" }
     val title = "${MONTH_NAMES[month - 1]} $year"
     val description =
         listOfNotNull(

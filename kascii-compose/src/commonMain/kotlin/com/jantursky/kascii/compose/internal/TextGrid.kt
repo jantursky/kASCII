@@ -69,9 +69,10 @@ internal fun TextAsciiView(
 ) {
     val clock = remember { AsciiClock(clockSpec.still) }
     var onScreen by remember { mutableStateOf(false) }
-    LaunchedEffect(clockSpec, onScreen) {
+    clock.spec = clockSpec
+    LaunchedEffect(clockSpec.running, onScreen) {
         clock.settle(clockSpec)
-        if (clockSpec.running && onScreen) clock.run(clockSpec)
+        if (clockSpec.running && onScreen) clock.run()
     }
     val measurer = rememberTextMeasurer()
     val advance = remember(font, measurer) { measurer.advanceEm(font) }

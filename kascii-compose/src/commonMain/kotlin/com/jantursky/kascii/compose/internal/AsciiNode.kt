@@ -70,7 +70,9 @@ internal class AsciiNode(
         val sizeChanged = next.source != spec.source || next.cell != spec.cell || next.font != spec.font
         if (next.source != spec.source) grid = null
         spec = next
-        if (clockChanged) restartClock()
+        if (clockChanged) {
+            if (next.clock.running == clock.spec.running) clock.spec = next.clock else restartClock()
+        }
         if (sizeChanged) invalidateMeasurement()
         invalidateDraw()
     }
@@ -93,8 +95,9 @@ internal class AsciiNode(
         job?.cancel()
         job = null
         val clockSpec = spec.clock
+        clock.spec = clockSpec
         clock.settle(clockSpec)
-        if (clockSpec.running && onScreen && isAttached) job = coroutineScope.launch { clock.run(clockSpec) }
+        if (clockSpec.running && onScreen && isAttached) job = coroutineScope.launch { clock.run() }
     }
 
     override fun MeasureScope.measure(

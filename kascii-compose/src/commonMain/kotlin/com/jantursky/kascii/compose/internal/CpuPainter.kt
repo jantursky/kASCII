@@ -9,6 +9,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import com.jantursky.kascii.core.Grid
 
+private const val MAX_FILTERS = 512
+
 /** Copies atlas slots to cells, tinted per cell. The tint filters are cached by color across frames. */
 internal class CpuPainter {
     private val filters = HashMap<Int, ColorFilter>()
@@ -40,8 +42,10 @@ internal class CpuPainter {
         }
     }
 
-    private fun filterFor(argb: Int): ColorFilter =
-        filters.getOrPut(argb) { ColorFilter.tint(Color(argb), BlendMode.SrcIn) }
+    private fun filterFor(argb: Int): ColorFilter {
+        if (filters.size >= MAX_FILTERS) filters.clear()
+        return filters.getOrPut(argb) { ColorFilter.tint(Color(argb), BlendMode.SrcIn) }
+    }
 }
 
 /** A cell's color: its own, or [ink] when the grid stores 0 for "theme ink". */

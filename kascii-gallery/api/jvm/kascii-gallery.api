@@ -48,10 +48,10 @@ public final class com/jantursky/kascii/gallery/DonutKt {
 	public static synthetic fun donutPiece-Gy6Wo5k$default (IILcom/jantursky/kascii/core/Charset$Ramp;ILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
 }
 
-public final class com/jantursky/kascii/gallery/DoomFireKt {
-	public static final fun AsciiDoomFire-87oMq6E (Landroidx/compose/ui/Modifier;IIIFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
-	public static final fun doomFirePiece-q-JaGCQ (III)Lcom/jantursky/kascii/core/AsciiPiece;
-	public static synthetic fun doomFirePiece-q-JaGCQ$default (IIIILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+public final class com/jantursky/kascii/gallery/FlamesKt {
+	public static final fun AsciiFlames-87oMq6E (Landroidx/compose/ui/Modifier;IIIFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun flamesPiece-q-JaGCQ (III)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun flamesPiece-q-JaGCQ$default (IIIILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
 }
 
 public final class com/jantursky/kascii/gallery/FractalTreeKt {

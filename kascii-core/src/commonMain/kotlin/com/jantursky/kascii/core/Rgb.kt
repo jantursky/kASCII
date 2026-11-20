@@ -39,7 +39,7 @@ public value class Rgb(
 
     /** The built-in values. */
     public companion object {
-        /** Black, the default "not set" value in a [Grid]. */
+        /** Opaque black. A [Grid] stores 0, not black, for "not set". */
         public val Black: Rgb = Rgb(0xFF000000.toInt())
 
         /** Opaque white. */
@@ -63,6 +63,7 @@ public value class Rgb(
         /** Parses `#rgb`, `#rrggbb` or `#aarrggbb`. */
         public fun fromHex(hex: String): Rgb {
             val h = hex.removePrefix("#")
+            require(h.all { it in '0'..'9' || it in 'a'..'f' || it in 'A'..'F' }) { "Not a color: $hex" }
             return when (h.length) {
                 3 -> Rgb(h.map { "$it$it".toInt(16) }.let { Rgb(it[0], it[1], it[2]) }.argb)
                 6 -> Rgb(0xFF000000.toInt() or h.toLong(16).toInt())

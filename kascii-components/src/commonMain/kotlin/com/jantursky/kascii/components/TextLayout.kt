@@ -3,6 +3,7 @@ package com.jantursky.kascii.components
 import com.jantursky.kascii.core.Grid
 import com.jantursky.kascii.core.Rgb
 import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 /** Builds a grid as wide as the longest of [lines]. */
 internal fun gridOfLines(
@@ -61,8 +62,21 @@ internal fun String.centered(width: Int): String {
 
 /** `3` for whole numbers, `3.5` otherwise. */
 internal fun Float.pretty(): String {
-    val tenths = (this * 10).roundToInt()
-    return if (tenths % 10 == 0) (tenths / 10).toString() else "${tenths / 10}.${kotlin.math.abs(tenths % 10)}"
+    if (!isFinite()) return "0"
+    val tenths = (this * 10).roundToLong()
+    return if (tenths % 10L == 0L) (tenths / 10).toString() else "${tenths / 10}.${kotlin.math.abs(tenths % 10)}"
 }
 
-internal fun percentOf(fraction: Float): Int = (fraction.coerceIn(0f, 1f) * 100).roundToInt()
+internal fun percentOf(fraction: Float): Int =
+    if (fraction.isNaN()) 0 else (fraction.coerceIn(0f, 1f) * 100).roundToInt()
+
+/** Replaces NaN and infinity, which no chart can place, with zero. */
+internal fun List<Float>.finite(): List<Float> =
+    if (all {
+            it.isFinite()
+        }
+    ) {
+        this
+    } else {
+        map { if (it.isFinite()) it else 0f }
+    }

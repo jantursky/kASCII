@@ -16,7 +16,7 @@ sidebar:
 
 ## GPU path
 
-The shader reads the atlas as a child shader: AGSL `RuntimeShader` with `setInputShader` on Android 13 and newer, and a Skia `RuntimeEffect` with a child shader on iOS, desktop and the web. Anything that fails, such as Android 12 and older or a program that does not compile, falls back to the CPU path and stays there.
+The shader reads the atlas as a child shader: AGSL `RuntimeShader` with `setInputShader` on Android 13 and newer, and a Skia `RuntimeEffect` with a child shader on iOS and desktop. Anything that fails, such as Android 12 and older or a program that does not compile, falls back to the CPU path and stays there.
 
 > **Unverified:** the GPU path is only verified where the [gallery](/guides/gallery) status table says so. Image children in the web (wasmJs) shader path have not been checked in a browser, so the web build falls back to the CPU renderer until they are.
 

@@ -45,6 +45,7 @@ internal fun renderTerminal(
     cursorOn: Boolean,
     theme: KasciiTheme,
 ): Grid {
+    require(cols > 0) { "cols must be positive" }
     val log = lines.flatMap { it.chunked(cols).ifEmpty { listOf("") } }
     val current = (prompt + input + if (cursorOn) "█" else "").chunked(cols)
     val visible = (log + current).takeLast(rows)

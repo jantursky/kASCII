@@ -140,4 +140,27 @@ class HelpersTest {
         assertEquals('[' to ']', fieldBrackets(false))
         assertEquals('▌' to '▐', fieldBrackets(true))
     }
+
+    @Test
+    fun nonFiniteValuesDoNotCrashTheRenderers() {
+        val theme = com.jantursky.kascii.core.KasciiTheme.Dark
+        val bad = listOf(1f, Float.NaN, Float.POSITIVE_INFINITY)
+        renderSparkline(bad, theme)
+        renderLineChart(bad, 10, 3, theme)
+        renderHeatmap(listOf(bad), emptyList(), theme)
+        renderCandlesticks(listOf(Candle(1f, Float.NaN, 0f, 1f)), 4, theme)
+        assertEquals(0, percentOf(Float.NaN))
+        assertEquals("0", Float.NaN.pretty())
+        assertTrue(5e9f.pretty().length > 9)
+    }
+
+    @Test
+    fun negativeMarqueeSpeedWraps() {
+        renderMarquee("hi", 10, 3f, -8f)
+    }
+
+    @Test
+    fun smallestGaugeRenders() {
+        renderGauge(0.5f, 1, null, com.jantursky.kascii.core.KasciiTheme.Dark)
+    }
 }

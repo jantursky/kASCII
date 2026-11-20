@@ -2,6 +2,7 @@ package com.jantursky.kascii.core
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 class GridExportTest {
@@ -67,5 +68,26 @@ class GridExportTest {
         g.clear()
         assertEquals("    \n    ", g.toText())
         assertEquals(null, g.colorAt(2, 0))
+    }
+
+    @Test
+    fun controlCharactersNeverReachAnsiOrSvgOutput() {
+        val g = Grid(4, 1)
+        g.write(0, 0, "\u001b]0\u0007")
+        assertEquals(false, Export.toAnsi(g).contains('\u001b'))
+        assertEquals(false, Export.toSvg(g).contains('\u0007'))
+    }
+
+    @Test
+    fun negativeSpeedWrapsIntoTheLoop() {
+        val t = PieceClock.next(0f, 1f, -1f, reduced = false, still = 0f, loop = 10f)
+        assertEquals(9f, t)
+    }
+
+    @Test
+    fun badInputsAreRejected() {
+        assertFailsWith<IllegalArgumentException> { Noise.fbm(0f, 0f, octaves = 0) }
+        assertFailsWith<IllegalArgumentException> { Fields.fromTones(FloatArray(0), 0, 0) }
+        assertFailsWith<IllegalArgumentException> { Rgb.fromHex("#-00001") }
     }
 }

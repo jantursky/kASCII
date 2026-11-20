@@ -16,7 +16,7 @@ public val galleryPiecesB: List<GalleryEntry> =
         GalleryEntry("mandelbrot", "Mandelbrot set", "generative", ported("mandelbrot")) { mandelbrotPiece() },
         GalleryEntry("glider-gun", "Glider gun", "generative", ported("glider gun")) { gliderGunPiece() },
         GalleryEntry("langtons-ant", "Langton's ant", "generative", ported("langtons ant")) { langtonsAntPiece(it) },
-        GalleryEntry("doom-fire", "Doom fire", "effects", ported("doom fire")) { doomFirePiece(it) },
+        GalleryEntry("flames", "Flames", "effects", ported("doom fire")) { flamesPiece(it) },
         GalleryEntry("matrix-rain", "Matrix rain", "effects", ported("matrix rain")) { matrixRainPiece(it) },
         GalleryEntry("synthwave", "Synthwave", "effects", ported("synthwave")) { synthwavePiece(it) },
         GalleryEntry("tunnel", "Tunnel", "effects", ported("tunnel")) { tunnelPiece(it) },

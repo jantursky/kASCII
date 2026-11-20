@@ -8,7 +8,7 @@ license: MIT
 
 Kascii draws text-mode art in Compose Multiplatform. A **field** gives a tone from 0 to 1 for every position and
 moment, a **charset** turns tones into glyphs, a **color mode** colors them, and a **renderer** draws the grid.
-Everything is deterministic for a given seed, pauses offscreen and holds a still frame under reduced motion.
+Everything is deterministic for a given seed, pauses offscreen (canvas, modifier and gallery views) and holds a still frame under reduced motion.
 
 Build what the user asked for. Do not drop in a nearby gallery piece and call it done. Draw glyphs, never pixels.
 
@@ -36,12 +36,12 @@ user cares about.
 | An animated background or effect | `AsciiCanvas(field = ...)` | Start from `Fields.plasma`, `noise`, `waves`, `ripples`. |
 | Any composable as ASCII | `Modifier.ascii(charset, cell)` | The content is drawn, sampled, then drawn as glyphs. |
 | A picture as ASCII | `AsciiImage(bitmap, ...)` | Tones and per-cell colors from the bitmap. |
-| A finished animated scene | A gallery composable such as `Donut()` or `Starfield()` | Each has `speed`, `seed`, `motion`. |
+| A finished animated scene | A gallery composable such as `Donut()` or `Starfield()` | Each has `speed` and `motion`; most also take `seed`. |
 | Terminal-style UI | `AsciiButton`, `AsciiCard`, `AsciiTabs`, `AsciiTerminal`, ... | Pure text frames with real semantics. |
 | A chart in text | `AsciiBarChart`, `AsciiSparkline`, `AsciiPieChart`, ... | Braille gives 2x4 dots per cell. |
 | Big or animated text | `AsciiBigText`, typewriter, scramble, glitch, marquee, ... | Reduced motion shows the final text. |
 | Something new | `asciiPiece(...)` and `AsciiPieceView` | See step 3. |
-| Output to a file or clipboard | `Export.toText`, `toAnsi`, `toSvg`, `Grid.toImageBitmap` | Golden-testable strings. |
+| Output to a file or clipboard | `Export.toText`, `toAnsi`, `toSvg`, `Grid.toImageBitmap` | Strings for `toText`, `toAnsi`, `toSvg` (golden-testable); an `ImageBitmap` for `toImageBitmap`. |
 
 ## 3. Build it
 
@@ -99,7 +99,7 @@ and theme swapped.
 - **Offscreen.** Pieces pause when not visible. Do not add your own timers; use the frame clock the composables use.
 - **Accessibility.** Give art a `contentDescription` when it carries meaning, leave it null when decorative.
   Interactive components expose role, state, keyboard and focus support and 48 dp touch targets.
-- **Renderers.** `AsciiRenderer.Auto` picks GPU when available. Force `Text` for selectable, copyable art and `Cpu`
+- **Renderers.** `AsciiRenderer.Auto` picks GPU when available and the grid has more than 2,000 cells. Force `Text` for selectable, copyable art and `Cpu`
   as the baseline. A platform you did not run is unverified: say so.
 - **Export.** `Export.toSvg` and `toAnsi` take a `Grid`; check them against a golden string.
 

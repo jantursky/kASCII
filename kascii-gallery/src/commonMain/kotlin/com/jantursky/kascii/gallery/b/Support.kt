@@ -42,6 +42,7 @@ internal fun gradient(
     colors: List<Rgb>,
     pos: Float,
 ): Rgb {
+    require(colors.isNotEmpty()) { "colors must not be empty" }
     if (colors.size == 1) return colors[0]
     val scaled = pos.coerceIn(0f, 1f) * (colors.size - 1)
     val i = scaled.toInt().coerceAtMost(colors.size - 2)

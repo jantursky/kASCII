@@ -29,7 +29,10 @@ internal class AsciiClock(
 ) {
     var time by mutableFloatStateOf(still)
 
-    suspend fun run(spec: ClockSpec) {
+    /** The spec the running loop reads each frame, so a new speed never restarts the clock. */
+    var spec: ClockSpec = ClockSpec(running = false, still = still)
+
+    suspend fun run() {
         var last = -1L
         while (true) {
             withFrameNanos { now ->

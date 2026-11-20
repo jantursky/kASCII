@@ -84,7 +84,7 @@ public object Charsets {
     /** The classic ten-step ramp, one sample per cell. */
     public val Standard: Charset.Ramp = Charset.Ramp("standard", " .:-=+*#%@")
 
-    /** A 70-glyph ramp for smooth gradients and photos. */
+    /** A 69-glyph ramp for smooth gradients and photos. */
     public val Dense: Charset.Ramp =
         Charset.Ramp(
             "dense",

@@ -36,7 +36,7 @@ public object Export {
                         )
                         current = color
                     }
-                    append(grid.glyphs[y * grid.cols + x])
+                    append(printable(grid.glyphs[y * grid.cols + x]))
                 }
                 if (current != 0) append("\u001b[39m")
                 if (y < grid.rows - 1) append('\n')
@@ -44,7 +44,7 @@ public object Export {
         }
 
     /**
-     * An SVG with one `<text>` element per row, drawn on [theme]'s paper. Characters are placed on a fixed
+     * An SVG with one `<text>` element per run of equally colored cells in a row, drawn on [theme]'s paper. Characters are placed on a fixed
      * [cellWidth] by [cellHeight] grid so the layout does not depend on font metrics.
      */
     public fun toSvg(
@@ -95,6 +95,8 @@ public object Export {
 
     private fun escape(s: String): String =
         s
+            .map(::printable)
+            .joinToString("")
             .replace("&", "&amp;")
             .replace("<", "&lt;")
             .replace(">", "&gt;")
@@ -134,3 +136,6 @@ public object Export {
         return "\u001b[${if (best < 8) 30 + best else 90 + best - 8}m"
     }
 }
+
+/** Control characters would run as terminal commands in ANSI output, so they print as spaces. */
+private fun printable(glyph: Char): Char = if (glyph < ' ' || glyph in '\u007f'..'\u009f') ' ' else glyph

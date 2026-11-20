@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
@@ -45,24 +46,28 @@ public fun AsciiTextField(
     val frame = monoTextStyle(if (focused) theme.accent else theme.dim())
     val (open, close) = fieldBrackets(focused)
     Row(modifier.heightIn(min = MinTouchTarget), verticalAlignment = Alignment.CenterVertically) {
-        BasicText(open.toString(), style = frame)
+        BasicText(open.toString(), Modifier.clearAndSetSemantics {}, style = frame)
         BasicTextField(
             value = value,
             onValueChange = onValueChange,
-            modifier = Modifier.width(CellWidth * cols).semantics { contentDescription = label },
+            modifier =
+                Modifier.width(CellWidth * cols).heightIn(min = MinTouchTarget).semantics {
+                    contentDescription =
+                        label
+                },
             enabled = enabled,
             singleLine = true,
             textStyle = ink,
             cursorBrush = SolidColor(Color(theme.accent.argb)),
             interactionSource = source,
             decorationBox = { field ->
-                Box {
+                Box(Modifier.heightIn(min = MinTouchTarget), contentAlignment = Alignment.CenterStart) {
                     if (value.isEmpty()) BasicText(placeholder.take(cols), style = monoTextStyle(theme.dim()))
                     field()
                 }
             },
         )
-        BasicText(close.toString(), style = frame)
+        BasicText(close.toString(), Modifier.clearAndSetSemantics {}, style = frame)
     }
 }
 

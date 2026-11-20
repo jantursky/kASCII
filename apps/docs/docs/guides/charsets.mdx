@@ -8,7 +8,7 @@ sidebar:
 | Charset | Glyphs | Cell samples | Use |
 | --- | --- | --- | --- |
 | `Standard` | `" .:-=+*#%@"` | 1 | The classic ramp. |
-| `Dense` | 70 glyphs | 1 | Smooth gradients and photos. |
+| `Dense` | 69 glyphs | 1 | Smooth gradients and photos. |
 | `Short` | `" .oO@"` | 1 | Chunky, graphic. |
 | `Blocks` | `" ░▒▓█"` | 1 | Solid fills. |
 | `Quadrants` | 16 blocks | 2 x 2 | Twice the resolution in blocks. |
@@ -31,7 +31,7 @@ List the glyphs from lightest to darkest. If you do not know their weight, `Char
 
 ## Braille and quadrants
 
-Both are bit masks. For Braille, each of the eight dots in a cell is lit when its tone sample is above the `threshold` (0.5 by default). Change it with `Charsets.Braille.withThreshold(0.3f)`. Because one cell covers 2 by 4 samples, Braille draws smooth shapes without shrinking the cell, which is why the pie chart and sparkline components use it.
+Both are bit masks. For Braille, each of the eight dots in a cell is lit when its tone sample is above the `threshold` (0.5 by default). Change it with `Charsets.Braille.withThreshold(0.3f)`. Because one cell covers 2 by 4 samples, Braille draws smooth shapes without shrinking the cell, which is why the line chart and gauge components use it.
 
 ## Fonts
 

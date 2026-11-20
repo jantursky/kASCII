@@ -52,17 +52,17 @@ private class Flames(
  * fire from the start when asked for an earlier frame and the output depends on the seed and the time alone.
  * Cells are two heat rows to a character. Colors run from [cool] to [hot]; the hottest cells use the theme ink.
  *
- * Ported from ascii.rest `doom fire` (MIT, Copyright (c) 2026 bas3line): the same PSX fire spread, simplified to
+ * Ported from ascii.rest `doom fire` (MIT, Copyright (c) 2026 bas3line): the same fire-spread rule, simplified to
  * the original rule and extended with seeds and per-cell colors.
  */
-public fun doomFirePiece(
+public fun flamesPiece(
     seed: Int = 0,
     cool: Rgb = Palette.Red,
     hot: Rgb = Palette.Amber,
 ): AsciiPiece {
     val stepper = Stepper(create = { Flames(rngFor(seed, 5)) }, advance = { it.spread() })
     return asciiPiece(
-        name = "doom fire",
+        name = "flames",
         category = "effects",
         cols = COLS,
         rows = ROWS,
@@ -86,7 +86,7 @@ public fun doomFirePiece(
  * its core. Ported from ascii.rest `doom fire`.
  */
 @Composable
-public fun AsciiDoomFire(
+public fun AsciiFlames(
     modifier: Modifier = Modifier,
     seed: Int = 0,
     cool: Rgb = Palette.Red,
@@ -96,6 +96,6 @@ public fun AsciiDoomFire(
     renderer: AsciiRenderer = AsciiRenderer.Auto,
     contentDescription: String? = "A fire burning along the bottom edge",
 ) {
-    val piece = remember(seed, cool, hot) { doomFirePiece(seed, cool, hot) }
+    val piece = remember(seed, cool, hot) { flamesPiece(seed, cool, hot) }
     AsciiPieceView(piece, modifier, speed, motion, renderer, contentDescription = contentDescription)
 }

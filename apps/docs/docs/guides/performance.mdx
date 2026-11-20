@@ -11,7 +11,7 @@ sidebar:
 - **Glyph lookup** is cheap.
 - **Drawing** is the big cost on the CPU path: one atlas blit per cell.
 
-The GPU path moves drawing to a shader, and the clock reads time only while drawing, so frames never recompose.
+The GPU path moves drawing to a shader, and the clock reads time only while drawing, so frames do not recompose with the Cpu and Gpu renderers. The Text renderer and the text-effect components recompose on every tick.
 
 ## Budget
 

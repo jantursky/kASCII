@@ -61,7 +61,7 @@ if base["post"].formatType == 2:
 family = "Kascii Mono"
 names = base["name"]
 for record in list(names.names):
-    if record.nameID in (1, 3, 4, 6, 16, 17, 21, 22):
+    if record.nameID in (1, 3, 4, 6, 7, 8, 11, 12, 16, 17, 21, 22):
         names.removeNames(nameID=record.nameID)
 copyright_text = (
     "Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono). "
@@ -74,6 +74,9 @@ names.setName("Regular", 2, 3, 1, 0x409)
 names.setName("KasciiMono-Regular;%.3f" % base["head"].fontRevision, 3, 3, 1, 0x409)
 names.setName(family + " Regular", 4, 3, 1, 0x409)
 names.setName("KasciiMono-Regular", 6, 3, 1, 0x409)
+names.setName("Kascii", 8, 3, 1, 0x409)
+names.setName("https://github.com/jantursky/kascii", 11, 3, 1, 0x409)
+names.setName("https://github.com/jantursky/kascii", 12, 3, 1, 0x409)
 names.setName(
     "Modified version of JetBrains Mono 2.304 merged with a subset of GNU Unifont 18.0.01. "
     "Programming ligatures removed. Wide glyphs scaled to one cell.",
@@ -86,5 +89,6 @@ names.setName("This Font Software is licensed under the SIL Open Font License, V
 names.setName("https://openfontlicense.org", 14, 3, 1, 0x409)
 names.names = [n for n in names.names if n.platformID == 3]
 
+base["OS/2"].achVendID = "KSCI"
 base.save(out_path)
 print("added", len(added), "glyphs, total", len(order))

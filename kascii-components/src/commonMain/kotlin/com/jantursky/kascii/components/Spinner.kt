@@ -22,17 +22,17 @@ public enum class AsciiSpinnerStyle(
     /** The `|/-\` line, safe on any font. */
     Line("|/-\\".toFrames(), 10),
 
-    /** A small arc turning. */
-    Arc("◜◠◝◞◡◟".toFrames(), 10),
+    /** A quarter block turning around the cell. */
+    Arc("▘▝▗▖".toFrames(), 10),
 
     /** A dot bouncing between the cell edges. */
     Bounce("⠁⠂⠄⡀⢀⠠⠐⠈".toFrames(), 10),
 
-    /** A hand sweeping a circle. */
-    Clock("◴◷◶◵".toFrames(), 6),
+    /** A half block turning. */
+    Clock("▀▐▄▌".toFrames(), 6),
 
-    /** Moon phases. */
-    Moon("◐◓◑◒".toFrames(), 6),
+    /** A circle filling and emptying. */
+    Moon("○◔◕●◕◔".toFrames(), 6),
 
     /** Arrows turning clockwise. */
     Arrows("←↖↑↗→↘↓↙".toFrames(), 10),

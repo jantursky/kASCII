@@ -31,6 +31,7 @@ internal fun renderHeatmap(
     rowLabels: List<String>,
     theme: KasciiTheme,
 ): Grid {
+    val values = values.map { it.finite() }
     val flat = values.flatten()
     val low = flat.minOrNull() ?: 0f
     val span = ((flat.maxOrNull() ?: 0f) - low).takeIf { it > 0f } ?: 1f

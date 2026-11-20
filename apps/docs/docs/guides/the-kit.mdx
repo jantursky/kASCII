@@ -21,7 +21,7 @@ AsciiPieceView(orbit, Modifier.fillMaxWidth().aspectRatio(64f / 24f))
 | Meta | Meaning |
 | --- | --- |
 | `cols`, `rows` | Grid size. |
-| `fps` | Frame rate, 0 for a still. |
+| `fps` | Greater than 0 for an animated piece, 0 for a still. Animated pieces redraw at the display rate. |
 | `still` | The time shown under reduced motion. Pick a representative moment. |
 | `loop` | Seconds after which the animation repeats, 0 for never. |
 

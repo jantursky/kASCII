@@ -42,6 +42,7 @@ internal fun renderCandlesticks(
     rows: Int,
     theme: KasciiTheme,
 ): Grid {
+    val candles = candles.filter { listOf(it.open, it.high, it.low, it.close).all(Float::isFinite) }
     val grid = Grid((candles.size * 2 - 1).coerceAtLeast(0), rows)
     if (candles.isEmpty()) return grid
     val top = candles.maxOf { it.high }

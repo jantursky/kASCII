@@ -35,7 +35,12 @@ public fun rainPiece(
         List((COLS * density * 2f).toInt().coerceAtLeast(1)) {
             floatArrayOf(rng.float(0f, COLS.toFloat()), (2 + rng.int(3)).toFloat(), rng.float())
         }
-    val slant = if (wind < 0.1f) '|' else '/'
+    val slant =
+        when {
+            wind > 0.1f -> '/'
+            wind < -0.1f -> '\\'
+            else -> '|'
+        }
     return asciiPiece(
         name = "rain",
         category = "nature",

@@ -96,7 +96,7 @@ internal fun renderMarquee(
     charsPerSecond: Float,
 ): Grid {
     val loop = text + " ".repeat(MARQUEE_GAP)
-    val offset = (t * charsPerSecond).toInt() % loop.length
+    val offset = (t * charsPerSecond).toInt().mod(loop.length)
     val window = (loop.repeat(cols / loop.length + 2)).drop(offset).take(cols)
     return Grid(cols, 1).also { it.writeText(window) }
 }

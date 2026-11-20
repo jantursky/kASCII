@@ -18,7 +18,7 @@ nothing from its Logos, Companies or Distros groups was used.
 | Mandelbrot set | generative | ascii.rest `mandelbrot` | done | JVM text grid only |
 | Glider gun | generative | ascii.rest `glider gun` | done | JVM text grid only |
 | Langton's ant | generative | ascii.rest `langtons ant` | done | JVM text grid only |
-| Doom fire | effects | ascii.rest `doom fire` | done | JVM text grid only |
+| Flames | effects | ascii.rest `doom fire` | done | JVM text grid only |
 | Matrix rain | effects | ascii.rest `matrix rain` | done | JVM text grid only |
 | Synthwave | effects | ascii.rest `synthwave` | done | JVM text grid only |
 | Tunnel | effects | ascii.rest `tunnel` | done | JVM text grid only |
@@ -40,7 +40,7 @@ nothing from its Logos, Companies or Distros groups was used.
 
 ## Notes
 
-- Stateful pieces (Langton's ant, doom fire) step a cached state by frame index and replay from the start when
+- Stateful pieces (Langton's ant, flames) step a cached state by frame index and replay from the start when
   asked for an earlier frame. The glider gun precomputes one 30 generation period and looks frames up. Matrix
   rain is a pure function of time.
 - The analog clock samples `now` (seconds since midnight) once when the piece is built and then counts with the

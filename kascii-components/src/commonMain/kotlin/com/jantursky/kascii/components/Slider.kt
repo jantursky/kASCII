@@ -72,7 +72,7 @@ public fun AsciiSlider(
                     progressBarRangeInfo = ProgressBarRangeInfo(value.coerceIn(valueRange), valueRange, steps)
                     stateDescription = "${percentOf(fraction)}%"
                     if (!enabled) disabled()
-                    setProgress { target -> commit(fractionOf(target, valueRange)).let { true } }
+                    setProgress { target -> enabled && commit(fractionOf(target, valueRange)).let { true } }
                 }.onKeyEvent { event ->
                     val down = enabled && event.type == KeyEventType.KeyDown
                     val target = if (down) keyTarget(event.key, fraction, steps) else null

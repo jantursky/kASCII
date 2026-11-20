@@ -41,8 +41,9 @@ public fun tunnelPiece(
     seed: Int = 0,
     charset: Charset.Ramp = Charsets.Standard,
     colors: List<Rgb> = listOf(Palette.Violet, Palette.Blue, Palette.Red),
-): AsciiPiece =
-    asciiPiece(
+): AsciiPiece {
+    require(colors.isNotEmpty()) { "colors must not be empty" }
+    return asciiPiece(
         name = "tunnel",
         category = "effects",
         cols = COLS,
@@ -69,6 +70,7 @@ public fun tunnelPiece(
             }
         }
     }
+}
 
 /**
  * A twisting tunnel of colored tiles seen head on. [seed] lays the tiles, [charset] shades them and [colors] are

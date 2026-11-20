@@ -28,7 +28,9 @@ public object PieceClock {
     ): Float {
         if (reduced) return still
         val t = time + deltaSeconds.coerceAtLeast(0f) * speed
-        return if (loop > 0f) t % loop else t
+        if (loop <= 0f) return t
+        val wrapped = t % loop
+        return if (wrapped < 0f) wrapped + loop else wrapped
     }
 
     /** Resolves [motion] against the platform preference. */

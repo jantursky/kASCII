@@ -26,6 +26,7 @@ internal fun renderLineChart(
     rows: Int,
     theme: KasciiTheme,
 ): Grid {
+    val values = values.finite()
     val grid = Grid(cols, rows)
     if (values.isEmpty()) return grid
     val low = values.min()

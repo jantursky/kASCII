@@ -27,4 +27,4 @@ For an image from a `Bitmap` use `AsciiImage(bitmap)`, which samples tones and p
 
 - The content is re-sampled when it changes, so an animated child stays in sync.
 - Semantics of the child are kept. The glyph layer adds nothing a screen reader would read twice.
-- Sampling happens off the main thread. The first frame can show the original content until the first sample is ready.
+- Sampling happens off the main thread. Until the first sample is ready the element draws plain paper.
