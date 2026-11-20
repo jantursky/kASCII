@@ -20,16 +20,16 @@ import kotlin.math.roundToInt
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-private const val COLS = 128
-private const val ROWS = 64
+private const val COLS = 192
+private const val ROWS = 48
 private const val CELLS = COLS * ROWS
 private const val LOOP = 16f
-private const val WL = 48
+private const val WL = 35
 private const val TAU = AKit.TAU
-private const val FLAKES = 46
-private const val STARS = 120
-private const val PUFFS = 10
-private const val BANDS = 3
+private const val FLAKES = 70
+private const val STARS = 170
+private const val PUFFS = 13
+private const val BANDS = 4
 
 private const val AIR = 0
 private const val FAR = 1
@@ -43,8 +43,13 @@ private const val ICE = 8
 private const val SOLID = 9
 
 private const val GLYPHS = " ·•●"
-private const val CHIMNEY_X = 94.5f
-private const val CHIMNEY_TOP = 28f
+private const val CHIMNEY_X = 145.5f
+private const val CHIMNEY_TOP = 15f
+private const val APEX_X = 138f
+private const val APEX_Y = 17f
+private const val ROOF_SLOPE = 0.44f
+private const val EAVES_Y = 24.7f
+private const val BASE_Y = 34f
 
 private val BAYER =
     floatArrayOf(0f, 8f, 2f, 10f, 12f, 4f, 14f, 6f, 3f, 11f, 1f, 9f, 15f, 7f, 13f, 5f)
@@ -244,6 +249,7 @@ private class Scene(
     private val fgCells: IntArray
     private val windowCol = col(window)
     private val auroraCol = col(aurora)
+    private val pane = windowCol.mix(col("#fff2c4"), 0.45f)
     private val palette: Palette
     private val starX = IntArray(STARS)
     private val starY = IntArray(STARS)
@@ -257,10 +263,10 @@ private class Scene(
 
     private val windows =
         listOf(
-            Window(81, 41, 4, 3, false),
-            Window(92, 41, 4, 3, true),
-            Window(87, 35, 3, 2, false),
-            Window(103, 43, 4, 2, true),
+            Window(126, 28, 5, 3, false),
+            Window(144, 28, 5, 3, true),
+            Window(136, 22, 4, 2, false),
+            Window(161, 31, 5, 2, true),
         )
 
     init {
@@ -270,6 +276,7 @@ private class Scene(
                 arrayOf(auroraCol.mix(col("#ffffff"), 0.35f), auroraCol, violet),
                 arrayOf(col("#4fe8cf"), col("#2cb5a6").mix(auroraCol, 0.3f), col("#7a7ae8")),
                 arrayOf(col("#f06ab8"), col("#b05ad0"), col("#6a5ad8")),
+                arrayOf(col("#7af0a8"), col("#3acf9a").mix(auroraCol, 0.3f), col("#6a8ae8")),
             )
         buildFar()
         buildForeground()
@@ -281,7 +288,7 @@ private class Scene(
             var y: Int
             do {
                 x = rng.int(COLS)
-                y = rng.int(WL - 8)
+                y = rng.int(WL - 7)
             } while (far.mat[y * COLS + x] != AIR || fg.mat[y * COLS + x] != AIR)
             starX[s] = x
             starY[s] = y
@@ -318,19 +325,19 @@ private class Scene(
     // ---- the static layers, built once -----------------------------------------------------------------------
 
     private fun farHeight(x: Float): Float =
-        6.5f + 6f * lat.fbm(x * 0.02f + 3f, 1.7f, 3) + 9f * gauss(x, 30f, 15f) + 7f * gauss(x, 112f, 13f) +
-            3.5f * gauss(x, 72f, 9f) + 2.2f * (1f - abs(2f * lat.at(x * 0.16f, 9f) - 1f))
+        4.2f + 4f * lat.fbm(x * 0.013f + 3f, 1.7f, 3) + 9f * gauss(x, 30f, 22f) + 8f * gauss(x, 92f, 16f) +
+            3.5f * gauss(x, 60f, 9f) + 9f * gauss(x, 186f, 14f) + 1.5f * (1f - abs(2f * lat.at(x * 0.1f, 9f) - 1f))
 
     private fun nearHeight(x: Float): Float {
-        val hill = 3.5f + 3f * lat.fbm(x * 0.045f + 20f, 5f, 2)
-        val plateau = smooth(60f, 72f, x) * smooth(124f, 112f, x)
-        return hill + (2.2f - hill) * plateau
+        val hill = 2.4f + 2.4f * lat.fbm(x * 0.03f + 20f, 5f, 2)
+        val plateau = smooth(104f, 120f, x) * smooth(190f, 178f, x)
+        return hill + (1.8f - hill) * plateau
     }
 
     private fun buildFar() {
         val haze = col("#6a7cb8")
-        val shadow = col("#4a5ea0")
-        val lit = col("#d4e0fa")
+        val shadow = col("#34448a")
+        val lit = col("#93a8de")
         val snowShade = col("#8aa0d4")
         val snowDark = col("#3a4a80")
         for (x in 0 until COLS) {
@@ -340,7 +347,7 @@ private class Scene(
                 val yc = y + 0.5f
                 if (yc >= nearTop) {
                     val depth = yc - nearTop
-                    val drift = lat.fbm(x * 0.18f, yc * 0.35f, 2)
+                    val drift = lat.fbm(x * 0.12f, yc * 0.45f, 2)
                     val shade = clamp01(0.25f + 0.85f * drift - depth * 0.05f)
                     far.set(
                         x,
@@ -352,7 +359,7 @@ private class Scene(
                     )
                 } else if (yc >= farTop) {
                     val depth = yc - farTop
-                    val rib = lat.at((x + depth * 0.55f) * 0.3f, 4f)
+                    val rib = lat.at((x + depth * 0.55f) * 0.2f, 4f)
                     val shade = clamp01(0.15f + 1.1f * rib - depth * 0.008f)
                     val c = shadow.mix(lit, shade).mix(haze, smooth(8f, 22f, depth) * 0.5f)
                     far.set(x, y, FAR, c, 0.7f + 0.3f * shade, 0.9f * exp(-depth / 5f) + 0.1f)
@@ -360,49 +367,46 @@ private class Scene(
             }
         }
         val rng = AKit.rng(seed, 7)
-        val deepHaze = 0.45f
-        repeat(52) {
+        repeat(104) {
             val px = rng.float(0f, COLS.toFloat())
-            if (px in 70f..113f) return@repeat
+            if (px in 114f..178f) return@repeat
             val h = rng.float(4f, 8f)
-            paintPine(far, px, WL - nearHeight(px) + 1.8f, h, deepHaze, false)
+            paintPine(far, px, WL - nearHeight(px) + 1.6f, h, 0.45f, false)
         }
-        val tall =
-            listOf(
-                floatArrayOf(10f, 12f),
-                floatArrayOf(22f, 9f),
-                floatArrayOf(36f, 11f),
-                floatArrayOf(48f, 8f),
-                floatArrayOf(60f, 10f),
-                floatArrayOf(69f, 14f),
-                floatArrayOf(116f, 13f),
-                floatArrayOf(122f, 9f),
-            )
-        for (p in tall) paintPine(far, p[0], WL - nearHeight(p[0]) + 2.2f, p[1], 0.18f, false)
+        var tx = 4f
+        while (tx < COLS) {
+            val px = tx + rng.float(-2f, 2f)
+            if (px !in 112f..178f) {
+                val h = rng.float(8f, 13.5f)
+                paintPine(far, px, WL - nearHeight(px) + 2f, h, 0.18f, false)
+            }
+            tx += rng.float(6f, 10f)
+        }
+        for (px in floatArrayOf(113f, 116f, 177f, 180f)) {
+            paintPine(far, px, WL - nearHeight(px) + 1.8f, rng.float(8f, 12f), 0.18f, false)
+        }
         paintCabin()
         paintIce()
     }
 
     private fun paintCabin() {
-        val apexX = 88f
-        val apexY = 31.5f
-        val slope = 0.583f
         val snow = col("#e4eeff")
-        val shingle = col("#3a3258")
+        val shingle = col("#5a4e8c")
         val wood = col("#9a6a40")
         val woodDark = col("#6e4a2c")
         val planks = col("#a87a4a")
         val stone = col("#5b6478")
         val trim = col("#d8b98a")
-        for (y in 24 until 47) {
-            for (x in 70 until 114) {
+        for (y in 12 until WL) {
+            for (x in 112 until 182) {
                 val xc = x + 0.5f
                 val yc = y + 0.5f
-                val roofY = apexY + abs(xc - apexX) * slope
-                val inRoofSpan = abs(xc - apexX) <= 12.2f
-                val thick = 2.2f + 0.5f * lat.at(xc * 0.4f, 3f)
+                val roofY = APEX_Y + abs(xc - APEX_X) * ROOF_SLOPE
+                val inRoofSpan = abs(xc - APEX_X) <= 17.6f
+                val thick = 2.6f + 0.5f * lat.at(xc * 0.4f, 3f)
+                val annexTop = 27.2f + (xc - 152f) * 0.1f
                 when {
-                    xc in 93f..96f && yc in CHIMNEY_TOP..(roofY + 1f) && !(inRoofSpan && yc >= roofY) -> {
+                    xc in 144f..147f && yc in CHIMNEY_TOP..(roofY + 1f) && !(inRoofSpan && yc >= roofY) -> {
                         val k = lat.at(xc * 1.3f, yc * 0.9f)
                         val cap = yc < CHIMNEY_TOP + 1.2f
                         far.set(
@@ -410,42 +414,50 @@ private class Scene(
                             y,
                             STONE,
                             if (cap) snow else stone.scale(0.8f + 0.5f * k),
-                            0.95f,
+                            if (cap) 1.98f else 1.6f,
                             if (cap) 1f else 0.3f,
                         )
                     }
 
                     inRoofSpan && yc >= roofY && yc < roofY + thick -> {
-                        val snowy = yc < roofY + 1.15f + 0.4f * lat.at(xc * 0.6f, 8f)
-                        far.set(x, y, ROOF, if (snowy) snow else shingle, 1f, if (snowy) 1f else 0.12f)
+                        val snowy = yc < roofY + 1.7f + 0.4f * lat.at(xc * 0.6f, 8f)
+                        if (snowy) {
+                            far.set(x, y, ROOF, snow, 1.98f, 1f)
+                        } else {
+                            far.set(x, y, ROOF, shingle, 1.6f, 0.2f)
+                        }
                     }
 
-                    inRoofSpan && yc >= roofY + thick && yc < 38.5f -> {
+                    inRoofSpan && yc >= roofY + thick && yc < EAVES_Y -> {
                         val plank = if (x % 2 == 0) planks else planks.scale(0.82f)
                         far.set(x, y, WALL, plank, 0.95f, 0.1f)
                     }
 
-                    xc in 79f..97f && yc in 38.5f..46f -> {
+                    xc in 123.5f..152.5f && yc in EAVES_Y..BASE_Y -> {
                         val log = if (y % 2 == 0) wood else woodDark
-                        val end = xc < 80.6f || xc > 95.4f
+                        val end = xc < 125f || xc > 151f
                         far.set(x, y, WALL, if (end) wood.mix(trim, 0.35f) else log, 0.95f, 0.1f)
                     }
 
-                    xc in 99f..111f && yc >= 38.5f + (xc - 99f) * 0.22f && yc < 41.2f + (xc - 99f) * 0.22f -> {
-                        val edge = yc > 40.2f + (xc - 99f) * 0.22f
-                        far.set(x, y, ROOF, if (edge) shingle else snow, 1f, if (edge) 0.12f else 1f)
+                    xc in 152f..175f && yc >= annexTop && yc < annexTop + 2.4f -> {
+                        val edge = yc > annexTop + 1.3f
+                        if (edge) {
+                            far.set(x, y, ROOF, shingle, 1.6f, 0.2f)
+                        } else {
+                            far.set(x, y, ROOF, snow, 1.98f, 1f)
+                        }
                     }
 
-                    xc in 100f..110f && yc >= 41.2f + (xc - 99f) * 0.22f && yc < 46f -> {
+                    xc in 153f..174f && yc >= annexTop + 2.4f && yc < BASE_Y -> {
                         far.set(x, y, WALL, if (y % 2 == 0) wood else woodDark, 0.95f, 0.1f)
                     }
                 }
             }
         }
         for (w in windows) paintWindow(w, trim)
-        for (y in 41 until 46) {
-            for (x in 87 until 90) {
-                far.set(x, y, WALL, if (x == 89 && y == 43) trim else col("#4a2f20"), 1f, 0.05f)
+        for (y in 29 until 34) {
+            for (x in 136 until 140) {
+                far.set(x, y, WALL, if (x == 139 && y == 31) trim else col("#4a2f20"), 1f, 0.05f)
             }
         }
         spillWarm()
@@ -475,14 +487,14 @@ private class Scene(
         for (w in windows) {
             val cx = w.x0 + w.w / 2f
             val cy = w.y0 + w.h / 2f
-            val radius = if (w.h == 2) 11f else 17f
-            for (y in 20 until WL) {
-                for (x in 60 until 120) {
+            val radius = if (w.h == 2) 12f else 19f
+            for (y in 10 until WL) {
+                for (x in 100 until COLS) {
                     val i = y * COLS + x
                     val m = far.mat[i]
                     if (m == AIR || m == PANE || m == FAR) continue
                     val dx = x + 0.5f - cx
-                    val dy = (y + 0.5f - cy) * 2f
+                    val dy = (y + 0.5f - cy) * 2.2f
                     val d = sqrt(dx * dx + dy * dy)
                     if (d >= radius) continue
                     val k = (1f - d / radius).let { it * it }
@@ -503,18 +515,18 @@ private class Scene(
     }
 
     private fun paintIce() {
-        val top = col("#2d6a88")
-        val bottom = col("#16304c")
+        val top = col("#245c7c")
+        val bottom = col("#0f2440")
         val crack = col("#9fd8e8")
         val patch = col("#a8bbe0")
         for (y in WL until ROWS) {
             val k = (y - WL) / (ROWS - WL - 1f)
             for (x in 0 until COLS) {
                 val i = y * COLS + x
-                val n = lat.fbm(x * 0.07f, y * 0.22f + 40f, 3)
+                val n = lat.fbm(x * 0.05f, y * 0.3f + 40f, 3)
                 val c = top.mix(bottom, k * 0.85f).mix(top, 0.3f * n)
-                val line = abs(lat.fbm(x * 0.05f + 70f, y * 0.12f, 2) - 0.5f)
-                val snowy = lat.fbm(x * 0.045f + 11f, y * 0.14f + 5f, 3)
+                val line = abs(lat.fbm(x * 0.035f + 70f, y * 0.16f, 2) - 0.5f)
+                val snowy = lat.fbm(x * 0.03f + 11f, y * 0.2f + 5f, 3)
                 far.set(x, y, ICE, c, 0.2f + 0.1f * n, 0.3f)
                 far.refl[i] = 1f
                 if (line < 0.018f) {
@@ -534,20 +546,20 @@ private class Scene(
         val snowDark = col("#3a4a7e")
         val snowLit = col("#a9bddd")
         for (x in 0 until COLS) {
-            val left = if (x < 44) 54f + 9f * smooth(0f, 42f, x.toFloat()) else 99f
-            val right = if (x > 92) 55f + 8f * smooth(128f, 94f, x.toFloat()) else 99f
-            val top = min(left, right) + 1.4f * (lat.at(x * 0.11f, 2f) - 0.5f)
+            val left = if (x < 66) 41f + 4.5f * smooth(0f, 66f, x.toFloat()) else 99f
+            val right = if (x > 150) 42f + 3f * smooth(192f, 150f, x.toFloat()) else 99f
+            val top = min(left, right) + 1f * (lat.at(x * 0.09f, 2f) - 0.5f)
             for (y in 0 until ROWS) {
                 if (y + 0.5f < top) continue
-                val n = lat.fbm(x * 0.2f, y * 0.5f, 2)
-                val c = snowDark.mix(snowLit, clamp01(0.35f + 0.9f * n - (y + 0.5f - top) * 0.04f))
+                val n = lat.fbm(x * 0.14f, y * 0.6f, 2)
+                val c = snowDark.mix(snowLit, clamp01(0.35f + 0.9f * n - (y + 0.5f - top) * 0.05f))
                 fg.set(x, y, SOLID, c, 0.88f, 0.95f)
             }
         }
-        paintPine(fg, 9f, 55.5f, 40f, 0f, true)
-        paintPine(fg, 25f, 60f, 27f, 0f, true)
-        paintPine(fg, 121f, 57f, 36f, 0f, true)
-        paintPine(fg, 107f, 62f, 23f, 0f, true)
+        paintPine(fg, 12f, 43.5f, 32f, 0f, true)
+        paintPine(fg, 33f, 46f, 20f, 0f, true)
+        paintPine(fg, 58f, 47f, 12f, 0f, true)
+        paintPine(fg, 185f, 45f, 29f, 0f, true)
     }
 
     private fun paintPine(
@@ -558,7 +570,7 @@ private class Scene(
         haze: Float,
         foreground: Boolean,
     ) {
-        val halfW = h * 0.36f
+        val halfW = h * (if (foreground) 0.4f else 0.5f)
         val dark = if (foreground) col("#0e2230") else col("#12303c")
         val mid = if (foreground) col("#1b4046") else col("#245358")
         val tip = col("#a9bddd")
@@ -580,7 +592,7 @@ private class Scene(
                     l.set(x, y, TREE, tip.scale(0.6f + 0.4f * n).mix(hazeCol, haze), 0.95f, 0.9f)
                 } else {
                     val c = mid.mix(dark, clamp01(0.5f + 0.5f * side + 0.2f * n)).mix(hazeCol, haze)
-                    l.set(x, y, TREE, c, if (foreground) 0.95f else 0.9f, 0.2f)
+                    l.set(x, y, TREE, c, if (foreground || haze < 0.3f) 1.6f else 0.9f, 0.25f)
                 }
             }
         }
@@ -601,18 +613,18 @@ private class Scene(
         val gain = FloatArray(BANDS * COLS)
     }
 
-    private val base = floatArrayOf(26f, 20.5f, 31f)
-    private val amp1 = floatArrayOf(3.2f, 2.6f, 2f)
-    private val freq1 = floatArrayOf(0.05f, 0.071f, 0.043f)
-    private val turns1 = intArrayOf(1, 2, 1)
-    private val phase1 = floatArrayOf(0f, 1.9f, 4.1f)
-    private val amp2 = floatArrayOf(1.6f, 1.3f, 1.1f)
-    private val freq2 = floatArrayOf(0.13f, 0.16f, 0.11f)
-    private val turns2 = intArrayOf(2, 1, 3)
-    private val phase2 = floatArrayOf(2f, 0.5f, 3.3f)
-    private val tall = floatArrayOf(27f, 20f, 12f)
-    private val strength = floatArrayOf(1f, 0.78f, 0.45f)
-    private val tilt = floatArrayOf(0.05f, -0.04f, 0.03f)
+    private val base = floatArrayOf(24f, 19f, 27f, 15.5f)
+    private val amp1 = floatArrayOf(4.5f, 3.8f, 3f, 2.6f)
+    private val freq1 = floatArrayOf(0.052f, 0.07f, 0.043f, 0.06f)
+    private val turns1 = intArrayOf(1, 2, 1, 1)
+    private val phase1 = floatArrayOf(0f, 1.9f, 4.1f, 2.7f)
+    private val amp2 = floatArrayOf(2f, 1.6f, 1.3f, 1.3f)
+    private val freq2 = floatArrayOf(0.13f, 0.16f, 0.11f, 0.14f)
+    private val turns2 = intArrayOf(2, 1, 3, 2)
+    private val phase2 = floatArrayOf(2f, 0.5f, 3.3f, 5.1f)
+    private val tall = floatArrayOf(24f, 17f, 10f, 13f)
+    private val strength = floatArrayOf(1f, 0.8f, 0.65f, 0.45f)
+    private val tilt = floatArrayOf(0.03f, -0.025f, 0.02f, -0.015f)
 
     private fun curtains(
         f: Frame,
@@ -624,15 +636,16 @@ private class Scene(
             for (x in 0 until COLS) {
                 val k = b * COLS + x
                 val xf = x.toFloat()
-                val pres = smooth(0.15f, 0.42f, lat.at(xf * 0.028f + b * 17.3f + 2.2f * cs, b * 5.1f + 2.2f * sn))
-                val n2 = lat.at(xf * 0.42f + b * 31f + 1.6f * sin(phi + b), 7.3f * b + 1.6f * kotlin.math.cos(phi * 2f))
-                val n3 = lat.at(xf * 1.1f + b * 5f + 1.2f * cs, 3f + 1.2f * sn)
+                val pres = smooth(0.22f, 0.45f, lat.at(xf * 0.03f + b * 17.3f + 2.2f * cs, b * 5.1f + 2.2f * sn))
+                val n2 = lat.at(xf * 0.17f + b * 31f + 1.6f * sin(phi + b), 7.3f * b + 1.6f * kotlin.math.cos(phi * 2f))
+                val n3 = lat.at(xf * 0.45f + b * 5f + 1.2f * cs, 3f + 1.2f * sn)
                 val ray = 0.1f + 1.5f * (0.65f * n2 + 0.35f * n3).let { it * it }
                 f.bottom[k] =
-                    base[b] + (xf - 64f) * tilt[b] +
+                    base[b] + (xf - 96f) * tilt[b] +
                     amp1[b] * sin(freq1[b] * xf + turns1[b] * phi + phase1[b]) +
                     amp2[b] * sin(freq2[b] * xf - turns2[b] * phi + phase2[b])
-                f.height[k] = tall[b] * (0.7f + 0.5f * n2)
+                val env = lat.at(xf * 0.024f + b * 9f + 1.6f * sn, b * 3f + 1.6f * cs + 11f)
+                f.height[k] = tall[b] * (0.55f + 0.45f * n2 + 0.55f * env)
                 f.gain[k] = pres * ray * strength[b]
             }
         }
@@ -679,8 +692,8 @@ private class Scene(
             if (gain < 0.01f) continue
             val d = (f.bottom[k] - yc) / f.height[k]
             if (d < -0.25f || d > 1f) continue
-            val prof = if (d < 0f) 1f + 4f * d else (1f - d) * (1f - d) * (1f - d)
-            val a = prof * gain * 1.5f
+            val prof = if (d < 0f) 1f + 4f * d else (1f - d) * (1f - d)
+            val a = prof * gain * 2.4f
             val c = bandCol[b]
             val u = clamp01(d)
             val from = if (u < 0.5f) c[0] else c[1]
@@ -692,7 +705,7 @@ private class Scene(
             amount += a
         }
         if (amount > 0.02f) {
-            val patch = 0.8f + 0.4f * lat.at(x * 0.12f + 4f * kotlin.math.cos(phi), y * 0.15f + 4f * sin(phi))
+            val patch = 0.8f + 0.4f * lat.at(x * 0.08f + 4f * kotlin.math.cos(phi), y * 0.2f + 4f * sin(phi))
             r = 0.1f + (r - 0.1f) * patch
             g = 0.13f + (g - 0.13f) * patch
         }
@@ -708,23 +721,23 @@ private class Scene(
     ) {
         for (p in 0 until PUFFS) {
             val age = fract(3f * t / LOOP + p / PUFFS.toFloat())
-            val cx = CHIMNEY_X + age * age * 11f + 1.6f * sin(TAU * age * 1.5f + p)
-            val cy = CHIMNEY_TOP - 0.5f - age * 21f
-            val rad = 1.4f + age * 4.8f
-            val dens = 1.3f * smooth(0f, 0.12f, age) * (1f - age) * (1f - age)
-            for (y in floor(cy - rad / 2f).toInt()..floor(cy + rad / 2f).toInt() + 1) {
+            val cx = CHIMNEY_X + age * age * 15f + 1.8f * sin(TAU * age * 1.5f + p)
+            val cy = CHIMNEY_TOP - 0.5f - age * 17f
+            val rad = 2f + age * 7f
+            val dens = 2f * smooth(0f, 0.1f, age) * (1f - age) * (1f - age)
+            for (y in floor(cy - rad / 2.2f).toInt()..floor(cy + rad / 2.2f).toInt() + 1) {
                 for (x in floor(cx - rad).toInt()..floor(cx + rad).toInt() + 1) {
                     if (x !in 0 until COLS || y !in 0 until WL) continue
                     val dx = x + 0.5f - cx
-                    val dy = (y + 0.5f - cy) * 2f
+                    val dy = (y + 0.5f - cy) * 2.2f
                     val q = 1f - (dx * dx + dy * dy) / (rad * rad)
                     if (q <= 0f) continue
                     val i = y * COLS + x
-                    val a = min(0.9f, q * dens * 1.7f)
-                    f.r[i] += (0.55f + f.lr[x] * 0.6f - f.r[i]) * a
-                    f.g[i] += (0.62f + f.lg[x] * 0.6f - f.g[i]) * a
-                    f.b[i] += (0.78f + f.lb[x] * 0.4f - f.b[i]) * a
-                    f.cov[i] += (0.85f - f.cov[i]).coerceAtLeast(0f) * a
+                    val a = min(0.95f, q * dens * 1.8f)
+                    f.r[i] += (0.74f + f.lr[x] * 0.6f - f.r[i]) * a
+                    f.g[i] += (0.78f + f.lg[x] * 0.6f - f.g[i]) * a
+                    f.b[i] += (0.9f + f.lb[x] * 0.4f - f.b[i]) * a
+                    f.cov[i] += (1.7f - f.cov[i]).coerceAtLeast(0f) * a
                 }
             }
         }
@@ -741,10 +754,10 @@ private class Scene(
         val m = far.mat[i]
         if (m == PANE) {
             val k = if (far.warmR[i] > 0f) fr else fl
-            val c = windowCol.mix(col("#fff2c4"), 0.45f).scale(0.7f + 0.4f * k)
-            f.r[i] = c.r
-            f.g[i] = c.g
-            f.b[i] = c.b
+            val sc = 0.7f + 0.4f * k
+            f.r[i] = pane.r * sc
+            f.g[i] = pane.g * sc
+            f.b[i] = pane.b * sc
             f.cov[i] = if (k > 0.8f) 2f else 1.9f
             return
         }
@@ -756,7 +769,12 @@ private class Scene(
         f.r[i] = far.r[i] + ar + windowCol.r * warm * 0.7f
         f.g[i] = far.g[i] + ag + windowCol.g * warm * 0.55f
         f.b[i] = far.b[i] + ab + windowCol.b * warm * 0.35f
-        f.cov[i] = min(1f, far.cov[i] + 0.7f * (0.3f * ar + 0.59f * ag + 0.11f * ab) + 0.35f * warm)
+        f.cov[i] =
+            if (far.cov[i] > 1.5f) {
+                far.cov[i]
+            } else {
+                min(1f, far.cov[i] + 0.7f * (0.3f * ar + 0.59f * ag + 0.11f * ab) + 0.35f * warm)
+            }
     }
 
     private fun lake(
@@ -766,17 +784,17 @@ private class Scene(
         for (y in WL until ROWS) {
             val d = (y - WL).toFloat()
             val wobble = 0.35f + 0.9f * d / (ROWS - WL - 1f)
-            val ys = max(0, (WL - 1 - d * 1.9f).toInt())
+            val ys = max(0, (WL - 1 - d * 1.4f).toInt())
             for (x in 0 until COLS) {
                 val i = y * COLS + x
                 val sx = (x + wobble * sin(0.85f * y + 0.21f * x + 2f * phi)).roundToInt().coerceIn(0, COLS - 1)
                 val j = ys * COLS + sx
                 val shimmer = 0.85f + 0.15f * sin(1.9f * y + 3f * phi + 0.15f * x)
-                val w = far.refl[i] * (0.82f - 0.025f * d) * shimmer
+                val w = far.refl[i] * (0.85f - 0.015f * d) * shimmer * (if (far.mat[j] == AIR) 0.45f else 1f)
                 val rec = far.rec[i] * 0.5f
-                f.r[i] = far.r[i] * (1f - w) + f.r[j] * w * 0.9f + f.lr[x] * rec
-                f.g[i] = far.g[i] * (1f - w) + f.g[j] * w * 0.9f + f.lg[x] * rec
-                f.b[i] = far.b[i] * (1f - w) + f.b[j] * w * 0.9f + f.lb[x] * rec
+                f.r[i] = far.r[i] * (1f - w) + f.r[j] * w * 0.8f + f.lr[x] * rec
+                f.g[i] = far.g[i] * (1f - w) + f.g[j] * w * 0.8f + f.lg[x] * rec
+                f.b[i] = far.b[i] * (1f - w) + f.b[j] * w * 0.8f + f.lb[x] * rec
                 val lum = 0.3f * f.lr[x] + 0.59f * f.lg[x] + 0.11f * f.lb[x]
                 f.cov[i] = min(1f, far.cov[i] * (1f - w) + min(1f, f.cov[j] * 0.9f + 0.1f) * w + lum * rec * 0.6f)
             }
@@ -785,7 +803,7 @@ private class Scene(
 
     private fun foreground(f: Frame) {
         for (i in fgCells) {
-            val x = i and (COLS - 1)
+            val x = i % COLS
             val rec = fg.rec[i]
             val ar = f.lr[x] * rec
             val ag = f.lg[x] * rec
@@ -793,7 +811,12 @@ private class Scene(
             f.r[i] = fg.r[i] + ar
             f.g[i] = fg.g[i] + ag
             f.b[i] = fg.b[i] + ab
-            f.cov[i] = min(1f, fg.cov[i] + 0.5f * (0.3f * ar + 0.59f * ag + 0.11f * ab))
+            f.cov[i] =
+                if (fg.cov[i] > 1.5f) {
+                    fg.cov[i]
+                } else {
+                    min(1f, fg.cov[i] + 0.5f * (0.3f * ar + 0.59f * ag + 0.11f * ab))
+                }
         }
     }
 
@@ -823,21 +846,24 @@ private class Scene(
         f: Frame,
         grid: Grid,
     ) {
-        for (i in 0 until CELLS) {
-            val c = f.cov[i]
-            if (c > 1.5f) {
-                grid.glyphs[i] = if (c > 1.95f) '█' else '▓'
-                grid.colors[i] = palette.pick(f.r[i], f.g[i], f.b[i])
-                continue
-            }
-            val q = c * 3f + BAYER[((i shr 7) and 3) * 4 + (i and 3)]
-            val idx = min(3, (q + 0.5f).toInt())
-            if (idx <= 0) {
-                grid.glyphs[i] = ' '
-                grid.colors[i] = 0
-            } else {
-                grid.glyphs[i] = GLYPHS[idx]
-                grid.colors[i] = palette.pick(f.r[i], f.g[i], f.b[i])
+        for (y in 0 until ROWS) {
+            for (x in 0 until COLS) {
+                val i = y * COLS + x
+                val c = f.cov[i]
+                if (c > 1.5f) {
+                    grid.glyphs[i] = if (c > 1.95f) '█' else '▓'
+                    grid.colors[i] = palette.pick(f.r[i], f.g[i], f.b[i])
+                    continue
+                }
+                val q = c * 3f + BAYER[(y and 3) * 4 + (x and 3)]
+                val idx = min(3, (q + 0.5f).toInt())
+                if (idx <= 0) {
+                    grid.glyphs[i] = ' '
+                    grid.colors[i] = 0
+                } else {
+                    grid.glyphs[i] = GLYPHS[idx]
+                    grid.colors[i] = palette.pick(f.r[i], f.g[i], f.b[i])
+                }
             }
         }
     }
