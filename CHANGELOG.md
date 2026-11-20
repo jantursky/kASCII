@@ -4,6 +4,8 @@ All notable changes to kASCII are listed here. The format follows [Keep a Change
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-20
+
 ### Added
 
 - Fourteen new animated scenes in `kascii-gallery`: lighthouse, steam train, sailboat sunset, desert caravan, aurora cabin, rainy city, cherry blossom, rocket launch, orbit sunrise, volcano night, abyss lure, witch moon, waking giant and moon angler. They are 192x48 computed scenes on their own dark ground.
