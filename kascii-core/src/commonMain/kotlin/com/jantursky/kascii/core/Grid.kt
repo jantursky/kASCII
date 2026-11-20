@@ -52,7 +52,7 @@ public class Grid(public val cols: Int, public val rows: Int) {
     public fun toText(): String = buildString {
         for (y in 0 until rows) {
             if (y > 0) append('\n')
-            append(glyphs, y * cols, cols)
+            appendRange(glyphs, y * cols, (y + 1) * cols)
         }
     }
 

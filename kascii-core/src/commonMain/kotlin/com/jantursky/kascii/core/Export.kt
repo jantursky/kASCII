@@ -50,7 +50,7 @@ public object Export {
                 val color = grid.colors[y * grid.cols + x]
                 var end = x
                 while (end < grid.cols && grid.colors[y * grid.cols + end] == color) end++
-                val run = String(grid.glyphs, y * grid.cols + x, end - x).trimEnd()
+                val run = grid.glyphs.concatToString(y * grid.cols + x, y * grid.cols + end).trimEnd()
                 if (run.isNotBlank()) {
                     val fill = if (color == 0) "" else """ fill="${Rgb(color).toHex()}""""
                     append("""<text x="${num(x * cellWidth)}" y="${num((y + 0.8f) * cellHeight)}" textLength="${num(run.length * cellWidth)}"$fill>${escape(run)}</text>""")
