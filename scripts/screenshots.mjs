@@ -24,7 +24,7 @@ const WIDTH = 560
 
 /** One GIF per gallery category. Piece pages open in embed mode, so the stage fills the viewport. */
 const GIFS = [
-  { name: 'scenes', pages: ['alpine-dawn', 'hilltop-night', 'lighthouse', 'sailboat-sunset', 'aurora-cabin', 'rainy-city', 'cherry-blossom', 'steam-train', 'desert-caravan', 'rocket-launch', 'orbit-sunrise', 'volcano-night', 'abyss-lure', 'witch-moon', 'waking-giant', 'moon-angler'] },
+  { name: 'scenes', pages: ['lighthouse', 'sailboat-sunset', 'aurora-cabin', 'rainy-city', 'moon-angler', 'abyss-lure'] },
   { name: 'shapes', pages: ['donut', 'cube', 'heart'] },
   { name: 'space', pages: ['starfield', 'solar-system'] },
   { name: 'physics', pages: ['pond-ripples', 'bouncing-balls'] },
@@ -91,7 +91,8 @@ const server = await serve()
 const url = `http://127.0.0.1:${server.address().port}/`
 const browser = await chromium.launch()
 try {
-  for (const gif of GIFS) {
+  const only = process.argv.find((arg) => arg.startsWith('--only='))?.slice('--only='.length)
+  for (const gif of GIFS.filter((g) => !only || g.name === only)) {
     for (const theme of ['light', 'dark']) {
       const dir = mkdtempSync(join(tmpdir(), `kascii-${gif.name}-`))
       try {

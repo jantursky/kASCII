@@ -3,6 +3,7 @@ package com.jantursky.kascii.samples.gallery
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -18,6 +19,7 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -26,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.jantursky.kascii.core.AsciiPiece
 import com.jantursky.kascii.core.PieceMeta
 import com.jantursky.kascii.gallery.GalleryEntry
 import com.jantursky.kascii.gallery.g.galleryPiecesG
@@ -36,6 +39,8 @@ import com.jantursky.kascii.gallery.galleryPiecesD
 import com.jantursky.kascii.gallery.galleryPiecesE
 import com.jantursky.kascii.gallery.galleryPiecesF
 import com.jantursky.kascii.samples.gallery.examples.PieceExample
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /** Every piece of the gallery module, in catalog order. */
 val Pieces: List<GalleryEntry> =
@@ -111,7 +116,9 @@ fun PieceCard(
 ) {
     val colors = Gallery.colors
     val navigate = LocalNavigate.current
-    val meta = remember(entry) { entry.create(0).meta }
+    // Building a scene fills palettes and layers, which takes long enough on a phone to stall the page if every card
+    // does it on the main thread at once. Cards build theirs on a worker and show a blank stage until it is ready.
+    val piece by produceState<AsciiPiece?>(null, entry) { value = withContext(Dispatchers.Default) { entry.create(0) } }
     val shape = RoundedCornerShape(8.dp)
     Column(
         modifier
@@ -119,23 +126,22 @@ fun PieceCard(
             .background(colors.surface2)
             .border(1.dp, colors.border, shape),
     ) {
-        PieceExample(
-            entry,
-            0,
-            state.speed,
-            state.motion,
-            state.renderer,
-            state.theme,
+        val stage =
             Modifier
                 .fillMaxWidth()
                 .aspectRatio(1.6f)
                 .background(Color(state.theme.paper.argb))
-                .padding(8.dp),
-        )
+                .padding(8.dp)
+        val built = piece
+        if (built == null) {
+            Box(stage)
+        } else {
+            PieceExample(entry, 0, state.speed, state.motion, state.renderer, state.theme, stage, built)
+        }
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             BasicText(entry.title, style = Gallery.type.body.copy(color = colors.strong))
             BasicText(
-                "${entry.category} · ${meta.cols}x${meta.rows}",
+                entry.category + (piece?.meta?.let { " · ${it.cols}x${it.rows}" } ?: ""),
                 style = Gallery.type.caption.copy(color = colors.muted),
             )
             entry.credit?.let { BasicText(it, style = Gallery.type.caption.copy(color = colors.muted)) }

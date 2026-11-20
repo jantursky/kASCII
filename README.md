@@ -29,7 +29,7 @@ It runs on Android, iOS, JVM desktop and wasmJs from one `commonMain` source set
 
 <table>
   <tr>
-    <td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/scenes-dark.gif"><img alt="Scenes: an alpine dawn and a hilltop at night" src=".github/assets/scenes-light.gif" width="260"></picture><br><sub>scenes</sub></td>
+    <td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/scenes-dark.gif"><img alt="Scenes: a lighthouse, a sailboat at sunset, an aurora over a cabin, a neon street in the rain" src=".github/assets/scenes-light.gif" width="260"></picture><br><sub>scenes</sub></td>
     <td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/shapes-dark.gif"><img alt="Shapes: a spinning torus, cube and heart" src=".github/assets/shapes-light.gif" width="260"></picture><br><sub>shapes</sub></td>
     <td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/space-dark.gif"><img alt="Space: a starfield and a solar system" src=".github/assets/space-light.gif" width="260"></picture><br><sub>space</sub></td>
   </tr>

@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import com.jantursky.kascii.compose.AsciiPieceView
 import com.jantursky.kascii.compose.AsciiRenderer
 import com.jantursky.kascii.compose.ProvideKasciiTheme
+import com.jantursky.kascii.core.AsciiPiece
 import com.jantursky.kascii.core.KasciiTheme
 import com.jantursky.kascii.core.Motion
 import com.jantursky.kascii.gallery.GalleryEntry
@@ -21,8 +22,8 @@ fun PieceExample(
     renderer: AsciiRenderer,
     theme: KasciiTheme,
     modifier: Modifier = Modifier,
+    piece: AsciiPiece = remember(entry, seed) { entry.create(seed) },
 ) {
-    val piece = remember(entry, seed) { entry.create(seed) }
     ProvideKasciiTheme(theme) {
         AsciiPieceView(
             piece,
