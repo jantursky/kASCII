@@ -42,6 +42,8 @@ kotlin {
                 .get()
                 .toInt()
         compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
+        // Compose resources ship the bundled font as an Android asset, which needs the resource pipeline.
+        androidResources { enable = true }
         withHostTest { isIncludeAndroidResources = true }
     }
 
