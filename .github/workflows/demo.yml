@@ -42,6 +42,7 @@ jobs:
         working-directory: samples/web/build/dist/wasmJs/productionExecutable
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          # The Apptiary team and its kascii-demo project. Neither is a secret.
+          VERCEL_ORG_ID: team_K9StkqZREJ9hVsKscavg7bgs
+          VERCEL_PROJECT_ID: prj_xBFHV0lurqDHQJ8UswXSSBCxGvqH
         run: npx vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"

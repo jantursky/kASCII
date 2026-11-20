@@ -31,6 +31,7 @@ jobs:
         if: hashFiles('apps/docs/package.json') != '' && steps.vercel.outputs.enabled == 'true'
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          # The Apptiary team and its kascii-docs project. Neither is a secret.
+          VERCEL_ORG_ID: team_K9StkqZREJ9hVsKscavg7bgs
+          VERCEL_PROJECT_ID: prj_xwDFDqk6svA0xe8S8DGLHLbimh9K
         run: npx vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"
