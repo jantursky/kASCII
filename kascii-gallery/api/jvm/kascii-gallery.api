@@ -454,3 +454,163 @@ public final class com/jantursky/kascii/gallery/k/TopographicContoursKt {
 	public static synthetic fun topographicContoursPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
 }
 
+public final class com/jantursky/kascii/gallery/l/CatalogLKt {
+	public static final fun getGalleryPiecesL ()Ljava/util/List;
+}
+
+public final class com/jantursky/kascii/gallery/l/DnaHelixKt {
+	public static final fun AsciiDnaHelix (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun dnaHelixPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun dnaHelixPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/l/IcosphereKt {
+	public static final fun AsciiIcosphere (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun icospherePiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun icospherePiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/l/MobiusStripKt {
+	public static final fun AsciiMobiusStrip (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun mobiusStripPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun mobiusStripPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/l/SpirographKt {
+	public static final fun AsciiSpirograph (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun spirographPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun spirographPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/l/TesseractKt {
+	public static final fun AsciiTesseract (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun tesseractPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun tesseractPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/l/TorusKnotKt {
+	public static final fun AsciiTorusKnot (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun torusKnotPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun torusKnotPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/m/BoidsFlockKt {
+	public static final fun AsciiBoidsFlock (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun boidsFlockPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun boidsFlockPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/m/CatalogMKt {
+	public static final fun getGalleryPiecesM ()Ljava/util/List;
+}
+
+public final class com/jantursky/kascii/gallery/m/DoublePendulumKt {
+	public static final fun AsciiDoublePendulum (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun doublePendulumPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun doublePendulumPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/m/FallingSandKt {
+	public static final fun AsciiFallingSand (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun fallingSandPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun fallingSandPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/m/HarmonographKt {
+	public static final fun AsciiHarmonograph (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun harmonographPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun harmonographPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/m/ReactionDiffusionKt {
+	public static final fun AsciiReactionDiffusion (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun reactionDiffusionPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun reactionDiffusionPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/m/VoronoiCellsKt {
+	public static final fun AsciiVoronoiCells (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun voronoiCellsPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun voronoiCellsPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/n/CatalogNKt {
+	public static final fun getGalleryPiecesN ()Ljava/util/List;
+}
+
+public final class com/jantursky/kascii/gallery/n/MarketStreetKt {
+	public static final fun AsciiMarketStreet (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun marketStreetPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun marketStreetPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/n/PirateShipStormKt {
+	public static final fun AsciiPirateShipStorm (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun pirateShipStormPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun pirateShipStormPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/n/SpaceElevatorKt {
+	public static final fun AsciiSpaceElevator (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun spaceElevatorPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun spaceElevatorPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/n/TreehouseDuskKt {
+	public static final fun AsciiTreehouseDusk (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun treehouseDuskPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun treehouseDuskPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/n/UnderwaterCityKt {
+	public static final fun AsciiUnderwaterCity (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun underwaterCityPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun underwaterCityPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/n/WizardTowerKt {
+	public static final fun AsciiWizardTower (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun wizardTowerPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun wizardTowerPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/o/CandleFlameKt {
+	public static final fun AsciiCandleFlame (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun candleFlamePiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun candleFlamePiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/o/CatalogOKt {
+	public static final fun getGalleryPiecesO ()Ljava/util/List;
+}
+
+public final class com/jantursky/kascii/gallery/o/GearTrainKt {
+	public static final fun AsciiGearTrain (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun gearTrainPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun gearTrainPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/o/LanternFestivalKt {
+	public static final fun AsciiLanternFestival (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun lanternFestivalPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun lanternFestivalPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/o/OceanWavesKt {
+	public static final fun AsciiOceanWaves (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun oceanWavesPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun oceanWavesPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/o/SnowGlobeKt {
+	public static final fun AsciiSnowGlobe (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun snowGlobePiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun snowGlobePiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+
+public final class com/jantursky/kascii/gallery/o/VinylRecordKt {
+	public static final fun AsciiVinylRecord (Landroidx/compose/ui/Modifier;IFLcom/jantursky/kascii/core/Motion;Lcom/jantursky/kascii/compose/AsciiRenderer;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun vinylRecordPiece (I)Lcom/jantursky/kascii/core/AsciiPiece;
+	public static synthetic fun vinylRecordPiece$default (IILjava/lang/Object;)Lcom/jantursky/kascii/core/AsciiPiece;
+}
+

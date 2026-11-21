@@ -92,4 +92,46 @@ internal val PieceSources: Map<String, PieceSource> =
         "liquid-metal" to PieceSource("com.jantursky.kascii.gallery.k", "liquidMetalPiece", "k/LiquidMetal.kt"),
         "topographic-contours" to
             PieceSource("com.jantursky.kascii.gallery.k", "topographicContoursPiece", "k/TopographicContours.kt"),
+        "torus-knot" to PieceSource("com.jantursky.kascii.gallery.l", "torusKnotPiece", "l/TorusKnot.kt"),
+        "icosphere" to PieceSource("com.jantursky.kascii.gallery.l", "icospherePiece", "l/Icosphere.kt"),
+        "mobius-strip" to PieceSource("com.jantursky.kascii.gallery.l", "mobiusStripPiece", "l/MobiusStrip.kt"),
+        "tesseract" to PieceSource("com.jantursky.kascii.gallery.l", "tesseractPiece", "l/Tesseract.kt"),
+        "dna-helix" to PieceSource("com.jantursky.kascii.gallery.l", "dnaHelixPiece", "l/DnaHelix.kt"),
+        "spirograph" to PieceSource("com.jantursky.kascii.gallery.l", "spirographPiece", "l/Spirograph.kt"),
+        "reaction-diffusion" to
+            PieceSource("com.jantursky.kascii.gallery.m", "reactionDiffusionPiece", "m/ReactionDiffusion.kt"),
+        "boids-flock" to PieceSource("com.jantursky.kascii.gallery.m", "boidsFlockPiece", "m/BoidsFlock.kt"),
+        "falling-sand" to PieceSource("com.jantursky.kascii.gallery.m", "fallingSandPiece", "m/FallingSand.kt"),
+        "voronoi-cells" to PieceSource("com.jantursky.kascii.gallery.m", "voronoiCellsPiece", "m/VoronoiCells.kt"),
+        "harmonograph" to PieceSource("com.jantursky.kascii.gallery.m", "harmonographPiece", "m/Harmonograph.kt"),
+        "double-pendulum" to
+            PieceSource(
+                "com.jantursky.kascii.gallery.m",
+                "doublePendulumPiece",
+                "m/DoublePendulum.kt",
+            ),
+        "pirate-ship-storm" to
+            PieceSource("com.jantursky.kascii.gallery.n", "pirateShipStormPiece", "n/PirateShipStorm.kt"),
+        "space-elevator" to PieceSource("com.jantursky.kascii.gallery.n", "spaceElevatorPiece", "n/SpaceElevator.kt"),
+        "underwater-city" to
+            PieceSource(
+                "com.jantursky.kascii.gallery.n",
+                "underwaterCityPiece",
+                "n/UnderwaterCity.kt",
+            ),
+        "treehouse-dusk" to
+            PieceSource(
+                "com.jantursky.kascii.gallery.n",
+                "treehouseDuskPiece",
+                "n/TreehouseDusk.kt",
+            ),
+        "wizard-tower" to PieceSource("com.jantursky.kascii.gallery.n", "wizardTowerPiece", "n/WizardTower.kt"),
+        "market-street" to PieceSource("com.jantursky.kascii.gallery.n", "marketStreetPiece", "n/MarketStreet.kt"),
+        "gear-train" to PieceSource("com.jantursky.kascii.gallery.o", "gearTrainPiece", "o/GearTrain.kt"),
+        "candle-flame" to PieceSource("com.jantursky.kascii.gallery.o", "candleFlamePiece", "o/CandleFlame.kt"),
+        "snow-globe" to PieceSource("com.jantursky.kascii.gallery.o", "snowGlobePiece", "o/SnowGlobe.kt"),
+        "lantern-festival" to
+            PieceSource("com.jantursky.kascii.gallery.o", "lanternFestivalPiece", "o/LanternFestival.kt"),
+        "vinyl-record" to PieceSource("com.jantursky.kascii.gallery.o", "vinylRecordPiece", "o/VinylRecord.kt"),
+        "ocean-waves" to PieceSource("com.jantursky.kascii.gallery.o", "oceanWavesPiece", "o/OceanWaves.kt"),
     )

@@ -42,6 +42,10 @@ import com.jantursky.kascii.gallery.h.galleryPiecesH
 import com.jantursky.kascii.gallery.i.galleryPiecesI
 import com.jantursky.kascii.gallery.j.galleryPiecesJ
 import com.jantursky.kascii.gallery.k.galleryPiecesK
+import com.jantursky.kascii.gallery.l.galleryPiecesL
+import com.jantursky.kascii.gallery.m.galleryPiecesM
+import com.jantursky.kascii.gallery.n.galleryPiecesN
+import com.jantursky.kascii.gallery.o.galleryPiecesO
 import com.jantursky.kascii.samples.gallery.examples.PieceExample
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -49,13 +53,17 @@ import kotlinx.coroutines.withContext
 /** Every piece of the gallery module, in catalog order. */
 val Pieces: List<GalleryEntry> =
     galleryPiecesA + galleryPiecesB + galleryPiecesC + galleryPiecesD + galleryPiecesE +
-        galleryPiecesF + galleryPiecesG + galleryPiecesH + galleryPiecesI + galleryPiecesJ + galleryPiecesK
+        galleryPiecesF + galleryPiecesG + galleryPiecesH + galleryPiecesI + galleryPiecesJ + galleryPiecesK +
+        galleryPiecesL +
+        galleryPiecesM +
+        galleryPiecesN +
+        galleryPiecesO
 
 /** The ratio of glyph cell height to width of the bundled font: a line is 1.32 em and a glyph 0.6 em. */
 internal const val CELL_ASPECT = 2.2f
 
 private val StageHeight = 440.dp
-private val CardMin = 260.dp
+private val TwoColumns = 640.dp
 private val CardGap = 16.dp
 
 internal fun PieceMeta.aspect(): Float = cols / (rows * CELL_ASPECT)
@@ -98,7 +106,7 @@ fun PieceCards(
     state: GalleryState,
 ) {
     BoxWithConstraints(Modifier.fillMaxWidth()) {
-        val columns = ((maxWidth + CardGap) / (CardMin + CardGap)).toInt().coerceAtLeast(1)
+        val columns = if (maxWidth >= TwoColumns) 2 else 1
         val width: Dp = (maxWidth - CardGap * (columns - 1)) / columns
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(CardGap),

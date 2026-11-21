@@ -18,6 +18,10 @@ import com.jantursky.kascii.gallery.h.galleryPiecesH
 import com.jantursky.kascii.gallery.i.galleryPiecesI
 import com.jantursky.kascii.gallery.j.galleryPiecesJ
 import com.jantursky.kascii.gallery.k.galleryPiecesK
+import com.jantursky.kascii.gallery.l.galleryPiecesL
+import com.jantursky.kascii.gallery.m.galleryPiecesM
+import com.jantursky.kascii.gallery.n.galleryPiecesN
+import com.jantursky.kascii.gallery.o.galleryPiecesO
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -27,7 +31,11 @@ import kotlin.test.assertTrue
 class GalleryComposeTest {
     private val entries =
         galleryPiecesA + galleryPiecesB + galleryPiecesC + galleryPiecesD + galleryPiecesE +
-            galleryPiecesF + galleryPiecesG + galleryPiecesH + galleryPiecesI + galleryPiecesJ + galleryPiecesK
+            galleryPiecesF + galleryPiecesG + galleryPiecesH + galleryPiecesI + galleryPiecesJ + galleryPiecesK +
+            galleryPiecesL +
+            galleryPiecesM +
+            galleryPiecesN +
+            galleryPiecesO
 
     @Test
     fun catalogIsNotEmpty() {

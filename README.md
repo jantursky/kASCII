@@ -24,7 +24,7 @@ It runs on Android, iOS, JVM desktop and wasmJs from one `commonMain` source set
 - **Engine.** Fields, 14 built-in charsets (classic ramps, blocks, quadrants, Braille at 2 x 4 dots per cell, CP437, PETSCII, katakana, an edge-aware one), six color modes, themes, a frame clock and export to text, ANSI and SVG.
 - **Compose.** `AsciiCanvas`, `AsciiImage`, `Modifier.ascii` for any element, and three renderers: a GPU shader, a cached glyph atlas, and real selectable text.
 - **Components.** Buttons, forms, tabs, tables, a terminal, charts, a Braille pie chart, spinners and eleven text effects, with real semantics and keyboard support.
-- **Gallery.** 67 animated pieces to start with, each a composable with a seed, deterministic and tested as text.
+- **Gallery.** 91 animated pieces to start with, each a composable with a seed, deterministic and tested as text.
 - **Calm by default.** Everything pauses offscreen and in the background and holds a still frame under reduced motion.
 
 <table>
@@ -136,7 +136,7 @@ Background pausing relies on the host frame clock stopping and is documented, no
 - Camera, video and microphone sources (`AsciiCamera`, `AsciiVideo`).
 - Animated export to GIF and WebM. Text, ANSI, SVG and PNG are covered.
 - FIGlet fonts. Big text uses two block fonts drawn for kASCII, because the standard FIGlet fonts have no clear license.
-- Most of the planned gallery: 67 pieces ship in the first release. Later phases add the rest of the ascii.rest catalogue re-implemented in Kotlin, city skylines, simulations, interactive pieces and seasonal pieces.
+- Most of the planned gallery: 91 pieces ship in the first release. Later phases add the rest of the ascii.rest catalogue re-implemented in Kotlin, city skylines, simulations, interactive pieces and seasonal pieces.
 - Interactive expand and collapse in `AsciiTree`, tap to select in `AsciiCalendar` and image support in `AsciiAvatar`.
 - Frame-time budgets per piece on devices.
 

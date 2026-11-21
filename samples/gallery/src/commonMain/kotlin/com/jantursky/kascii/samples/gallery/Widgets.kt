@@ -8,8 +8,10 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.drag
+import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.input.key.Key
@@ -43,6 +46,8 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
@@ -73,13 +78,23 @@ fun Modifier.pressable(
 ): Modifier {
     val source = remember { MutableInteractionSource() }
     val focused by source.collectIsFocusedAsState()
+    val hovered by source.collectIsHoveredAsState()
     val ring = if (focused) Modifier.border(2.dp, Gallery.colors.link, shape) else Modifier
+    val wash = Gallery.colors.link.copy(alpha = HOVER_WASH)
     return this
         .defaultMinSize(TARGET.dp, TARGET.dp)
         .then(ring)
         .clip(shape)
-        .clickable(interactionSource = source, indication = null, role = role, onClick = onClick)
+        .hoverable(source)
+        .pointerHoverIcon(PointerIcon.Hand)
+        .drawWithContent {
+            drawContent()
+            // Drawn over whatever the target is made of, so every kind of target answers the pointer the same way.
+            if (hovered) drawRect(wash)
+        }.clickable(interactionSource = source, indication = null, role = role, onClick = onClick)
 }
+
+private const val HOVER_WASH = 0.14f
 
 /** A pill button: a 20% tint of the accent, accent text and a 10% white border. */
 @Composable
