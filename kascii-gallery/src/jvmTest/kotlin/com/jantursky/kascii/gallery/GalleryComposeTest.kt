@@ -14,6 +14,10 @@ import androidx.compose.ui.unit.dp
 import com.jantursky.kascii.compose.AsciiPieceView
 import com.jantursky.kascii.core.Motion
 import com.jantursky.kascii.gallery.g.galleryPiecesG
+import com.jantursky.kascii.gallery.h.galleryPiecesH
+import com.jantursky.kascii.gallery.i.galleryPiecesI
+import com.jantursky.kascii.gallery.j.galleryPiecesJ
+import com.jantursky.kascii.gallery.k.galleryPiecesK
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -23,7 +27,7 @@ import kotlin.test.assertTrue
 class GalleryComposeTest {
     private val entries =
         galleryPiecesA + galleryPiecesB + galleryPiecesC + galleryPiecesD + galleryPiecesE +
-            galleryPiecesF + galleryPiecesG
+            galleryPiecesF + galleryPiecesG + galleryPiecesH + galleryPiecesI + galleryPiecesJ + galleryPiecesK
 
     @Test
     fun catalogIsNotEmpty() {

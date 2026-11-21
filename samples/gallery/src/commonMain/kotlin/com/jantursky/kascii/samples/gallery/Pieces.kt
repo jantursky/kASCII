@@ -38,6 +38,10 @@ import com.jantursky.kascii.gallery.galleryPiecesC
 import com.jantursky.kascii.gallery.galleryPiecesD
 import com.jantursky.kascii.gallery.galleryPiecesE
 import com.jantursky.kascii.gallery.galleryPiecesF
+import com.jantursky.kascii.gallery.h.galleryPiecesH
+import com.jantursky.kascii.gallery.i.galleryPiecesI
+import com.jantursky.kascii.gallery.j.galleryPiecesJ
+import com.jantursky.kascii.gallery.k.galleryPiecesK
 import com.jantursky.kascii.samples.gallery.examples.PieceExample
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -45,7 +49,7 @@ import kotlinx.coroutines.withContext
 /** Every piece of the gallery module, in catalog order. */
 val Pieces: List<GalleryEntry> =
     galleryPiecesA + galleryPiecesB + galleryPiecesC + galleryPiecesD + galleryPiecesE +
-        galleryPiecesF + galleryPiecesG
+        galleryPiecesF + galleryPiecesG + galleryPiecesH + galleryPiecesI + galleryPiecesJ + galleryPiecesK
 
 /** The ratio of glyph cell height to width of the bundled font: a line is 1.32 em and a glyph 0.6 em. */
 internal const val CELL_ASPECT = 2.2f

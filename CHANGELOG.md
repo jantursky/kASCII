@@ -4,6 +4,10 @@ All notable changes to kASCII are listed here. The format follows [Keep a Change
 
 ## [Unreleased]
 
+### Added
+
+- Twenty-seven new animated pieces in `kascii-gallery`. Seven landscapes: mountain lake, windmill meadow, jungle temple, ice cave, floating islands, canyon river and snow village. Seven built places and space scenes: space station, moon base, observatory, desert highway, neon arcade, clock tower and airship sky. Seven creatures: whale song, fox in snow, butterfly meadow, dragon over castle, koi pond, firefly marsh and sea turtle reef. Six shader-style visuals: lightning storm, fireworks harbor, galaxy spiral, aurora ribbons, liquid metal and topographic contours.
+
 ## [1.0.0] - 2026-11-20
 
 ### Added
