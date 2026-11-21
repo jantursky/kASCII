@@ -3,7 +3,6 @@ package com.jantursky.kascii.samples.app
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Modifier
 import com.jantursky.kascii.samples.gallery.GalleryApp as Gallery
 
 /**
@@ -22,5 +21,5 @@ fun GalleryApp(
 ) {
     val initialDark = dark ?: isSystemInDarkTheme()
     LaunchedEffect(initialDark) { onDarkChange(initialDark) }
-    Gallery(Modifier, entry, initialDark, onDarkModeChange = onDarkChange)
+    Gallery(initialPage = entry, initialDark = initialDark, onDarkModeChange = onDarkChange)
 }
