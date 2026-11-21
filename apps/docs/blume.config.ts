@@ -1,7 +1,6 @@
 import { readFileSync } from 'node:fs'
 
 import { defineConfig } from 'blume'
-import { script } from 'blume/analytics'
 
 const properties = readFileSync(new URL('../../gradle.properties', import.meta.url), 'utf8')
 const version = /^VERSION_NAME=(.+)$/m.exec(properties)?.[1]?.trim()
@@ -33,14 +32,6 @@ export default defineConfig({
     // The repository's skill (skills/kascii/SKILL.md) replaces the one Blume would generate for the site.
     skills: '../../skills',
   },
-  analytics: [
-    // Analytik, privacy-first and self-hosted. Strict mode stores nothing on the device, so no consent banner is needed.
-    script({
-      src: 'https://analytics.apptiary.com/js/analytik.js',
-      strategy: 'defer',
-      attributes: { 'data-site': 'gwr1pchjcdfq', 'data-mode': 'strict' },
-    }),
-  ],
   deployment: {
     site: 'https://kascii-docs.vercel.app',
   },
