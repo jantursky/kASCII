@@ -28,6 +28,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.heading
@@ -116,6 +118,7 @@ private fun NavBar(
 ) {
     val wide = LocalWide.current
     val navigate = LocalNavigate.current
+    val uri = LocalUriHandler.current
     var menuOpen by remember { mutableStateOf(false) }
     Column(Modifier.fillMaxWidth().background(Gallery.colors.surface2)) {
         FlowRow(
@@ -131,6 +134,7 @@ private fun NavBar(
             )
             if (wide) {
                 NavLinks.forEach { NavButton(it.title, it.isCurrent(page)) { navigate(it.id) } }
+                ExternalLinks(uri)
             } else {
                 Pill(if (menuOpen) "Close" else "Menu", { menuOpen = !menuOpen }, tint = Tint.Amber)
             }
@@ -144,10 +148,20 @@ private fun NavBar(
                         navigate(it.id)
                     }
                 }
+                ExternalLinks(uri)
             }
         }
     }
 }
+
+@Composable
+private fun ExternalLinks(uri: UriHandler) {
+    TextLink("Docs", { uri.openUri(DOCS_URL) })
+    TextLink("GitHub", { uri.openUri(GITHUB_URL) })
+}
+
+private const val DOCS_URL = "https://kascii-docs.vercel.app/"
+private const val GITHUB_URL = "https://github.com/jantursky/kASCII/"
 
 @Composable
 private fun NavButton(
