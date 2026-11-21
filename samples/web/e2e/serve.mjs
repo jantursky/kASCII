@@ -30,11 +30,6 @@ export const serve = (port = 0) => {
   return new Promise((resolve) => {
     const server = createServer((request, response) => {
       const path = normalize(decodeURIComponent(new URL(request.url ?? '/', 'http://x').pathname))
-      if (path.startsWith('/_a/')) {
-        // The analytics proxy exists only on Vercel. Here the script is empty, so the tests send nothing anywhere.
-        response.writeHead(200, { 'content-type': 'text/javascript' }).end('')
-        return
-      }
       let file = join(dist, path)
       if (!file.startsWith(dist) || !statSync(file, { throwIfNoEntry: false })?.isFile()) {
         file = join(dist, 'index.html')
