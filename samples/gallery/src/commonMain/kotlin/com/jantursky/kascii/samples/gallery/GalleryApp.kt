@@ -39,7 +39,7 @@ const val GALLERY_VERSION = "1.1.0"
 
 private val WideBreakpoint = 720.dp
 private val ProseWidth = 800.dp
-private val GridWidth = 1120.dp
+private val GridWidth = 1680.dp
 
 /**
  * The whole gallery: a nav bar, the current page with its source and a footer.

@@ -4,6 +4,11 @@ All notable changes to kASCII are listed here. The format follows [Keep a Change
 
 ## [Unreleased]
 
+### Changed
+
+- The demo's pages of pieces and the overview use up to 1680dp of width, so wide screens show more cards per row.
+- Every piece page in the demo has a "Use it in your app" section: the dependency, the code that plays the piece and a link to its source on GitHub.
+
 ## [1.1.0] - 2026-11-21
 
 ### Added

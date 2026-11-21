@@ -22,6 +22,15 @@ class CatalogTest {
     }
 
     @Test
+    fun everyPieceNamesItsSourceAndTheSnippetBuildsIt() {
+        Pieces.forEach {
+            val source = assertNotNull(PieceSources[it.id], it.id)
+            assertTrue(pieceSnippet(source).contains("${source.factory}(0)"), it.id)
+        }
+        assertEquals(Pieces.size, PieceSources.size)
+    }
+
+    @Test
     fun theComponentPagesAreRegisteredAndReachableFromTheNav() {
         assertEquals(8, ComponentPages.size)
         ComponentPages.forEach { assertEquals(Group.Components, pageFor(it.id).group) }

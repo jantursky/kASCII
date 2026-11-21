@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import com.jantursky.kascii.core.Charset
 import com.jantursky.kascii.core.Charsets
@@ -58,8 +59,40 @@ fun PiecePage(
             ThemeControl(state)
         }
         ExportBar(state.theme, entry.id) { entry.create(state.seed).render() }
+        PieceUsage(entry)
     }
 }
+
+/** How to put the piece in an app: the dependency, the line that builds it and a link to its source. */
+@Composable
+private fun PieceUsage(entry: GalleryEntry) {
+    val source = PieceSources[entry.id] ?: return
+    val uri = LocalUriHandler.current
+    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        SectionHeading("Use it in your app")
+        CodePanel(pieceSnippet(source))
+        TextLink("View the source of ${entry.title} on GitHub", { uri.openUri(SOURCE_URL + source.file) })
+    }
+}
+
+private const val SOURCE_URL =
+    "https://github.com/jantursky/kASCII/blob/main/kascii-gallery/src/commonMain/kotlin/com/jantursky/kascii/gallery/"
+
+internal fun pieceSnippet(source: PieceSource): String =
+    """
+    // build.gradle.kts: implementation("io.github.jantursky:kascii-gallery:$GALLERY_VERSION")
+    import com.jantursky.kascii.compose.AsciiPieceView
+    import ${source.pkg}.${source.factory}
+
+    @Composable
+    fun Scene(modifier: Modifier = Modifier) {
+        val piece = remember { ${source.factory}(0) }
+        AsciiPieceView(
+            piece,
+            modifier.fillMaxWidth().aspectRatio(piece.meta.cols / (piece.meta.rows * 2.2f)),
+        )
+    }
+    """.trimIndent()
 
 /** Procedural fields by charset by color mode. The previews are the pickers. */
 @Composable
