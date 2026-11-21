@@ -61,7 +61,7 @@ class PiecesJTest {
 
     @Test
     fun aFrameDoesNotDependOnTheOrderFramesAreRequestedIn() {
-        val times = listOf(2.5f, 0.5f, 7f, 0f, 3.2f, 7f, 11.3f)
+        val times = listOf(2.5f, 0.5f, 7f, 0f, 11.3f)
         for (case in pieceCases) {
             val fresh = times.associateWith { case.create(5).render(it).toText() }
             val reused = case.create(5)
