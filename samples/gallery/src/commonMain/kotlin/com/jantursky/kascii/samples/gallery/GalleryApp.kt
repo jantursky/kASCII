@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import com.jantursky.kascii.compose.ProvideKasciiTheme
 import com.jantursky.kascii.core.Motion
 
-const val GALLERY_VERSION = "1.0.0"
+const val GALLERY_VERSION = "1.1.0"
 
 private val WideBreakpoint = 720.dp
 private val ProseWidth = 800.dp

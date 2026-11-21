@@ -51,9 +51,9 @@ The modules are published to Maven Central under `io.github.jantursky`.
 
 ```kotlin
 commonMain.dependencies {
-    implementation("io.github.jantursky:kascii-compose:1.0.0")    // AsciiCanvas, Modifier.ascii, renderers
-    implementation("io.github.jantursky:kascii-components:1.0.0") // interface, data and text-effect components
-    implementation("io.github.jantursky:kascii-gallery:1.0.0")    // animated pieces
+    implementation("io.github.jantursky:kascii-compose:1.1.0")    // AsciiCanvas, Modifier.ascii, renderers
+    implementation("io.github.jantursky:kascii-components:1.1.0") // interface, data and text-effect components
+    implementation("io.github.jantursky:kascii-gallery:1.1.0")    // animated pieces
 }
 ```
 

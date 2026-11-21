@@ -28,7 +28,7 @@ private val Boot =
 fun TerminalExample(modifier: Modifier = Modifier) {
     FlowRow(modifier, Arrangement.spacedBy(32.dp), Arrangement.spacedBy(24.dp)) {
         AsciiTerminal(
-            lines = listOf("$ kascii --version", "kascii 1.0.0", "$ ls", "core  compose  components"),
+            lines = listOf("$ kascii --version", "kascii 1.1.0", "$ ls", "core  compose  components"),
             cols = 36,
             rows = 8,
             typing = "kascii run gallery",
