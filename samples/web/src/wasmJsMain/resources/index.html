@@ -12,7 +12,8 @@
         @media (prefers-color-scheme: dark) { html, body { background: #06051d; } }
     </style>
     <script src="app.js" defer></script>
-    <script defer src="https://analytics.apptiary.com/js/analytik.js" data-site="gwr1pchjcdfq" data-mode="strict"></script>
+    <!-- Analytik, served through this site's own /_a path (see vercel.json) so a blocker that lists the analytics host does not stop it. -->
+    <script defer src="/_a/s.js" data-api="/_a/api" data-site="gwr1pchjcdfq" data-mode="strict"></script>
 </head>
 <body>
 </body>
