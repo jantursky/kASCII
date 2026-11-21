@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.widthIn
@@ -26,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.heading
@@ -34,6 +36,12 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.jantursky.kascii.compose.ProvideKasciiTheme
 import com.jantursky.kascii.core.Motion
+import kotlinx.coroutines.flow.first
+
+/** A request to open the page [id]. Two requests are different even for the same id, so each one opens it again. */
+class PageRequest(
+    val id: String?,
+)
 
 const val GALLERY_VERSION = "1.1.0"
 
@@ -45,6 +53,8 @@ private val GridWidth = 1240.dp
  * The whole gallery: a nav bar, the current page with its source and a footer.
  *
  * @param initialPage The id of the page to open: a showcase page such as `fields`, or a piece such as `donut`.
+ * @param pageRequest A page to open, such as the one a browser's back button returns to. Each request opens its
+ *   page, also when it names the page that is already shown by an earlier one.
  * @param onPageChange Called with the id of each page that opens, so a host can keep it in a URL.
  * @param onDarkModeChange Called with the theme in use, so a host can match its system bars.
  * @param initialAnimated Starts with animation on, which is the default. Off holds every piece on its still frame.
@@ -54,6 +64,7 @@ private val GridWidth = 1240.dp
 fun GalleryApp(
     modifier: Modifier = Modifier,
     initialPage: String? = null,
+    pageRequest: PageRequest? = null,
     initialDark: Boolean = isSystemInDarkTheme(),
     onPageChange: (String) -> Unit = {},
     onDarkModeChange: (Boolean) -> Unit = {},
@@ -63,6 +74,7 @@ fun GalleryApp(
     val state =
         remember { GalleryState(initialDark, if (initialAnimated) Motion.System else Motion.Reduced, embed) }
     var pageId by remember { mutableStateOf(pageFor(initialPage).id) }
+    LaunchedEffect(pageRequest) { if (pageRequest != null) pageId = pageFor(pageRequest.id).id }
     LaunchedEffect(pageId) { onPageChange(pageId) }
     LaunchedEffect(state.dark) { onDarkModeChange(state.dark) }
     GalleryTheme(state.dark) {
@@ -153,8 +165,16 @@ private fun PageView(
 ) {
     val colors = Gallery.colors
     val wide = LocalWide.current
+    val navigate = LocalNavigate.current
     val scroll = rememberScrollState()
-    LaunchedEffect(page.id) { scroll.scrollTo(0) }
+    LaunchedEffect(page.id) {
+        // A list page opens where it was left; any other starts at the top. The page is laid out after this runs, so
+        // wait until it is tall enough to scroll that far.
+        val target = if (page.wide) state.scrolls[page.id] ?: 0 else 0
+        if (target > 0) snapshotFlow { scroll.maxValue }.first { it >= target }
+        scroll.scrollTo(target)
+        snapshotFlow { scroll.value }.collect { state.scrolls[page.id] = it }
+    }
     Box(Modifier.fillMaxSize().verticalScroll(scroll), contentAlignment = Alignment.TopCenter) {
         Column(
             Modifier
@@ -165,6 +185,9 @@ private fun PageView(
         ) {
             if (page.id != "overview") {
                 Column(Modifier.widthIn(max = 640.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    if (page.group == Group.Pieces) {
+                        TextLink("← All pieces", { navigate("pieces") }, Modifier.offset(x = (-8).dp))
+                    }
                     BasicText(
                         page.title,
                         Modifier.semantics { heading() },

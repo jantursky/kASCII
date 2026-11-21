@@ -28,6 +28,12 @@ class GalleryState(
     var charset by mutableStateOf<Charset>(Charsets.Standard)
     var colors by mutableStateOf(ColorChoice.Theme)
 
+    /** The category picked on the Pieces page, kept so coming back from a piece finds the same list. */
+    var pieceCategory by mutableStateOf(ALL_PIECES)
+
+    /** How far each page was scrolled when it was left, so a list opens where it was left. */
+    val scrolls: MutableMap<String, Int> = mutableMapOf()
+
     /** Switches between the built-in light and dark themes, dropping a theme picked on the theme page. */
     fun useDark(value: Boolean) {
         dark = value
@@ -38,3 +44,6 @@ class GalleryState(
     val theme: KasciiTheme
         get() = themeOverride ?: if (dark) KasciiTheme.Dark else KasciiTheme.Light
 }
+
+/** The category that shows every piece. */
+internal const val ALL_PIECES = "all"

@@ -90,11 +90,11 @@ fun PieceStage(
 /** The grid of every piece, filtered by category. */
 @Composable
 fun PiecesGrid(state: GalleryState) {
-    val categories = remember { listOf(ALL) + Pieces.map { it.category }.distinct() }
-    var category by remember { mutableStateOf(ALL) }
+    val categories = remember { listOf(ALL_PIECES) + Pieces.map { it.category }.distinct() }
+    val category = state.pieceCategory
     Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(24.dp)) {
-        Choice(categories, category, { category = it }, { it })
-        PieceCards(Pieces.filter { category == ALL || it.category == category }, state)
+        Choice(categories, category, { state.pieceCategory = it }, { it })
+        PieceCards(Pieces.filter { category == ALL_PIECES || it.category == category }, state)
     }
 }
 
@@ -116,8 +116,6 @@ fun PieceCards(
         }
     }
 }
-
-private const val ALL = "all"
 
 /** A card with the live piece, its title, category and credit. Opens the piece's page. */
 @Composable

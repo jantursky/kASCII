@@ -175,7 +175,7 @@ test.describe('controls', () => {
 
   test('choosing full motion makes a held piece move', async ({ page }) => {
     await open(page, '/?animated=0#campfire')
-    await page.mouse.click(392, 971)
+    await page.mouse.click(392, 1027)
     await page.waitForTimeout(500)
     const first = await page.screenshot()
     await expect.poll(async () => difference(first, await page.screenshot()), { timeout: 5_000 }).toBeGreaterThan(0.1)
@@ -183,15 +183,15 @@ test.describe('controls', () => {
 
   test('the copy buttons put the frame on the clipboard', async ({ page }) => {
     await open(page, '/?animated=0#campfire')
-    await page.mouse.click(328, 1133)
+    await page.mouse.click(328, 1189)
     await expect
       .poll(async () => (await page.evaluate(() => navigator.clipboard.readText())).split('\n').length, { timeout: 5_000 })
       .toBeGreaterThan(10)
-    await page.mouse.click(447, 1133)
+    await page.mouse.click(447, 1189)
     await expect
       .poll(async () => page.evaluate(() => navigator.clipboard.readText()), { timeout: 5_000 })
       .toContain('\u001b[')
-    await page.mouse.click(564, 1133)
+    await page.mouse.click(564, 1189)
     await expect
       .poll(async () => page.evaluate(() => navigator.clipboard.readText()), { timeout: 5_000 })
       .toContain('<svg')
