@@ -4,6 +4,10 @@ All notable changes to kASCII are listed here. The format follows [Keep a Change
 
 ## [Unreleased]
 
+- The Firefox project runs in its own job, outside the demo gate, until its failure on the Linux runner is fixed.
+
+## [1.2.0] - 2026-11-25
+
 ### Added
 
 - Twenty-four more animated pieces in `kascii-gallery`. Six shapes: torus knot, icosphere, Mobius strip, tesseract, DNA helix and spirograph. Six simulations and generative pieces: reaction diffusion, boids flock, falling sand, Voronoi cells, harmonograph and double pendulum. Six scenes: pirate ship storm, space elevator, underwater city, treehouse dusk, wizard tower and market street. Six objects and phenomena: gear train, candle flame, snow globe, lantern festival, vinyl record and ocean waves.
