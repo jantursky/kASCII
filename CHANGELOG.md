@@ -4,17 +4,6 @@ All notable changes to kASCII are listed here. The format follows [Keep a Change
 
 ## [Unreleased]
 
-### Added
-
-- Twenty-four more animated pieces in `kascii-gallery`. Six shapes: torus knot, icosphere, Mobius strip, tesseract, DNA helix and spirograph. Six simulations and generative pieces: reaction diffusion, boids flock, falling sand, Voronoi cells, harmonograph and double pendulum. Six scenes: pirate ship storm, space elevator, underwater city, treehouse dusk, wizard tower and market street. Six objects and phenomena: gear train, candle flame, snow globe, lantern festival, vinyl record and ocean waves.
-
-### Changed
-
-- Continuous integration runs the demo's browser suite against the production build, and the demo deploys only after it passes. Pull requests fail when the Unreleased section of this changelog is empty.
-- A piece's page in the demo has an "All pieces" link back to the list, and the browser's back and forward buttons step through the pages. The list keeps its category and scroll position.
-- The demo's grid of pieces shows two cards per row on a wide screen, stretched and centered, and one on a narrow one. Everything that can be clicked answers the mouse pointer with a tint and a hand cursor.
-- Every piece page in the demo has a "Use it in your app" section: the dependency, the code that plays the piece and a link to its source on GitHub.
-
 ## [1.1.0] - 2026-11-21
 
 ### Added
