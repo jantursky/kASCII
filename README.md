@@ -153,6 +153,8 @@ bun run build:docs                      # the docs site
 bun run screenshots                     # re-record the README GIFs
 ```
 
+The browser suite runs in CI on every change to the demo (`.github/workflows/demo.yml`), and the demo deploys only after it passes. Pull requests need a `CHANGELOG.md` entry under `## [Unreleased]`, checked by CI.
+
 See [CONTRIBUTING.md](CONTRIBUTING.md). Agent instructions for building with kASCII are in [`skills/kascii/SKILL.md`](skills/kascii/SKILL.md).
 
 <!-- PROJECTS:START -->
