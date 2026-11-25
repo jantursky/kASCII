@@ -45,7 +45,7 @@ CI runs all of them on every pull request. `koverVerify` fails the build when co
 - Everything that isn't public API is `internal`. Changing the public API means running `./gradlew apiDump` and reviewing the diff in each module's `api` folder.
 - Pure logic (fields, charsets, grids, export) lives in `commonMain` and is tested in `commonTest`.
 - Code ported from another project keeps its license notice and names the source in its KDoc. Add the license text to `THIRD_PARTY_NOTICES` in the same change.
-- Add a line under `## [Unreleased]` in `CHANGELOG.md` for anything users will notice.
+- Every pull request adds at least one bullet under `## [Unreleased]` in `CHANGELOG.md`. CI fails a pull request whose Unreleased section is empty. A change users will not notice still gets a short bullet.
 
 ## License
 

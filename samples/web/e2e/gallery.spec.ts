@@ -46,6 +46,16 @@ const ready = async (page: Page) => {
     .toBe(true)
 }
 
+// Clicks the control whose text is [name], where Compose drew it. Compose's semantic element is matched by its exact
+// text: the accessible name is not always the label (a picker's name can be the canvas image's). Playwright's own
+// actionability check fails because the overlay sits above the element, so the pointer goes to the center of its box.
+const tap = async (page: Page, name: string) => {
+  const control = page.locator('[role="button"]').filter({ hasText: new RegExp(`^${name}$`) }).first()
+  const box = await control.boundingBox()
+  expect(box, `"${name}" is on screen`).not.toBeNull()
+  await page.mouse.click(box!.x + box!.width / 2, box!.y + box!.height / 2)
+}
+
 // How much the pixels vary: the largest standard deviation of a channel. A blank page has none.
 const variation = async (png: Buffer) => Math.max(...(await sharp(png).stats()).channels.map((channel) => channel.stdev))
 
@@ -150,8 +160,9 @@ test('the page follows the system theme', async ({ page }) => {
   expect(light.channels[0].mean).toBeGreaterThan(dark.channels[0].mean + 100)
 })
 
-// The controls are drawn on the canvas, so they are reached by position. The viewport is fixed and the colors are
-// forced so the layout is the same on every run; the phone project has another layout and skips them.
+// The controls are drawn on the canvas, but Compose exposes them as role=button elements in its semantic tree, so they
+// are reached by name. The viewport is fixed and the colors are forced so the layout is the same on every run; the
+// phone project has another layout and skips them.
 test.describe('controls', () => {
   test.beforeEach(({}, testInfo) => {
     test.skip(testInfo.project.name !== 'desktop', 'positions are for the desktop layout')
@@ -167,7 +178,7 @@ test.describe('controls', () => {
   test('the theme button switches between light and dark', async ({ page }) => {
     await open(page, '/?animated=0#campfire')
     const light = await sharp(await page.screenshot()).stats()
-    await page.mouse.click(1101, 32)
+    await tap(page, 'Dark')
     await page.waitForTimeout(500)
     const dark = await sharp(await page.screenshot()).stats()
     expect(light.channels[0].mean).toBeGreaterThan(dark.channels[0].mean + 100)
@@ -175,7 +186,7 @@ test.describe('controls', () => {
 
   test('choosing full motion makes a held piece move', async ({ page }) => {
     await open(page, '/?animated=0#campfire')
-    await page.mouse.click(392, 1027)
+    await tap(page, 'Full')
     await page.waitForTimeout(500)
     const first = await page.screenshot()
     await expect.poll(async () => difference(first, await page.screenshot()), { timeout: 5_000 }).toBeGreaterThan(0.1)
@@ -183,15 +194,15 @@ test.describe('controls', () => {
 
   test('the copy buttons put the frame on the clipboard', async ({ page }) => {
     await open(page, '/?animated=0#campfire')
-    await page.mouse.click(328, 1189)
+    await tap(page, 'Copy Text')
     await expect
       .poll(async () => (await page.evaluate(() => navigator.clipboard.readText())).split('\n').length, { timeout: 5_000 })
       .toBeGreaterThan(10)
-    await page.mouse.click(447, 1189)
+    await tap(page, 'Copy ANSI')
     await expect
       .poll(async () => page.evaluate(() => navigator.clipboard.readText()), { timeout: 5_000 })
       .toContain('\u001b[')
-    await page.mouse.click(564, 1189)
+    await tap(page, 'Copy SVG')
     await expect
       .poll(async () => page.evaluate(() => navigator.clipboard.readText()), { timeout: 5_000 })
       .toContain('<svg')
@@ -200,11 +211,11 @@ test.describe('controls', () => {
   test('the field, charset and color pickers change the field', async ({ page }) => {
     await open(page, '/?animated=0#fields')
     const plasma = await page.screenshot({ clip: { x: 272, y: 293, width: 736, height: 360 } })
-    await page.mouse.click(396, 727)
+    await tap(page, 'Noise')
     await page.waitForTimeout(400)
     const noise = await page.screenshot({ clip: { x: 272, y: 293, width: 736, height: 360 } })
     expect(await difference(plasma, noise)).toBeGreaterThan(1)
-    await page.mouse.click(688, 1208)
+    await tap(page, 'blocks')
     await page.waitForTimeout(400)
     const blocks = await page.screenshot({ clip: { x: 272, y: 293, width: 736, height: 360 } })
     expect(await difference(noise, blocks)).toBeGreaterThan(1)

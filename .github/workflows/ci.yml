@@ -28,6 +28,19 @@ jobs:
           distribution: temurin
           java-version: 17
       - uses: gradle/actions/setup-gradle@v6
+      - name: Changelog has an entry under Unreleased
+        run: |
+          entries=$(awk '
+            /^## \[Unreleased\]/ { found = 1; next }
+            found && /^## \[/ { exit }
+            found && /^\[.*\]: / { exit }
+            found && /^- / { count++ }
+            END { print count + 0 }
+          ' CHANGELOG.md)
+          if [ "$entries" -eq 0 ]; then
+            echo "CHANGELOG.md has no entry under ## [Unreleased]; add a bullet describing this change" >&2
+            exit 1
+          fi
       - name: Format, API, JVM and Android host tests, coverage gate
         run: ./gradlew spotlessCheck apiCheck jvmTest testAndroidHostTest koverXmlReport koverVerify
       - name: Keep JVM crash reports
